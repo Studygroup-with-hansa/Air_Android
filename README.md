@@ -2,4 +2,4 @@
 
 ---
 
-Windows Client for Studygroup with Hansa project
+Android for Studygroup with Hansa project
