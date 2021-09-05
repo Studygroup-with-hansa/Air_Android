@@ -1,8 +1,9 @@
 
-package com.hansarang.android.air
+package com.hansarang.android.air.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.hansarang.android.air.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
