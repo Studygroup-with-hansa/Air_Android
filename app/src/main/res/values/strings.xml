@@ -5,6 +5,8 @@
     <string name="home">홈</string>
     <!-- 2021.09.06 -->
     <string name="ymd">%04d.%02d.%02d</string>
+    <string name="time">%2dH %2dS %2dM</string>
+    <string name="target_time">목표 시간 05H 00M 00S</string>
     <string name="stats">통계</string>
     <string name="group">그룹</string>
     <string name="todo">할 일</string>

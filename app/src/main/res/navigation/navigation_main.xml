@@ -8,5 +8,26 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.hansarang.android.air.ui.fragment.HomeFragment"
+        android:label=""
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.hansarang.android.air.ui.fragment.StatsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_stats" />
+    <fragment
+        android:id="@+id/groupFragment"
+        android:name="com.hansarang.android.air.ui.fragment.GroupFragment"
+        android:label=""
+        tools:layout="@layout/fragment_group" />
+    <fragment
+        android:id="@+id/todoFragment"
+        android:name="com.hansarang.android.air.ui.fragment.TodoFragment"
+        android:label=""
+        tools:layout="@layout/fragment_todo" />
+    <fragment
+        android:id="@+id/memoFragment"
+        android:name="com.hansarang.android.air.ui.fragment.MemoFragment"
+        android:label=""
+        tools:layout="@layout/fragment_memo" />
 </navigation>

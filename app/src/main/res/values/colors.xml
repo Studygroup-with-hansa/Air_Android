@@ -12,4 +12,9 @@
     <color name="main_grey">#c1caea</color>
     <color name="grey_enabled">#464646</color>
     <color name="grey_disabled">#C4C4C4</color>
+    <color name="red">#ED6A5E</color>
+    <color name="yellow">#F6C343</color>
+    <color name="green">#79D16E</color>
+    <color name="blue">#97BAFF</color>
+    <color name="purple">#8886FF</color>
 </resources>
