@@ -12,4 +12,5 @@
     <string name="todo">할 일</string>
     <string name="memo">메모</string>
     <string name="subject">과목</string>
+    <string name="todo_date_pattern">yyyy.MM.dd</string>
 </resources>

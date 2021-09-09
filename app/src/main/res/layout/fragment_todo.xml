@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.TodoFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".ui.fragment.TodoFragment">
 
-</FrameLayout>
+        <LinearLayout
+            android:background="@color/main"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), -1)}"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_left_arrow" />
+
+            <TextView
+                android:id="@+id/tv_date_todo"
+                style="@style/BoldTextWhiteMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:setDate="@{vm.date}"
+                app:setPattern="@{@string/todo_date_pattern}"
+                tools:text="2021.09.06" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), 1)}"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_right_arrow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
