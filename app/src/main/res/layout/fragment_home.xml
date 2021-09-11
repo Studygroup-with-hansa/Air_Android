@@ -129,9 +129,9 @@
                         android:id="@+id/rv_subject_home"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_timer_subject"
                         android:nestedScrollingEnabled="false"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_timer_subject" />
 
                 </LinearLayout>
 

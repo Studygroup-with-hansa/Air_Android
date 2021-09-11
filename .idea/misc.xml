@@ -27,9 +27,10 @@
         <entry key="app/src/main/res/layout/fragment_memo.xml" value="0.2717391304347826" />
         <entry key="app/src/main/res/layout/fragment_stats.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_todo.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/item_timer_subject.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_timer_subject.xml" value="0.375" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.3572916666666667" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.16666666666666666" />
+        <entry key="app/src/main/res/menu/menu_timer_subject_list.xml" value="0.3572916666666667" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3734375" />
       </map>
     </option>

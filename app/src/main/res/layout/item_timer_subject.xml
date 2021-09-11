@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.graphics.Color"/>
         <variable
             name="subject"
             type="com.hansarang.android.domain.entity.dto.Subject" />
@@ -20,7 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play"
-            app:backgroundTint="#7C3636"
+            tools:backgroundTint="#7C3636"
+            android:stateListAnimator="@null"
+            app:elevation="0dp"
+            app:backgroundTint="@{subject.color}"
             app:fabCustomSize="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                app:setTime="@{vm.date}"
+                app:setDateTime="@{vm.date}"
                 app:setPattern="@{@string/date_pattern}"
                 tools:text="2021.09.06" />
 
