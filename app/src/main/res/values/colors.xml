@@ -17,4 +17,10 @@
     <color name="green">#79D16E</color>
     <color name="blue">#97BAFF</color>
     <color name="purple">#8886FF</color>
+    <color name="error_color">#E92121</color>
+    <color name="switch_track_disabled">#9F9F9F</color>
+    <color name="switch_track_enabled">#348303</color>
+    <color name="switch_thumb_disabled">#FAFAFA</color>
+    <color name="switch_thumb_enabled">#31BC00</color>
+    <color name="outline">#F1F1F3</color>
 </resources>
