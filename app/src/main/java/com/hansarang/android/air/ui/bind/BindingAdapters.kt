@@ -14,8 +14,8 @@ fun ProgressBar.setProgressBar(progressValue: Int) {
         .start()
 }
 
-@BindingAdapter("setDate", "setPattern")
-fun TextView.setDate(timeInMillis: Long, pattern: String) {
+@BindingAdapter("setTime", "setPattern")
+fun TextView.setTime(timeInMillis: Long, pattern: String) {
     val sdf = SimpleDateFormat(pattern, Locale.KOREA)
     text = sdf.format(Date(timeInMillis))
 }
