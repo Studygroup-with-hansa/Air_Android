@@ -1,24 +1,23 @@
 package com.hansarang.android.air.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentHomeBinding
-import com.hansarang.android.air.ui.activity.MainActivity
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toolbar: Toolbar
+    private lateinit var drawerLayout: DrawerLayout
     private val navController by lazy { findNavController() }
 
     override fun onCreateView(
@@ -37,18 +36,17 @@ class HomeFragment : Fragment() {
 
     private fun init() {
         toolbar = binding.toolbarHome
+        drawerLayout = binding.drawerLayoutHome
 
-        if (requireActivity() is MainActivity) {
-            with(requireActivity() as MainActivity) {
-                setSupportActionBar(toolbar)
-                NavigationUI.setupWithNavController(
-                    toolbar,
-                    navController,
-                    appBarConfiguration
-                )
-                supportActionBar?.title = ""
-                supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
-            }
+        with(requireActivity() as AppCompatActivity) {
+            setSupportActionBar(toolbar)
+            NavigationUI.setupWithNavController(
+                toolbar,
+                navController,
+                drawerLayout
+            )
+            supportActionBar?.title = ""
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
         }
     }
 

@@ -25,27 +25,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var drawerLayout: DrawerLayout
-
-    lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        drawerLayout = binding.drawerLayoutMain
         bottomNavigationView = binding.bottomNavigationViewMain
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.memoFragment,
-                R.id.todoFragment,
-                R.id.groupFragment,
-                R.id.statsFragment
-            ),
-            drawerLayout
-        )
     }
 
     override fun onStart() {
