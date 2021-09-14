@@ -4,6 +4,11 @@ import android.animation.ObjectAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.Transformation
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -38,4 +43,52 @@ fun TextView.setTime(timeInMillis: Long, pattern: String) {
 @BindingAdapter("app:backgroundTint")
 fun FloatingActionButton.setTint(colorCode: String) {
     supportBackgroundTintList = ColorStateList.valueOf(Color.parseColor(colorCode))
+}
+
+fun ImageButton.setToggleEnabled(enabled: Boolean) {
+    if (enabled) {
+        animate().setDuration(200).rotation(180f)
+    }
+    else {
+        animate().setDuration(200).rotation(0f)
+    }
+}
+
+fun View.expand() {
+    measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    val actualHeight = measuredHeight
+
+    layoutParams.height = 0
+    visibility = View.VISIBLE
+
+    val animation = object : Animation() {
+        override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+            layoutParams.height = if (interpolatedTime == 1f) ViewGroup.LayoutParams.WRAP_CONTENT
+            else (actualHeight * interpolatedTime).toInt()
+
+            requestLayout()
+        }
+    }
+
+    animation.duration = (actualHeight / context.resources.displayMetrics.density).toLong()
+
+    startAnimation(animation)
+}
+
+fun View.collapse() {
+    val actualHeight = measuredHeight
+
+    val animation = object : Animation() {
+        override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
+            if (interpolatedTime == 1f) {
+                visibility = View.GONE
+            } else {
+                layoutParams.height = (actualHeight - (actualHeight * interpolatedTime)).toInt()
+                requestLayout()
+            }
+        }
+    }
+
+    animation.duration = (actualHeight / context.resources.displayMetrics.density).toLong()
+    startAnimation(animation)
 }
