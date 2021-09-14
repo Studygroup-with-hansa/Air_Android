@@ -8,30 +8,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.hansarang.android.air.R
-import com.hansarang.android.air.databinding.FragmentSignInBinding
+import com.hansarang.android.air.databinding.FragmentSignUpBinding
 import com.hansarang.android.air.ui.activity.MainActivity
 
-class SignInFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
     private val navController by lazy { findNavController() }
-    private lateinit var binding: FragmentSignInBinding
+    private lateinit var binding: FragmentSignUpBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSignInBinding.inflate(inflater)
+        binding = FragmentSignUpBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSignUpSignIn.setOnClickListener {
-            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
+        binding.btnSignInSignUp.setOnClickListener {
+            navController.navigateUp()
         }
 
-        binding.btnSubmitSignIn.setOnClickListener {
+        binding.btnSubmitSignUp.setOnClickListener {
             val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
