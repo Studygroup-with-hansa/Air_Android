@@ -12,19 +12,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.fragment.TodoFragment">
 
         <LinearLayout
-            android:background="@color/main"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="@color/main"
             android:gravity="center">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), -1)}"
                 android:background="?selectableItemBackground"
+                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), -1)}"
                 android:src="@drawable/ic_left_arrow" />
 
             <TextView
@@ -40,11 +42,28 @@
             <androidx.appcompat.widget.AppCompatImageButton
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), 1)}"
                 android:background="?selectableItemBackground"
+                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), 1)}"
                 android:src="@drawable/ic_right_arrow" />
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.4"/>
+
+        <EditText
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:padding="10dp"
+            android:layout_margin="15dp"
+            android:hint="@string/please_set_memo"
+            android:gravity="top"
+            android:background="@drawable/memo_background"/>
 
     </LinearLayout>
 </layout>

@@ -11,7 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/main</item>
     </style>
 
     <style name="BoldTextWhite" parent="TextAppearance.AppCompat">
@@ -45,10 +45,9 @@
         <item name="android:textColor">@color/error_color</item>
     </style>
 
-    <style name="SwitchButton" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:track">@drawable/switch_track</item>
-        <item name="android:thumbTint">@color/switch_thumb</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/main</item>
+        <item name="android:textSelectHandle">@color/main</item>
+        <item name="android:textColorHighlight">@color/main_white</item>
     </style>
 </resources>

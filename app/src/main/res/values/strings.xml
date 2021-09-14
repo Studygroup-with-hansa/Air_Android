@@ -16,4 +16,5 @@
     <string name="modify">수정</string>
     <string name="delete">삭제</string>
     <string name="time_pattern">%02d:%02d:%02d</string>
+    <string name="please_set_memo">자유롭게 메모해주세요</string>
 </resources>
