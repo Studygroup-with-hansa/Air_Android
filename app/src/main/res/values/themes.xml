@@ -54,4 +54,29 @@
         <item name="android:textSelectHandle">@color/main</item>
         <item name="android:textColorHighlight">@color/main_white</item>
     </style>
+
+    <style name="TextEditText" parent="CustomEditText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:background">@drawable/edt_box</item>
+    </style>
+
+    <style name="OutlinedButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/btn_outlined_box</item>
+        <item name="android:textColor">@color/main</item>
+    </style>
+
+    <style name="TextButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+    <style name="SubmitButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/btn_filled_box</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

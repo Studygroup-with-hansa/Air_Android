@@ -17,4 +17,12 @@
     <string name="delete">삭제</string>
     <string name="time_pattern">%02d:%02d:%02d</string>
     <string name="please_set_memo">자유롭게 메모해주세요</string>
+    <string name="email">이메일</string>
+    <string name="please_set_email">이메일을 입력해주세요.</string>
+    <string name="validate_code">인증코드</string>
+    <string name="please_set_validate_code">인증코드를 입력해주세요.</string>
+    <string name="validate">인증</string>
+    <string name="sign_in">로그인</string>
+    <string name="dont_you_have_an_account">회원이 아니신가요?</string>
+    <string name="lets_sign_up">회원가입하기</string>
 </resources>

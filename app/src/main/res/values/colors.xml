@@ -25,4 +25,5 @@
     <color name="switch_thumb_enabled">#31BC00</color>
     <color name="outline">#F1F1F3</color>
     <color name="background">#F8F8FA</color>
+    <color name="edt_outline">#F1F1F3</color>
 </resources>
