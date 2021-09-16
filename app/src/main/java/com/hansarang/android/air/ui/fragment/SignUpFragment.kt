@@ -27,10 +27,6 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSignInSignUp.setOnClickListener {
-            navController.navigateUp()
-        }
-
         binding.btnSubmitSignUp.setOnClickListener {
             val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
