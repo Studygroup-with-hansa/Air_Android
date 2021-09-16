@@ -27,14 +27,8 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSignUpSignIn.setOnClickListener {
-            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
-        }
-
         binding.btnSubmitSignIn.setOnClickListener {
-            val intent = Intent(context, MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
         }
     }
 
