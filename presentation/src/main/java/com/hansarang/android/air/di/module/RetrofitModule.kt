@@ -20,7 +20,7 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun providesRetrofit(okHttpClient: OkHttpClient) =
+    fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("")
             .addConverterFactory(GsonConverterFactory.create())
