@@ -60,11 +60,14 @@
                     <ImageView
                         android:layout_width="120dp"
                         android:layout_height="120dp"
+                        android:id="@+id/iv_profile_sign_up"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_user_image"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_add_image_sign_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:fabCustomSize="48dp"
