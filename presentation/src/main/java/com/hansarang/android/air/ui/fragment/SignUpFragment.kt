@@ -2,19 +2,18 @@ package com.hansarang.android.air.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import coil.load
-import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentSignUpBinding
 import com.hansarang.android.air.ui.activity.MainActivity
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
