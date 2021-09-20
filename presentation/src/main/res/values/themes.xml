@@ -49,7 +49,7 @@
         <item name="android:textColor">@color/error_color</item>
     </style>
 
-    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+    <style name="CustomEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="colorControlActivated">@color/main</item>
         <item name="android:textSelectHandle">@color/main</item>
         <item name="android:textColorHighlight">@color/main_white</item>
@@ -57,7 +57,7 @@
 
     <style name="TextEditText" parent="CustomEditText">
         <item name="android:textSize">15sp</item>
-        <item name="android:padding">15dp</item>
+        <item name="boxBackgroundMode">none</item>
         <item name="android:background">@drawable/edt_box</item>
     </style>
 

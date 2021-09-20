@@ -9,7 +9,6 @@ import com.hansarang.android.domain.usecase.user.PostSendAuthCodeUseCase
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
-import kotlin.time.Duration
 
 class SignInViewModel(
     private val getRequestAuthUseCase: GetRequestAuthUseCase,

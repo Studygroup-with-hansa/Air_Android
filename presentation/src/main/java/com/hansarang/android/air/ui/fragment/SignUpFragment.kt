@@ -8,15 +8,19 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.hansarang.android.air.databinding.FragmentSignUpBinding
 import com.hansarang.android.air.ui.activity.MainActivity
+import com.hansarang.android.air.ui.viewmodel.factory.SignUpViewModelFactory
+import com.hansarang.android.air.ui.viewmodel.fragment.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
+    private lateinit var viewModel: SignUpViewModel
     private lateinit var launcher: ActivityResultLauncher<String>
 
     override fun onCreateView(
@@ -24,6 +28,8 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater)
+        viewModel = ViewModelProvider(this, SignUpViewModelFactory())[SignUpViewModel::class.java]
+        binding.vm = viewModel
         return binding.root
     }
 
@@ -47,6 +53,15 @@ class SignUpFragment : Fragment() {
         launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
                 binding.ivProfileSignUp.load(it)
+            }
+        }
+
+        with(viewModel) {
+            nickname.observe(viewLifecycleOwner) {
+                if (it.length < 2) {
+                    binding.tilNicknameSignUp.error =
+                        "닉네임은 두자 이상 입력해 주세요."
+                }
             }
         }
     }

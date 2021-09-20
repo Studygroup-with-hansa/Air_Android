@@ -1,6 +1,7 @@
 package com.hansarang.android.air.ui.fragment
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class SignInFragment : Fragment() {
 
         val factory = SignInViewModelFactory(getRequestAuthUseCase, postSendAuthCodeUseCase)
         viewModel = ViewModelProvider(this, factory)[SignInViewModel::class.java]
+        binding.vm = viewModel
 
         return binding.root
     }
@@ -46,6 +48,18 @@ class SignInFragment : Fragment() {
 
         binding.btnSubmitSignIn.setOnClickListener {
             navController.navigate(R.id.action_signInFragment_to_signUpFragment)
+        }
+
+        with(viewModel) {
+            email.observe(viewLifecycleOwner) {
+                val emailChk = Patterns.EMAIL_ADDRESS
+                binding.tilEmailSignIn.error =
+                    if (!emailChk.matcher(it).matches()) {
+                        resources.getString(R.string.please_set_validate_email)
+                    } else {
+                        ""
+                    }
+            }
         }
     }
 

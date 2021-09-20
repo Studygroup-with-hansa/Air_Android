@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.fragment.SignInViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,17 +57,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="top">
+                    android:layout_marginTop="5dp">
 
-                    <EditText
-                        android:id="@+id/et_email_sign_in"
-                        style="@style/TextEditText"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_email_sign_in"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:hint="@string/please_set_email"
-                        android:inputType="textEmailAddress" />
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:hintEnabled="false"
+                        app:hintAnimationEnabled="false"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_email_sign_in"
+                            style="@style/TextEditText"
+                            android:text="@={vm.email}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:hint="@string/please_set_email" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_email_validate_sign_in"
@@ -87,16 +105,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
 
-                    <EditText
-                        android:id="@+id/et_validate_code_sign_in"
-                        style="@style/TextEditText"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_validate_code_sign_in"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:hint="@string/please_set_validate_code"
-                        android:inputType="number"
-                        android:textSize="15sp"
-                        tools:ignore="Autofill,TextFields" />
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:hintEnabled="false"
+                        app:hintAnimationEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_validate_code_sign_in"
+                            style="@style/TextEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={vm.authCode}"
+                            android:inputType="number"
+                            android:hint="@string/please_set_validate_code" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
