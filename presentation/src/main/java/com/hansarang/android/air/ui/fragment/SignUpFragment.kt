@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import coil.load
 import com.hansarang.android.air.databinding.FragmentSignUpBinding
 import com.hansarang.android.air.ui.activity.MainActivity
-import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.AndroidEntryPoint
 
-@HiltAndroidApp
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
