@@ -13,10 +13,10 @@ import com.hansarang.android.air.ui.viewmodel.factory.SignInViewModelFactory
 import com.hansarang.android.air.ui.viewmodel.fragment.SignInViewModel
 import com.hansarang.android.domain.usecase.user.GetRequestAuthUseCase
 import com.hansarang.android.domain.usecase.user.PostSendAuthCodeUseCase
-import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@HiltAndroidApp
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     @Inject
