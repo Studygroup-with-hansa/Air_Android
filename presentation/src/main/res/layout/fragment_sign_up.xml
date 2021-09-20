@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.fragment.SignUpViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -94,14 +100,27 @@
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
-                <EditText
-                    android:id="@+id/et_nickname_sign_up"
-                    style="@style/TextEditText"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_nickname_sign_up"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
                     android:layout_marginTop="5dp"
-                    android:hint="@string/please_set_nickname"
-                    android:inputType="textPersonName" />
+                    app:errorEnabled="true"
+                    app:hintEnabled="false"
+                    app:hintAnimationEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nickname_sign_up"
+                        style="@style/TextEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={vm.nickname}"
+                        android:inputType="textPersonName"
+                        android:hint="@string/please_set_nickname" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
