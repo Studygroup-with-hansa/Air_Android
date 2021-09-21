@@ -1,11 +1,15 @@
 package com.hansarang.android.air.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.hansarang.android.air.databinding.FragmentStatsBinding
 import com.hansarang.android.air.ui.adapter.WeekdayDatePickerAdapter
 import com.hansarang.android.air.ui.viewmodel.fragment.StatsViewModel
@@ -39,6 +43,14 @@ class StatsFragment : Fragment() {
             binding.stats = it
         }
         viewModel.stats.observe(viewLifecycleOwner) { adapter.submitList(it) }
+
+        val dataSet = PieDataSet(arrayListOf(PieEntry(100f, "국어")), "")
+        with(binding.chartStudyTimeStats) {
+            data = PieData(dataSet)
+            description.text = ""
+        }
+
+
     }
 
 }

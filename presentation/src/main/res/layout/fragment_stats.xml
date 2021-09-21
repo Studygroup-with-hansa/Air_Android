@@ -45,5 +45,49 @@
             tools:itemCount="7"
             tools:listitem="@layout/item_weekday_date_picker" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/card_border_color"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@color/main_sub"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:textSize="17sp"
+            android:text="목표 달성률 50%"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_time"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/main"
+            style="@style/BoldTextBlackMiddle"/>
+
+        <TextView
+            android:id="@+id/tv_time_stats"
+            style="@style/BoldTextBlackBiggest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/main"
+            android:layout_gravity="center"
+            app:setTime="@{stats.totalStudyTime}"
+            app:setPattern="@{@string/time}"
+            tools:text="01H 47M 26S" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_study_time_stats"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 </layout>
