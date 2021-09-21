@@ -11,7 +11,9 @@ import com.hansarang.android.air.databinding.FragmentTodoBinding
 import com.hansarang.android.air.ui.adapter.TodoListAdapter
 import com.hansarang.android.air.ui.viewmodel.factory.TodoViewModelFactory
 import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TodoFragment : Fragment() {
 
     private lateinit var todoListAdapter: TodoListAdapter
