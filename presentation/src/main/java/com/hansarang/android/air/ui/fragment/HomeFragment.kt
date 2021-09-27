@@ -15,7 +15,9 @@ import com.hansarang.android.air.databinding.FragmentHomeBinding
 import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
 import com.hansarang.android.air.ui.viewmodel.factory.HomeViewModelFactory
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding

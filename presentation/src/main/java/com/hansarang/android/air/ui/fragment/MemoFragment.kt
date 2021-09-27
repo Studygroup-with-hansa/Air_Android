@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hansarang.android.air.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MemoFragment : Fragment() {
 
     override fun onCreateView(
