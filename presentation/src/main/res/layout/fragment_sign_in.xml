@@ -54,7 +54,7 @@
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
@@ -63,25 +63,21 @@
                         android:id="@+id/til_email_sign_in"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="4"
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
-                        android:layout_marginEnd="5dp"
-                        app:errorEnabled="true"
-                        app:hintAnimationEnabled="false"
                         app:hintEnabled="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btn_email_validate_sign_in"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:hintAnimationEnabled="false"
+                        app:errorEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_email_sign_in"
                             style="@style/TextEditText"
+                            android:text="@={vm.email}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/please_set_email"
                             android:inputType="textEmailAddress"
-                            android:text="@={vm.email}" />
+                            android:hint="@string/please_set_email" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,13 +85,12 @@
                         android:id="@+id/btn_email_validate_sign_in"
                         style="@style/OutlinedButton"
                         android:layout_width="0dp"
-                        android:text="@string/validate"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/validate" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
