@@ -90,6 +90,7 @@
                         style="@style/OutlinedButton"
                         android:layout_width="0dp"
                         android:text="@string/validate"
+                        android:stateListAnimator="@null"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
