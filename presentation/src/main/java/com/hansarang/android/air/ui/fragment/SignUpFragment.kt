@@ -44,7 +44,7 @@ class SignUpFragment : Fragment() {
             requireActivity().finish()
         }
 
-        binding.fabAddImageSignUp.setOnClickListener {
+        binding.btnAddImageSignUp.setOnClickListener {
             launcher.launch("image/*")
         }
     }
