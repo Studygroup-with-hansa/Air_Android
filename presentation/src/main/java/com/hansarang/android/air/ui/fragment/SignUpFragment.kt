@@ -44,7 +44,7 @@ class SignUpFragment : Fragment() {
             requireActivity().finish()
         }
 
-        binding.fabAddImageSignUp.setOnClickListener {
+        binding.btnAddImageSignUp.setOnClickListener {
             launcher.launch("image/*")
         }
     }
@@ -58,10 +58,12 @@ class SignUpFragment : Fragment() {
 
         with(viewModel) {
             nickname.observe(viewLifecycleOwner) {
-                if (it.length < 2) {
-                    binding.tilNicknameSignUp.error =
+                binding.tilNicknameSignUp.error =
+                    if (it.length < 2) {
                         "닉네임은 두자 이상 입력해 주세요."
-                }
+                    } else {
+                        ""
+                    }
             }
         }
     }
