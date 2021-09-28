@@ -63,6 +63,7 @@
 
     <style name="OutlinedButton" parent="TextAppearance.AppCompat.Button">
         <item name="android:background">@drawable/btn_outlined_box</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:textColor">@color/main</item>
     </style>
 
