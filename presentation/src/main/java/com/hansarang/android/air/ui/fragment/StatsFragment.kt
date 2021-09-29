@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,6 @@ import com.hansarang.android.air.ui.adapter.ChartLegendListAdapter
 import com.hansarang.android.air.ui.adapter.WeekdayDatePickerAdapter
 import com.hansarang.android.air.ui.viewmodel.fragment.StatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import android.view.MotionEvent
 
 @AndroidEntryPoint
 class StatsFragment : Fragment() {
@@ -42,33 +42,25 @@ class StatsFragment : Fragment() {
     }
 
     private fun init() {
-        val pieColorList = ColorTemplate.createColors(ColorTemplate.JOYFUL_COLORS)
         weekDayDatePickerAdapter = WeekdayDatePickerAdapter()
         weekDayDatePickerAdapter.stats.observe(viewLifecycleOwner) {
             binding.stats = it
 
-            val pieEntry =
-                arrayListOf(
-                    PieEntry(10f, "국어"),
-                    PieEntry(10f, "수학"),
-                    PieEntry(10f, "사회"),
-                    PieEntry(10f, "과학"),
-                    PieEntry(10f, "영어"),
-                    PieEntry(10f, "웹프"),
-                    PieEntry(10f, "프실"),
-                    PieEntry(10f, "파이썬"),
-                    PieEntry(10f, "C++"),
-                    PieEntry(10f, "자바"),
-                )
+            val pieColorList = ArrayList<Int>()
+            val pieEntryList = ArrayList<PieEntry>()
+            it.subject.forEach { subject ->
+                pieColorList.add(Color.parseColor(subject.color))
+                pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
+            }
 
             chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
-            chartLegendListAdapter.submitList(pieEntry)
+            chartLegendListAdapter.submitList(pieEntryList)
 
             with(binding.rvChartLegendStats) {
                 adapter = chartLegendListAdapter
             }
 
-            val pieDataSet = PieDataSet(pieEntry, "")
+            val pieDataSet = PieDataSet(pieEntryList, "")
                 .apply {
                     sliceSpace = 3f
                     selectionShift = 5f
@@ -84,13 +76,6 @@ class StatsFragment : Fragment() {
                 dragDecelerationFrictionCoef = 0.95f
                 setDrawEntryLabels(false)
                 animateY(500, Easing.EaseInOutQuart)
-
-                setOnTouchListener { view, motionEvent ->
-                    if (motionEvent.action == MotionEvent.ACTION_UP) {
-                        view.performClick()
-                    }
-                    return@setOnTouchListener true
-                }
             }
         }
 
