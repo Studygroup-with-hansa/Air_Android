@@ -11,7 +11,7 @@
             <item android:state_checked="true">
                 <shape android:shape="rectangle">
                     <solid android:color="@color/white"/>
-                    <stroke android:color="@color/main"
+                    <stroke android:color="@color/date_picker_selected"
                         android:width="2dp"/>
                 </shape>
             </item>
