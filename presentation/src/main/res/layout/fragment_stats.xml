@@ -32,64 +32,90 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_weekday_date_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:nestedScrollingEnabled="false"
-            app:fastScrollEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="7"
-            tools:listitem="@layout/item_weekday_date_picker" />
-
-        <View
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_stats_data_stats"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/card_border_color"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginHorizontal="5dp"/>
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@color/main_sub"
-            android:textColor="@color/white"
-            android:padding="10dp"
-            android:textSize="17sp"
-            android:text="목표 달성률 50%"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/all_time"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/main"
-            style="@style/BoldTextBlack"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_weekday_date_picker_stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:nestedScrollingEnabled="false"
+                    app:fastScrollEnabled="false"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="7"
+                    tools:listitem="@layout/item_weekday_date_picker" />
 
-        <TextView
-            android:id="@+id/tv_time_stats"
-            style="@style/BoldTextBlackBiggest"
-            android:textSize="25sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/main"
-            android:layout_gravity="center"
-            app:setTime="@{stats.totalStudyTime}"
-            app:setPattern="@{@string/time}"
-            tools:text="01H 47M 26S" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/card_border_color"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginHorizontal="5dp"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart_study_time_stats"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/main_sub"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:textSize="17sp"
+                    android:text="목표 달성률 50%"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_time"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/main"
+                    style="@style/BoldTextBlack"/>
+
+                <TextView
+                    android:id="@+id/tv_time_stats"
+                    style="@style/BoldTextBlackBiggest"
+                    android:textSize="25sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/main"
+                    android:layout_gravity="center"
+                    app:setTime="@{stats.totalStudyTime}"
+                    app:setPattern="@{@string/time}"
+                    tools:text="01H 47M 26S" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart_study_time_stats"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_chart_legend_stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:nestedScrollingEnabled="false"
+                    app:fastScrollEnabled="false"
+                    android:overScrollMode="never"
+                    android:layout_marginBottom="20dp"
+                    tools:listitem="@layout/item_chart_legend" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>
