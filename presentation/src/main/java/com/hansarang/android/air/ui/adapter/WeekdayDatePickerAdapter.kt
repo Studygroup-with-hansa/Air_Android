@@ -33,12 +33,11 @@ class WeekdayDatePickerAdapter: ListAdapter<Stats, WeekdayDatePickerAdapter.View
                 with(tvDayWeekdayDatePicker) {
                     text = dayOfWeek.format(sdf.parse(date)?:"").replace("요일", "")
                     frameLayoutDateBackgroundWeekdayDatePicker.background =
-                        ContextCompat.getDrawable(context, R.color.white)
-//                        if (stats.totalStudyTime != 0) {
-//                            ContextCompat.getDrawable(context, R.color.main_sub)
-//                        } else {
-//                            ContextCompat.getDrawable(context, R.color.white)
-//                        }
+                        if (stats.totalStudyTime != 0) {
+                            ContextCompat.getDrawable(context, R.color.main_sub)
+                        } else {
+                            ContextCompat.getDrawable(context, R.color.white)
+                        }
                 }
                 with(cbDateWeekdayDatePicker) {
                     text = DateFormat.format("dd", sdf.parse(date))
