@@ -20,7 +20,7 @@ abstract class BaseRemote<SV> {
         if (!response.isSuccessful) {
             val gson = Gson()
             val errorBody = gson.fromJson(response.errorBody()!!.charStream(), BaseResponse::class.java)
-            throw Throwable(errorBody.detail)
+            throw Throwable(errorBody.status.toString())
         }
     }
 }

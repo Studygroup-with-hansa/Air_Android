@@ -1,14 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.StatsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="stats"
+            type="com.hansarang.android.domain.entity.dto.Stats" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        tools:context=".ui.fragment.StatsFragment">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/main"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_date_stats"
+                style="@style/BoldTextWhiteMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="@{stats.date}"
+                tools:text="2021.09.06" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_weekday_date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:nestedScrollingEnabled="false"
+            app:fastScrollEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_weekday_date_picker" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/card_border_color"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@color/main_sub"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:textSize="17sp"
+            android:text="목표 달성률 50%"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_time"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/main"
+            style="@style/BoldTextBlackMiddle"/>
+
+        <TextView
+            android:id="@+id/tv_time_stats"
+            style="@style/BoldTextBlackBiggest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/main"
+            android:layout_gravity="center"
+            app:setTime="@{stats.totalStudyTime}"
+            app:setPattern="@{@string/time}"
+            tools:text="01H 47M 26S" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_study_time_stats"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</layout>

@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.fragment.SignInViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,31 +54,49 @@
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="top">
+                    android:layout_marginTop="5dp">
 
-                    <EditText
-                        android:id="@+id/et_email_sign_in"
-                        style="@style/TextEditText"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_email_sign_in"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:hint="@string/please_set_email"
-                        android:inputType="textEmailAddress" />
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        android:layout_marginEnd="10dp"
+                        app:errorEnabled="true"
+                        app:hintAnimationEnabled="false"
+                        app:hintEnabled="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btn_email_validate_sign_in"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_email_sign_in"
+                            style="@style/TextEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/please_set_email"
+                            android:inputType="textEmailAddress"
+                            android:text="@={vm.email}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_email_validate_sign_in"
                         style="@style/OutlinedButton"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:text="@string/validate" />
+                        android:text="@string/validate"
+                        android:stateListAnimator="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,16 +111,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
 
-                    <EditText
-                        android:id="@+id/et_validate_code_sign_in"
-                        style="@style/TextEditText"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_validate_code_sign_in"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:hint="@string/please_set_validate_code"
-                        android:inputType="number"
-                        android:textSize="15sp"
-                        tools:ignore="Autofill,TextFields" />
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:errorEnabled="true"
+                        app:hintEnabled="false"
+                        app:hintAnimationEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_validate_code_sign_in"
+                            style="@style/TextEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={vm.authCode}"
+                            android:inputType="number"
+                            android:hint="@string/please_set_validate_code" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
