@@ -63,7 +63,7 @@
         <entry key="presentation/src/main/res/layout/fragment_group.xml" value="0.29528985507246375" />
         <entry key="presentation/src/main/res/layout/fragment_home.xml" value="0.31900826446280994" />
         <entry key="presentation/src/main/res/layout/fragment_memo.xml" value="0.175" />
-        <entry key="presentation/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
+        <entry key="presentation/src/main/res/layout/fragment_sign_in.xml" value="0.375" />
         <entry key="presentation/src/main/res/layout/fragment_sign_up.xml" value="0.381835148230605" />
         <entry key="presentation/src/main/res/layout/fragment_stats.xml" value="0.375" />
         <entry key="presentation/src/main/res/layout/fragment_todo.xml" value="0.335" />
