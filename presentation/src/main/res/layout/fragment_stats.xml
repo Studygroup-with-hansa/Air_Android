@@ -7,6 +7,9 @@
         <variable
             name="stats"
             type="com.hansarang.android.domain.entity.dto.Stats" />
+        <variable
+            name="achievement"
+            type="Float" />
     </data>
 
     <LinearLayout
@@ -55,9 +58,9 @@
             android:layout_marginHorizontal="5dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp">
+            android:layout_marginHorizontal="8dp">
 
             <View
                 android:id="@+id/view_goal_achievement_rate_background_stats"
@@ -65,23 +68,49 @@
                 android:layout_height="0dp"
                 android:background="@color/main"
                 tools:alpha="0.5"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_goal_achievement_rate_stats"
+                android:alpha="@{achievement > 0.3f ? achievement : 0.3f}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_goal_achievement_rate_stats"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="목표 달성률 50%"
-                android:textColor="@color/white" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_goal_achievement_rate_stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:layout_margin="10dp"
+                    android:text="@{@string/goal_achievement_rate_stats(achievement * 100)}"
+                    tools:text="목표 달성률 50%" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:background="@color/white"
+                    android:layout_marginVertical="10dp"
+                    android:layout_height="match_parent"/>
+
+
+                <TextView
+                    android:id="@+id/tv_goal_time_stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:layout_margin="10dp"
+                    app:setTime="@{stats.goal}"
+                    app:setPattern="@{@string/time}"
+                    tools:text="05H 00M 00S" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
