@@ -57,101 +57,122 @@
             android:layout_marginBottom="10dp"
             android:layout_marginHorizontal="5dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp">
+            android:layout_height="match_parent">
 
-            <View
-                android:id="@+id/view_goal_achievement_rate_background_stats"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/main"
-                tools:alpha="0.5"
-                android:alpha="@{achievement > 0.3f ? achievement : 0.3f}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_no_data_stats"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="공부 기록이 없습니다"
+                android:textSize="18sp"
+                android:gravity="center"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/linearLayout_data_graph_stats"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp">
+
+                    <View
+                        android:id="@+id/view_goal_achievement_rate_background_stats"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/main"
+                        tools:alpha="0.5"
+                        android:alpha="@{achievement > 0.3f ? achievement : 0.3f}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_goal_achievement_rate_stats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:layout_margin="10dp"
+                            android:text="@{@string/goal_achievement_rate_stats(achievement * 100)}"
+                            tools:text="목표 달성률 50%" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:background="@color/white"
+                            android:layout_marginVertical="10dp"
+                            android:layout_height="match_parent"/>
+
+
+                        <TextView
+                            android:id="@+id/tv_goal_time_stats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:layout_margin="10dp"
+                            app:setTime="@{stats.goal}"
+                            app:setPattern="@{@string/time}"
+                            tools:text="05H 00M 00S" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/tv_goal_achievement_rate_stats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="17sp"
-                    android:layout_margin="10dp"
-                    android:text="@{@string/goal_achievement_rate_stats(achievement * 100)}"
-                    tools:text="목표 달성률 50%" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:background="@color/white"
-                    android:layout_marginVertical="10dp"
-                    android:layout_height="match_parent"/>
-
+                    android:text="@string/all_time"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/main"
+                    style="@style/BoldTextBlack"/>
 
                 <TextView
-                    android:id="@+id/tv_goal_time_stats"
+                    android:id="@+id/tv_time_stats"
+                    style="@style/BoldTextBlackBiggest"
+                    android:textSize="25sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="17sp"
-                    android:layout_margin="10dp"
-                    app:setTime="@{stats.goal}"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/main"
+                    android:layout_gravity="center"
+                    app:setTime="@{stats.totalStudyTime}"
                     app:setPattern="@{@string/time}"
-                    tools:text="05H 00M 00S" />
+                    tools:text="01H 47M 26S" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart_study_time_stats"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_chart_legend_stats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_chart_legend" />
 
             </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/all_time"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/main"
-            style="@style/BoldTextBlack"/>
-
-        <TextView
-            android:id="@+id/tv_time_stats"
-            style="@style/BoldTextBlackBiggest"
-            android:textSize="25sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/main"
-            android:layout_gravity="center"
-            app:setTime="@{stats.totalStudyTime}"
-            app:setPattern="@{@string/time}"
-            tools:text="01H 47M 26S" />
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart_study_time_stats"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_width="200dp"
-            android:layout_height="200dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_chart_legend_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_chart_legend" />
+        </FrameLayout>
     </LinearLayout>
 </layout>
