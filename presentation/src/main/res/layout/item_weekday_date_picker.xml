@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:paddingVertical="5dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -15,26 +16,41 @@
             android:layout_height="wrap_content"
             tools:text="월" />
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frameLayout_date_background_weekday_date_picker"
             android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="56.5dp"
             android:layout_height="wrap_content"
-            android:background="@color/grey_disabled">
+            android:background="?selectableItemBackground">
+
+            <View
+                android:id="@+id/view_background_color"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/main"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <RadioButton
                 android:id="@+id/cb_date_weekday_date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp"
-                android:checked="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@drawable/chk_calendar_date"
                 android:button="@null"
+                android:checked="true"
                 android:checkedButton="@null"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="20" />
 
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 </layout>

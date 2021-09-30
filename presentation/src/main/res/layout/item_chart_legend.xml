@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <View
+            android:id="@+id/view_form_chart_legend"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/main" />
+
+        <TextView
+            android:id="@+id/tv_element_chart_legend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:text="국어 : 1H 21M 00S" />
+
+    </LinearLayout>
+</layout>

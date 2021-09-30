@@ -1,5 +1,6 @@
 package com.hansarang.android.air.di.module
 
+import com.hansarang.android.data.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +23,7 @@ object RetrofitModule {
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://www.naver.com/")
+            .baseUrl(Constants.TEST_SERVER)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
