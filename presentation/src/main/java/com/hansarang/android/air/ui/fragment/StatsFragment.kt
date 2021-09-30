@@ -81,16 +81,12 @@ class StatsFragment : Fragment() {
             with(binding.tvGoalAchievementRateStats) {
                 text = String.format(
                     resources.getString(R.string.goal_achievement_rate_stats),
-                    (achievement * 100).toInt()
+                    achievement * 100
                 )
-                setTextColor(if (achievement > 0.5f) {
-                    ContextCompat.getColor(context, R.color.white)
-                } else {
-                    ContextCompat.getColor(context, R.color.black)
-                })
             }
 
-            binding.viewGoalAchievementRateBackgroundStats.alpha = achievement
+            binding.viewGoalAchievementRateBackgroundStats.alpha =
+                if (achievement > 0.3f) achievement else 0.3f
         }
 
         viewModel.stats.observe(viewLifecycleOwner) { weekDayDatePickerAdapter.submitList(it) }

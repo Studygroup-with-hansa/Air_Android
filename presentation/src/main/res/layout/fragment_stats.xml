@@ -81,7 +81,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="목표 달성률 50%"
-                tools:textColor="@color/white" />
+                android:textColor="@color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
