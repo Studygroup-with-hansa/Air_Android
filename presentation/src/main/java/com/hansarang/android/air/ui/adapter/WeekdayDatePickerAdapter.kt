@@ -36,15 +36,11 @@ class WeekdayDatePickerAdapter: ListAdapter<Stats, WeekdayDatePickerAdapter.View
 
             with(binding) {
                 tvDayWeekdayDatePicker.text = dayOfWeek.format(sdf.parse(date)?:"").replace("요일", "")
-                viewBackgroundColor.alpha = achievement
+                viewBackgroundColor.alpha =
+                    if (achievement > 0.3f) achievement else 0.3f
                 with(cbDateWeekdayDatePicker) {
                     text = DateFormat.format("dd", sdf.parse(date))
                     isChecked = checkedItem == adapterPosition
-                    setTextColor(if (achievement > 0.5f) {
-                        ContextCompat.getColor(context, R.color.white)
-                    } else {
-                        ContextCompat.getColor(context, R.color.black)
-                    })
                     setOnClickListener {
                         _stats.value = stats
                         if (checkedItem != adapterPosition) {

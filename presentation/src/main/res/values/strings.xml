@@ -5,7 +5,7 @@
     <string name="home">홈</string>
     <!-- 2021.09.06 -->
     <string name="ymd">%04d.%02d.%02d</string>
-    <string name="time">%2dH %2dM %2dS</string>
+    <string name="time">%02dH %02dM %02dS</string>
     <string name="target_time">목표 시간 05H 00M 00S</string>
     <string name="stats">통계</string>
     <string name="group">그룹</string>
@@ -33,5 +33,5 @@
     <string name="save">저장</string>
     <string name="please_set_validate_email">옳은 이메일 주소를 입력해 주세요.</string>
     <string name="all_time">총 공부 시간</string>
-    <string name="goal_achievement_rate_stats">목표 달성률 %d%%</string>
+    <string name="goal_achievement_rate_stats">목표 달성률 %.1f%%</string>
 </resources>
