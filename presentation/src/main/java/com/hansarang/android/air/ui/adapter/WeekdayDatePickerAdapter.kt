@@ -1,26 +1,22 @@
 package com.hansarang.android.air.ui.adapter
 
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemWeekdayDatePickerBinding
+import com.hansarang.android.air.ui.viewmodel.adapter.WeekdayDatePickerAdapterViewModel
 import com.hansarang.android.domain.entity.dto.Stats
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class WeekdayDatePickerAdapter: ListAdapter<Stats, WeekdayDatePickerAdapter.ViewHolder>(diffUtil) {
-
-    private val _stats = MutableLiveData<Stats>()
-    val stats: LiveData<Stats> = _stats
+class WeekdayDatePickerAdapter(
+    private val viewModel: WeekdayDatePickerAdapterViewModel
+): ListAdapter<Stats, WeekdayDatePickerAdapter.ViewHolder>(diffUtil) {
 
     private var checkedItem = 6
 
@@ -36,13 +32,20 @@ class WeekdayDatePickerAdapter: ListAdapter<Stats, WeekdayDatePickerAdapter.View
 
             with(binding) {
                 tvDayWeekdayDatePicker.text = dayOfWeek.format(sdf.parse(date)?:"").replace("요일", "")
-                viewBackgroundColor.alpha =
-                    if (achievement > 0.3f) achievement else 0.3f
                 with(cbDateWeekdayDatePicker) {
+                    viewBackgroundColor.alpha =
+                        if (stats.totalStudyTime > 0) {
+                            setTextColor(ContextCompat.getColor(context, R.color.white))
+                            if (achievement > 0.3f) achievement else 0.3f
+                        } else {
+                            setTextColor(ContextCompat.getColor(context, R.color.black))
+                            0f
+                        }
+
                     text = DateFormat.format("dd", sdf.parse(date))
                     isChecked = checkedItem == adapterPosition
                     setOnClickListener {
-                        _stats.value = stats
+                        viewModel.stats.value = stats
                         if (checkedItem != adapterPosition) {
                             notifyItemChanged(checkedItem)
                             checkedItem = adapterPosition
@@ -59,7 +62,7 @@ class WeekdayDatePickerAdapter: ListAdapter<Stats, WeekdayDatePickerAdapter.View
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (checkedItem == position) _stats.value = getItem(position)
+        if (checkedItem == position) viewModel.stats.value = getItem(position)
         holder.bind(getItem(position))
     }
 
