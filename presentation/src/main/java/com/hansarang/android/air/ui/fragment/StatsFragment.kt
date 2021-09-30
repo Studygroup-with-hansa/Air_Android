@@ -47,36 +47,44 @@ class StatsFragment : Fragment() {
     private fun init() {
         weekDayDatePickerAdapter = WeekdayDatePickerAdapter()
         weekDayDatePickerAdapter.stats.observe(viewLifecycleOwner) {
-            binding.stats = it
-            binding.achievement = with(it) { totalStudyTime.toFloat() / goal.toFloat() }
+            if (it.totalStudyTime != 0) {
+                binding.tvNoDataStats.visibility = View.GONE
+                binding.linearLayoutDataGraphStats.visibility = View.VISIBLE
 
-            val pieColorList = ArrayList<Int>()
-            val pieEntryList = ArrayList<PieEntry>()
-            it.subject.forEach { subject ->
-                pieColorList.add(Color.parseColor(subject.color))
-                pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
-            }
-            val pieDataSet = PieDataSet(pieEntryList, "")
-                .apply {
-                    sliceSpace = 3f
-                    selectionShift = 5f
-                    colors = pieColorList
+                binding.stats = it
+                binding.achievement = with(it) { totalStudyTime.toFloat() / goal.toFloat() }
+
+                val pieColorList = ArrayList<Int>()
+                val pieEntryList = ArrayList<PieEntry>()
+                it.subject.forEach { subject ->
+                    pieColorList.add(Color.parseColor(subject.color))
+                    pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
                 }
-            val pieData = PieData(pieDataSet)
+                val pieDataSet = PieDataSet(pieEntryList, "")
+                    .apply {
+                        sliceSpace = 3f
+                        selectionShift = 5f
+                        colors = pieColorList
+                    }
+                val pieData = PieData(pieDataSet)
 
-            with(binding.chartStudyTimeStats) {
-                data = pieData.apply { setDrawValues(false) }
-                legend.isEnabled = false
-                description.text = ""
-                holeRadius = 60f
-                dragDecelerationFrictionCoef = 0.95f
-                setDrawEntryLabels(false)
-                animateY(500, Easing.EaseInOutQuart)
+                with(binding.chartStudyTimeStats) {
+                    data = pieData.apply { setDrawValues(false) }
+                    legend.isEnabled = false
+                    description.text = ""
+                    holeRadius = 60f
+                    dragDecelerationFrictionCoef = 0.95f
+                    setDrawEntryLabels(false)
+                    animateY(500, Easing.EaseInOutQuart)
+                }
+
+                chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
+                chartLegendListAdapter.submitList(pieEntryList)
+                binding.rvChartLegendStats.adapter = chartLegendListAdapter
+            } else {
+                binding.tvNoDataStats.visibility = View.VISIBLE
+                binding.linearLayoutDataGraphStats.visibility = View.GONE
             }
-
-            chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
-            chartLegendListAdapter.submitList(pieEntryList)
-            binding.rvChartLegendStats.adapter = chartLegendListAdapter
         }
 
         viewModel.stats.observe(viewLifecycleOwner) { weekDayDatePickerAdapter.submitList(it) }
