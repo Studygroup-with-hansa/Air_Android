@@ -2,9 +2,11 @@ package com.hansarang.android.air.ui.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.animation.Easing
@@ -12,6 +14,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentStatsBinding
 import com.hansarang.android.air.ui.adapter.ChartLegendListAdapter
 import com.hansarang.android.air.ui.adapter.WeekdayDatePickerAdapter
@@ -45,6 +48,7 @@ class StatsFragment : Fragment() {
         weekDayDatePickerAdapter = WeekdayDatePickerAdapter()
         weekDayDatePickerAdapter.stats.observe(viewLifecycleOwner) {
             binding.stats = it
+            val achievement = with(it) { totalStudyTime.toFloat() / goal.toFloat() }
 
             val pieColorList = ArrayList<Int>()
             val pieEntryList = ArrayList<PieEntry>()
@@ -52,14 +56,6 @@ class StatsFragment : Fragment() {
                 pieColorList.add(Color.parseColor(subject.color))
                 pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
             }
-
-            chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
-            chartLegendListAdapter.submitList(pieEntryList)
-
-            with(binding.rvChartLegendStats) {
-                adapter = chartLegendListAdapter
-            }
-
             val pieDataSet = PieDataSet(pieEntryList, "")
                 .apply {
                     sliceSpace = 3f
@@ -67,6 +63,10 @@ class StatsFragment : Fragment() {
                     colors = pieColorList
                 }
             val pieData = PieData(pieDataSet)
+
+            chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
+            chartLegendListAdapter.submitList(pieEntryList)
+            binding.rvChartLegendStats.adapter = chartLegendListAdapter
 
             with(binding.chartStudyTimeStats) {
                 data = pieData.apply { setDrawValues(false) }
@@ -77,6 +77,20 @@ class StatsFragment : Fragment() {
                 setDrawEntryLabels(false)
                 animateY(500, Easing.EaseInOutQuart)
             }
+
+            with(binding.tvGoalAchievementRateStats) {
+                text = String.format(
+                    resources.getString(R.string.goal_achievement_rate_stats),
+                    (achievement * 100).toInt()
+                )
+                setTextColor(if (achievement > 0.5f) {
+                    ContextCompat.getColor(context, R.color.white)
+                } else {
+                    ContextCompat.getColor(context, R.color.black)
+                })
+            }
+
+            binding.viewGoalAchievementRateBackgroundStats.alpha = achievement
         }
 
         viewModel.stats.observe(viewLifecycleOwner) { weekDayDatePickerAdapter.submitList(it) }

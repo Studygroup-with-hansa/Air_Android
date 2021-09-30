@@ -1,6 +1,7 @@
 package com.hansarang.android.air.ui.adapter
 
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -29,19 +30,21 @@ class WeekdayDatePickerAdapter: ListAdapter<Stats, WeekdayDatePickerAdapter.View
             val sdf = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
             val dayOfWeek = SimpleDateFormat("EEEE", Locale.KOREA)
             val date = stats.date
+            val achievement = with(stats) {
+                totalStudyTime.toFloat() / goal.toFloat()
+            }
+
             with(binding) {
-                with(tvDayWeekdayDatePicker) {
-                    text = dayOfWeek.format(sdf.parse(date)?:"").replace("요일", "")
-                    frameLayoutDateBackgroundWeekdayDatePicker.background =
-                        if (stats.totalStudyTime != 0) {
-                            ContextCompat.getDrawable(context, R.color.main_sub)
-                        } else {
-                            ContextCompat.getDrawable(context, R.color.white)
-                        }
-                }
+                tvDayWeekdayDatePicker.text = dayOfWeek.format(sdf.parse(date)?:"").replace("요일", "")
+                viewBackgroundColor.alpha = achievement
                 with(cbDateWeekdayDatePicker) {
                     text = DateFormat.format("dd", sdf.parse(date))
                     isChecked = checkedItem == adapterPosition
+                    setTextColor(if (achievement > 0.5f) {
+                        ContextCompat.getColor(context, R.color.white)
+                    } else {
+                        ContextCompat.getColor(context, R.color.black)
+                    })
                     setOnClickListener {
                         _stats.value = stats
                         if (checkedItem != adapterPosition) {
