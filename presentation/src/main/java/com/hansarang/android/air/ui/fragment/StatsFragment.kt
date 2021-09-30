@@ -69,6 +69,7 @@ class StatsFragment : Fragment() {
                 val pieData = PieData(pieDataSet)
 
                 with(binding.chartStudyTimeStats) {
+                    rotationAngle = 270f
                     data = pieData.apply { setDrawValues(false) }
                     legend.isEnabled = false
                     description.text = ""
