@@ -18,8 +18,10 @@ import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentStatsBinding
 import com.hansarang.android.air.ui.adapter.ChartLegendListAdapter
 import com.hansarang.android.air.ui.adapter.WeekdayDatePickerAdapter
+import com.hansarang.android.air.ui.viewmodel.adapter.WeekdayDatePickerAdapterViewModel
 import com.hansarang.android.air.ui.viewmodel.fragment.StatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.ceil
 
 @AndroidEntryPoint
 class StatsFragment : Fragment() {
@@ -28,12 +30,15 @@ class StatsFragment : Fragment() {
     private lateinit var weekDayDatePickerAdapter: WeekdayDatePickerAdapter
     private lateinit var chartLegendListAdapter: ChartLegendListAdapter
     private val viewModel: StatsViewModel by viewModels()
+    private val weekdayDatePickerAdapterViewModel: WeekdayDatePickerAdapterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentStatsBinding.inflate(inflater)
+        binding.weekdayDatePickerAdapterVm = weekdayDatePickerAdapterViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -45,15 +50,10 @@ class StatsFragment : Fragment() {
     }
 
     private fun init() {
-        weekDayDatePickerAdapter = WeekdayDatePickerAdapter()
-        weekDayDatePickerAdapter.stats.observe(viewLifecycleOwner) {
+        weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
+        weekdayDatePickerAdapterViewModel.stats.observe(viewLifecycleOwner) {
             if (it.totalStudyTime != 0) {
-                binding.tvNoDataStats.visibility = View.GONE
-                binding.linearLayoutDataGraphStats.visibility = View.VISIBLE
-
-                binding.stats = it
                 binding.achievement = with(it) { totalStudyTime.toFloat() / goal.toFloat() }
-
                 val pieColorList = ArrayList<Int>()
                 val pieEntryList = ArrayList<PieEntry>()
                 it.subject.forEach { subject ->
@@ -82,9 +82,6 @@ class StatsFragment : Fragment() {
                 chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
                 chartLegendListAdapter.submitList(pieEntryList)
                 binding.rvChartLegendStats.adapter = chartLegendListAdapter
-            } else {
-                binding.tvNoDataStats.visibility = View.VISIBLE
-                binding.linearLayoutDataGraphStats.visibility = View.GONE
             }
         }
 
