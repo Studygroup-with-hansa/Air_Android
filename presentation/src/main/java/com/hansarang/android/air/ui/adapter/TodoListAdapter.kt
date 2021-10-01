@@ -23,13 +23,13 @@ class TodoListAdapter: ListAdapter<Todo, TodoListAdapter.ViewHolder>(diffUtil) {
             binding.todo = todo
             btnExpendTodo.setOnClickListener {
                 todo.isExpended = !todo.isExpended
-                btnExpendTodo.setToggleEnabled(todo.isExpended)
-                binding.constraintLayoutBaseTodo.background = if (todo.isExpended) {
+                ivExpendTodo.setToggleEnabled(todo.isExpended)
+                binding.btnExpendTodo.isSelected = if (todo.isExpended) {
                     linearLayoutCheckListTodo.expand()
-                    ContextCompat.getDrawable(it.context, R.drawable.todo_expended)
+                    true
                 } else {
                     linearLayoutCheckListTodo.collapse()
-                    ContextCompat.getDrawable(it.context, R.drawable.todo_collapsed)
+                    false
                 }
             }
         }

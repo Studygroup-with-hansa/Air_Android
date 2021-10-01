@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.databinding.FragmentTodoBinding
 import com.hansarang.android.air.ui.adapter.TodoListAdapter
+import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
+import com.hansarang.android.air.ui.extention.dp
 import com.hansarang.android.air.ui.viewmodel.factory.TodoViewModelFactory
 import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +53,7 @@ class TodoFragment : Fragment() {
         recyclerView = binding.rvTodoListTodo
         todoListAdapter = TodoListAdapter()
         recyclerView.adapter = todoListAdapter
+        recyclerView.addItemDecoration(ItemDividerDecorator(15.dp))
     }
 
 }

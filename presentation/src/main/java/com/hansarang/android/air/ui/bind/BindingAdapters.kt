@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -45,7 +46,7 @@ fun FloatingActionButton.setTint(colorCode: String) {
     supportBackgroundTintList = ColorStateList.valueOf(Color.parseColor(colorCode))
 }
 
-fun ImageButton.setToggleEnabled(enabled: Boolean) {
+fun ImageView.setToggleEnabled(enabled: Boolean) {
     if (enabled) {
         animate().setDuration(200).rotation(180f)
     }
