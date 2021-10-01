@@ -10,7 +10,6 @@
     </data>
 
     <LinearLayout
-        android:paddingBottom="20dp"
         android:paddingHorizontal="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,11 +46,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/btn_expend_todo"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="?selectableItemBackground"
-                android:src="@drawable/ic_arrow_up"
+                android:id="@+id/iv_expend_todo"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
