@@ -16,10 +16,11 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout_base_todo"
+            android:id="@+id/btn_expend_todo"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/todo_collapsed"
+            android:checked="true"
+            android:background="@drawable/todo_expend_collapse"
             android:padding="15dp">
 
             <TextView
@@ -45,7 +46,7 @@
                 app:layout_constraintStart_toEndOf="@+id/tv_title_todo"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/iv_expend_todo"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
