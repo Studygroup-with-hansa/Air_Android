@@ -86,12 +86,14 @@
                         android:layout_height="wrap_content" />
 
                     <EditText
-                        android:hint="할 일을 작성해주세요"
-                        android:textSize="15sp"
-                        android:background="@android:color/transparent"
+                        android:id="@+id/et_add_checkList_todo"
                         android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="10.5"
-                        android:layout_height="match_parent"/>
+                        android:background="@android:color/transparent"
+                        android:hint="할 일을 작성해주세요"
+                        android:imeOptions="actionSend|actionDone"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 

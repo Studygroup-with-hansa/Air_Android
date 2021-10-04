@@ -13,9 +13,6 @@ class TodoViewModel: ViewModel() {
     private val _todoList = MutableLiveData(ArrayList<Todo>())
     val todoList: LiveData<ArrayList<Todo>> = _todoList
 
-    private val _subjectTodoList = MutableLiveData(ArrayList<String>())
-    val subjectTodoList: LiveData<ArrayList<String>> = _subjectTodoList
-
     fun setDay(currentYMD: String, amount: Int) {
         val ymdArray = currentYMD.split(".").map { it.toInt() }
         val calendar = Calendar.Builder()
@@ -26,10 +23,32 @@ class TodoViewModel: ViewModel() {
     }
 
     fun getTodoList() {
-        _todoList.value = arrayListOf(Todo("국어"), Todo("수학"), Todo("한국사"), Todo("ㅎㅎㅎ"))
+        _todoList.value = arrayListOf(
+            Todo("국어",
+                arrayListOf("dzfsd", "ㅁㄴㅇㄹㅁㅇㄴㄹㅁㄹ", "ㅁㅇㄹㅁㄴㄹㅁㄹㅇ", "ㅁㅇㄹㅁㄴㄹㅁㄹ")
+            ),
+            Todo("수학",
+                arrayListOf("dzfsd", "ㅁㄴㅇㄹㅁㅇㄴㄹㅁㄹ", "ㅁㅇㄹㅁㄴㄹㅁㄹㅇ", "ㅁㅇㄹㅁㄴㄹㅁㄹ")
+            ),
+            Todo("한국사",
+                arrayListOf("dzfsd", "ㅁㄴㅇㄹㅁㅇㄴㄹㅁㄹ", "ㅁㅇㄹㅁㄴㄹㅁㄹㅇ", "ㅁㅇㄹㅁㄴㄹㅁㄹ")
+            ),
+            Todo("ㅎㅎㅎ",
+                arrayListOf("dzfsd", "ㅁㄴㅇㄹㅁㅇㄴㄹㅁㄹ", "ㅁㅇㄹㅁㄴㄹㅁㄹㅇ", "ㅁㅇㄹㅁㄴㄹㅁㄹ")
+            )
+        )
     }
 
-    fun getSubjectTodoList() {
-        _subjectTodoList.value= arrayListOf("dzfsd", "ㅁㄴㅇㄹㅁㅇㄴㄹㅁㄹ", "ㅁㅇㄹㅁㄴㄹㅁㄹㅇ", "ㅁㅇㄹㅁㄴㄹㅁㄹ")
+    fun postCheckList(title: String, value: String) {
+        if (!_todoList.value.isNullOrEmpty()) {
+            _todoList.value = ArrayList(_todoList.value?.map {
+                if (it.title == title) {
+                    it.checkList.add(value)
+                    it
+                } else {
+                    it
+                }
+            }!!)
+        }
     }
 }
