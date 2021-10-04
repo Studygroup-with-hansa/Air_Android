@@ -13,6 +13,9 @@ class TodoViewModel: ViewModel() {
     private val _todoList = MutableLiveData(ArrayList<Todo>())
     val todoList: LiveData<ArrayList<Todo>> = _todoList
 
+    private val _subjectTodoList = MutableLiveData(ArrayList<String>())
+    val subjectTodoList: LiveData<ArrayList<String>> = _subjectTodoList
+
     fun setDay(currentYMD: String, amount: Int) {
         val ymdArray = currentYMD.split(".").map { it.toInt() }
         val calendar = Calendar.Builder()
@@ -23,6 +26,10 @@ class TodoViewModel: ViewModel() {
     }
 
     fun getTodoList() {
-        _todoList.value = arrayListOf(Todo("국어"), Todo("수학"), Todo("한국사"))
+        _todoList.value = arrayListOf(Todo("국어"), Todo("수학"), Todo("한국사"), Todo("ㅎㅎㅎ"))
+    }
+
+    fun getSubjectTodoList() {
+        _subjectTodoList.value= arrayListOf("dzfsd", "ㅁㄴㅇㄹㅁㅇㄴㄹㅁㄹ", "ㅁㅇㄹㅁㄴㄹㅁㄹㅇ", "ㅁㅇㄹㅁㄴㄹㅁㄹ")
     }
 }

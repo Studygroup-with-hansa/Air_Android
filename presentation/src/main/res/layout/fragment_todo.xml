@@ -63,7 +63,7 @@
             android:layout_weight="1"
             android:textSize="15sp"
             android:padding="10dp"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:hint="@string/please_set_memo"
             android:gravity="top"
             android:background="@drawable/memo_background"/>

@@ -10,9 +10,10 @@
     </data>
 
     <LinearLayout
-        android:paddingHorizontal="15dp"
+        android:paddingHorizontal="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:padding="10dp"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,41 +58,56 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout_checkList_todo"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView_checkList_todo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:padding="10dp"
             tools:visibility="visible"
-            android:orientation="vertical"
             android:background="@drawable/todo_list_background">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <LinearLayout
+                android:id="@+id/linearLayout_checkList_todo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <CheckBox
-                    android:layout_width="35dp"
-                    android:clickable="false"
-                    android:layout_height="wrap_content" />
-
-                <EditText
-                    android:hint="할 일을 작성해주세요"
-                    android:textSize="15sp"
-                    android:background="@android:color/transparent"
+                <LinearLayout
+                    android:id="@+id/linearLayout_horizontal_checkList_todo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="10dp">
+
+                    <CheckBox
+                        android:clickable="false"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:hint="할 일을 작성해주세요"
+                        android:textSize="15sp"
+                        android:background="@android:color/transparent"
+                        android:layout_width="0dp"
+                        android:layout_weight="10.5"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_check_list_todo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="vertical"
+                    tools:listitem="@layout/item_check_list"/>
 
             </LinearLayout>
 
-
-
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 </layout>

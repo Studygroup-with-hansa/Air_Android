@@ -38,6 +38,7 @@ class TodoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getTodoList()
+        viewModel.getSubjectTodoList()
 
         init()
         observe()
@@ -51,9 +52,9 @@ class TodoFragment : Fragment() {
 
     private fun init() {
         recyclerView = binding.rvTodoListTodo
-        todoListAdapter = TodoListAdapter()
+        todoListAdapter = TodoListAdapter(viewModel)
         recyclerView.adapter = todoListAdapter
-        recyclerView.addItemDecoration(ItemDividerDecorator(15.dp))
+        recyclerView.addItemDecoration(ItemDividerDecorator(5.dp))
     }
 
 }
