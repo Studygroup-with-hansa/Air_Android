@@ -55,7 +55,19 @@ fun ImageView.setToggleEnabled(enabled: Boolean) {
     }
 }
 
-fun View.expand() {
+fun View.setExpend() {
+    visibility = View.VISIBLE
+    with(layoutParams) {
+        width = ViewGroup.LayoutParams.MATCH_PARENT
+        height = ViewGroup.LayoutParams.WRAP_CONTENT
+    }
+}
+
+fun View.setCollapse() {
+    visibility = View.GONE
+}
+
+fun View.expandAnimation() {
     measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     val actualHeight = measuredHeight
 
@@ -76,7 +88,7 @@ fun View.expand() {
     startAnimation(animation)
 }
 
-fun View.collapse() {
+fun View.collapseAnimation() {
     val actualHeight = measuredHeight
 
     val animation = object : Animation() {

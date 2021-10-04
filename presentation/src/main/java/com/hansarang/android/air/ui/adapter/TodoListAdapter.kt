@@ -1,21 +1,16 @@
 package com.hansarang.android.air.ui.adapter
 
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.doOnAttach
-import androidx.core.view.doOnDetach
-import androidx.core.view.marginBottom
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemTodoBinding
-import com.hansarang.android.air.ui.bind.collapse
-import com.hansarang.android.air.ui.bind.expand
+import com.hansarang.android.air.ui.bind.collapseAnimation
+import com.hansarang.android.air.ui.bind.expandAnimation
+import com.hansarang.android.air.ui.bind.setExpend
 import com.hansarang.android.air.ui.bind.setToggleEnabled
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
@@ -28,34 +23,52 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
         private val binding: ItemTodoBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(todo: Todo) = with(binding) {
+        private fun init(todo: Todo) = with(binding) {
+            if (todo.isExpended) nestedScrollViewCheckListTodo.setExpend()
+            ivExpendTodo.setToggleEnabled(todo.isExpended)
+        }
+
+        fun bind(todo: Todo, position: Int) = with(binding) {
+
+            init(todo)
+
             val checkListAdapter = CheckListAdapter()
-            rvCheckListTodo.adapter = checkListAdapter
-            rvCheckListTodo.addItemDecoration(ItemDividerDecorator(5.dp))
+            rvCheckListTodo.run {
+                adapter = checkListAdapter
+                if (todo.checkList.isEmpty()) {
+                    linearLayoutHorizontalCheckListTodo.setPadding(0,0,0, 10.dp)
+                } else {
+                    linearLayoutHorizontalCheckListTodo.setPadding(0,0,0,0)
+                    checkListAdapter.submitList(todo.checkList)
+                }
+                if (itemDecorationCount == 0) {
+                    addItemDecoration(ItemDividerDecorator(5.dp))
+                }
+            }
 
             binding.todo = todo
             btnExpendTodo.setOnClickListener {
                 todo.isExpended = !todo.isExpended
                 ivExpendTodo.setToggleEnabled(todo.isExpended)
                 binding.btnExpendTodo.isSelected = if (todo.isExpended) {
-                    nestedScrollViewCheckListTodo.expand()
+                    nestedScrollViewCheckListTodo.expandAnimation()
                     true
                 } else {
-                    nestedScrollViewCheckListTodo.collapse()
+                    nestedScrollViewCheckListTodo.collapseAnimation()
                     false
                 }
             }
-            itemView.doOnAttach {
-                val viewLifecycleOwner = ViewTreeLifecycleOwner.get(itemView)!!
 
-                viewModel.subjectTodoList.observe(viewLifecycleOwner) { checkList ->
-                    if (checkList.isEmpty()) {
-                        linearLayoutHorizontalCheckListTodo.setPadding(0,0,0, 10.dp)
-                    } else {
-                        linearLayoutHorizontalCheckListTodo.setPadding(0,0,0,0)
-                        checkListAdapter.submitList(checkList)
+            etAddCheckListTodo.setOnKeyListener { _, _, keyEvent ->
+                val keyCode = keyEvent.keyCode
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (etAddCheckListTodo.text.isNotEmpty()) {
+                        viewModel.postCheckList(todo.title, etAddCheckListTodo.text.toString())
+                        etAddCheckListTodo.setText("")
+                        notifyItemChanged(position)
                     }
                 }
+                return@setOnKeyListener true
             }
         }
     }
@@ -71,7 +84,7 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 
     companion object {
