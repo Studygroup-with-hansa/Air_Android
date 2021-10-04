@@ -11,11 +11,17 @@ class ItemDividerDecorator(private val padding: Int): RecyclerView.ItemDecoratio
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        when(parent.getChildAdapterPosition(view)) {
-            0 -> outRect.top = padding
-            state.itemCount - 1 -> outRect.bottom = padding
-            else -> {
-                with(outRect) {
+        with(outRect) {
+            when (parent.getChildAdapterPosition(view)) {
+                0 -> {
+                    top = padding * 2
+                    bottom = padding
+                }
+                state.itemCount - 1 -> {
+                    top = padding
+                    bottom = padding * 2
+                }
+                else -> {
                     top = padding
                     bottom = padding
                 }
