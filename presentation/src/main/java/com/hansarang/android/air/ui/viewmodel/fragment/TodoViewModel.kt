@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hansarang.android.domain.entity.dto.Todo
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TodoViewModel: ViewModel() {
     private val _date = MutableLiveData(System.currentTimeMillis())
@@ -40,15 +41,47 @@ class TodoViewModel: ViewModel() {
     }
 
     fun postCheckList(title: String, value: String) {
-        if (!_todoList.value.isNullOrEmpty()) {
-            _todoList.value = ArrayList(_todoList.value?.map {
+        if (!_todoList.value.isNullOrEmpty() && title.isNotEmpty() && value.isNotEmpty()) {
+            _todoList.value = ArrayList(_todoList.value!!.map {
                 if (it.title == title) {
                     it.checkList.add(value)
                     it
                 } else {
                     it
                 }
-            }!!)
+            })
+        }
+    }
+
+    fun deleteCheckList(title: String, value: String) {
+        if (!_todoList.value.isNullOrEmpty() && title.isNotEmpty() && value.isNotEmpty()) {
+            _todoList.value = ArrayList(_todoList.value!!.map {
+                if (it.title == title) {
+                    it.checkList.remove(value)
+                    it
+                } else {
+                    it
+                }
+            })
+        }
+    }
+
+    fun putCheckList(title: String, beforeValue: String, afterValue: String) {
+        if (!_todoList.value.isNullOrEmpty() && title.isNotEmpty() && afterValue.isNotEmpty()) {
+            _todoList.value = ArrayList(_todoList.value!!.map {
+                if (it.title == title) {
+                    it.checkList.map { value ->
+                        if (value == beforeValue) {
+                            afterValue
+                        } else {
+                            value
+                        }
+                    }
+                    it
+                } else {
+                    it
+                }
+            })
         }
     }
 }

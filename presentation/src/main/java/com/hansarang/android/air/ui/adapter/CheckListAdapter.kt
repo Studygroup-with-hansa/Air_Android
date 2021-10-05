@@ -1,6 +1,6 @@
 package com.hansarang.android.air.ui.adapter
 
-import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -10,9 +10,44 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.databinding.ItemCheckListBinding
 
 class CheckListAdapter: ListAdapter<String, CheckListAdapter.ViewHolder>(diffUtil) {
+
+    lateinit var onClickDeleteListener: OnClickDeleteListener
+    interface OnClickDeleteListener {
+        fun onClick(value: String)
+    }
+    fun setOnClickDeleteListener(listener: (String) -> Unit) {
+        onClickDeleteListener = object : OnClickDeleteListener {
+            override fun onClick(value: String) {
+                listener(value)
+            }
+        }
+    }
+
+    lateinit var onClickModifyListener: OnClickModifyListener
+    interface OnClickModifyListener {
+        fun onClick(beforeValue: String, afterValue: String)
+    }
+    fun setOnClickModifyListener(listener: (String, String) -> Unit) {
+        onClickModifyListener = object : OnClickModifyListener {
+            override fun onClick(beforeValue: String, afterValue: String) {
+                listener(beforeValue, afterValue)
+            }
+
+        }
+    }
+
     inner class ViewHolder(private val binding: ItemCheckListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(value: String) = with(binding) {
             etTodoCheckList.setText(value)
+            btnDeleteTodoCheckList.setOnClickListener {
+                onClickDeleteListener.onClick(value)
+            }
+            etTodoCheckList.setOnKeyListener { _, keyCode, keyEvent ->
+                if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
+                    onClickModifyListener.onClick(value, etTodoCheckList.text.toString())
+                }
+                return@setOnKeyListener true
+            }
         }
     }
 

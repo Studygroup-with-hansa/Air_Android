@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.adapter
 
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,7 +25,10 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
     ): RecyclerView.ViewHolder(binding.root) {
 
         private fun init(todo: Todo) = with(binding) {
-            if (todo.isExpended) nestedScrollViewCheckListTodo.setExpend()
+            if (todo.isExpended) {
+                nestedScrollViewCheckListTodo.setExpend()
+                binding.btnExpendTodo.isSelected = true
+            }
             ivExpendTodo.setToggleEnabled(todo.isExpended)
         }
 
@@ -59,9 +63,8 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
                 }
             }
 
-            etAddCheckListTodo.setOnKeyListener { _, _, keyEvent ->
-                val keyCode = keyEvent.keyCode
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            etAddCheckListTodo.setOnKeyListener { _, keyCode, keyEvent ->
+                if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
                     if (etAddCheckListTodo.text.isNotEmpty()) {
                         viewModel.postCheckList(todo.title, etAddCheckListTodo.text.toString())
                         etAddCheckListTodo.setText("")
@@ -69,6 +72,15 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
                     }
                 }
                 return@setOnKeyListener true
+            }
+
+            checkListAdapter.setOnClickDeleteListener { value ->
+                viewModel.deleteCheckList(todo.title, value)
+                notifyItemChanged(position)
+            }
+
+            checkListAdapter.setOnClickModifyListener { beforeValue, afterValue ->
+                viewModel.putCheckList(todo.title, beforeValue, afterValue)
             }
         }
     }
