@@ -81,9 +81,9 @@
 
                     <CheckBox
                         android:clickable="false"
-                        android:layout_width="0dp"
+                        android:layout_width="48dp"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="48dp" />
 
                     <EditText
                         android:id="@+id/et_add_checkList_todo"
@@ -91,8 +91,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="10.5"
                         android:background="@android:color/transparent"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:hint="할 일을 작성해주세요"
-                        android:imeOptions="actionSend|actionDone"
                         android:textSize="15sp" />
 
                 </LinearLayout>
