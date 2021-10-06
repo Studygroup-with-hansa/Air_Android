@@ -8,6 +8,7 @@
         android:gravity="center">
 
         <CheckBox
+            android:id="@+id/chk_todo_checkList"
             android:layout_width="48dp"
             android:layout_weight="1"
             android:layout_height="48dp" />
