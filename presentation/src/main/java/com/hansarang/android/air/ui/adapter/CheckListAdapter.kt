@@ -1,12 +1,16 @@
 package com.hansarang.android.air.ui.adapter
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemCheckListBinding
 
 class CheckListAdapter: ListAdapter<String, CheckListAdapter.ViewHolder>(diffUtil) {
@@ -47,6 +51,21 @@ class CheckListAdapter: ListAdapter<String, CheckListAdapter.ViewHolder>(diffUti
                     onClickModifyListener.onClick(value, etTodoCheckList.text.toString())
                 }
                 return@setOnKeyListener true
+            }
+
+            chkTodoCheckList.setOnCheckedChangeListener { view, isChecked ->
+                with(etTodoCheckList) {
+                    paintFlags =
+                        if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG
+                        else 0
+
+                    setTextColor(ContextCompat.getColor(view.context,
+                        if (isChecked) R.color.grey_disabled
+                        else R.color.black
+                    ))
+
+                    isFocusable = !isChecked
+                }
             }
         }
     }
