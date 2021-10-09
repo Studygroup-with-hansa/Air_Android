@@ -61,6 +61,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_email_sign_in"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:boxStrokeWidth="0dp"
@@ -113,6 +114,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_validate_code_sign_in"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"

@@ -107,6 +107,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_nickname_sign_up"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:boxStrokeWidth="0dp"
@@ -121,9 +122,9 @@
                         style="@style/TextEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={vm.nickname}"
+                        android:hint="@string/please_set_nickname"
                         android:inputType="textPersonName"
-                        android:hint="@string/please_set_nickname" />
+                        android:text="@={vm.nickname}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
