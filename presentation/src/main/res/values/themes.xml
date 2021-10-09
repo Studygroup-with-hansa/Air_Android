@@ -59,12 +59,14 @@
         <item name="android:textSize">15sp</item>
         <item name="boxBackgroundMode">none</item>
         <item name="android:background">@drawable/edt_box</item>
+        <item name="android:paddingVertical">16dp</item>
     </style>
 
     <style name="OutlinedButton" parent="TextAppearance.AppCompat.Button">
         <item name="android:background">@drawable/btn_outlined_box</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/main</item>
+        <item name="android:paddingVertical">17dp</item>
     </style>
 
     <style name="TextButton" parent="TextAppearance.AppCompat.Button">
