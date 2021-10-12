@@ -16,20 +16,17 @@ import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
 import com.hansarang.android.air.ui.viewmodel.factory.HomeViewModelFactory
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var toolbar: Toolbar
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var recyclerView: RecyclerView
     private lateinit var timerSubjectListAdapter: TimerSubjectListAdapter
 
     private val factory by lazy { HomeViewModelFactory() }
     private val viewModel: HomeViewModel by viewModels { factory }
-
-    private val navController by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,23 +49,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun init() {
-        toolbar = binding.toolbarHome
-        drawerLayout = binding.drawerLayoutHome
-        recyclerView = binding.rvSubjectHome
+    private fun init() = with(binding) {
         timerSubjectListAdapter = TimerSubjectListAdapter(viewModel)
-        recyclerView.adapter = timerSubjectListAdapter
-
-        with(requireActivity() as AppCompatActivity) {
-            setSupportActionBar(toolbar)
-            NavigationUI.setupWithNavController(
-                toolbar,
-                navController,
-                drawerLayout
-            )
-            supportActionBar?.title = ""
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+        rvSubjectHome.adapter = timerSubjectListAdapter
+        toolbarHome.setNavigationOnClickListener {
+            drawerLayoutHome.open()
         }
+        tvDateHome.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(Date(System.currentTimeMillis()))
     }
 
 }

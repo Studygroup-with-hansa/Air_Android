@@ -50,6 +50,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="2021.08.21"
+                                android:textSize="20sp"
                                 android:textColor="@color/white" />
 
                             <TextView
@@ -63,7 +64,10 @@
                                 android:id="@+id/tv_target_time_home"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:text="목표 시간 05H 00M 00S"
+                                android:textSize="20sp"
+                                android:alpha="0.8"
                                 android:textColor="@color/white" />
 
                         </LinearLayout>
@@ -131,6 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_timer_subject" />
 
