@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentHomeBinding
+import com.hansarang.android.air.ui.activity.AddSubjectActivity
 import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
 import com.hansarang.android.air.ui.viewmodel.factory.HomeViewModelFactory
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
@@ -36,16 +38,28 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getSubjectList()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        listener()
         observe()
-        viewModel.getSubjectList()
+    }
+
+    private fun listener() = with(binding) {
+        fabAddSubjectHome.setOnClickListener {
+            val intent = Intent(requireContext(), AddSubjectActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun observe() = with(viewModel) {
         subjectList.observe(viewLifecycleOwner) {
-            timerSubjectListAdapter.submitList(it)
+            timerSubjectListAdapter.submitList(it.toMutableList())
         }
     }
 
