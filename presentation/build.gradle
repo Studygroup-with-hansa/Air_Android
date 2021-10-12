@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.hansarang.android.air"
-        minSdk 28
+        minSdk 29
         targetSdk 31
         versionCode 1
         versionName "1.0"
