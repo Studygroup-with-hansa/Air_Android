@@ -58,6 +58,7 @@
             android:layout_marginStart="20dp" />
 
         <EditText
+            android:id="@+id/et_subject_name_add_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="과목 이름을 입력해주세요."
@@ -74,6 +75,17 @@
             android:textColor="@color/black"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_color_picker_add_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_color_picker"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="5"/>
 
     </LinearLayout>
 </layout>
