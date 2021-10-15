@@ -163,7 +163,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingEnd="80dp"
-                                android:enabled="@{vm.isEmailNotExist}"
+                                android:enabled="@{vm.isEmailSent}"
                                 android:hint="@string/please_set_validate_code"
                                 android:inputType="text"
                                 android:text="@={vm.authCode}"

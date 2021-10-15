@@ -78,21 +78,20 @@ class SignInFragment : Fragment() {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
-        isExistEmail.observe(viewLifecycleOwner, EventObserver {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-        })
-
-        isEmailNotExist.observe(viewLifecycleOwner) {
-
+        isEmailSent.observe(viewLifecycleOwner) {
             if (it == true && binding.tvCountdownTimer.text != "시간 초과")
                 countDownTimer.start()
         }
 
         isAuthSuccess.observe(viewLifecycleOwner, EventObserver {
             token = it
-            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
+            if (isExistEmail) {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                navController.navigate(R.id.action_signInFragment_to_signUpFragment)
+            }
         })
     }
 

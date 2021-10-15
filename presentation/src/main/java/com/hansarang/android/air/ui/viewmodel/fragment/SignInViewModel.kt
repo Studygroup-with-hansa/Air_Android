@@ -26,12 +26,11 @@ class SignInViewModel @Inject constructor(
     private val _isAuthSuccess = MutableLiveData<Event<String>>()
     val isAuthSuccess: LiveData<Event<String>> = _isAuthSuccess
 
-    private val _isExistEmail = MutableLiveData<Event<String>>()
-    val isExistEmail: LiveData<Event<String>> = _isExistEmail
+    var isExistEmail = false
 
     val email = MutableLiveData<String>()
     val authCode = MutableLiveData<String>()
-    val isEmailNotExist = MutableLiveData(false)
+    val isEmailSent = MutableLiveData(false)
     val signInButtonEnabled = MutableLiveData(false)
 
     val progressBarVisibility = MutableLiveData(View.GONE)
@@ -46,11 +45,8 @@ class SignInViewModel @Inject constructor(
                 try {
                     withTimeout(10000) {
                         val auth = postRequestAuthUseCase.buildParamsUseCaseSuspend(params)
-                        if (auth.isEmailExist) {
-                            // 토큰 내놔
-                        } else {
-                            isEmailNotExist.value = true
-                        }
+                        isExistEmail = auth.isEmailExist
+                        isEmailSent.value = true
                         progressBarVisibility.value = View.GONE
                     }
                 } catch (e: TimeoutCancellationException) {
