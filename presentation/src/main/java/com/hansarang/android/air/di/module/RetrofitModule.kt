@@ -1,5 +1,6 @@
 package com.hansarang.android.air.di.module
 
+import com.hansarang.android.air.ui.interceptor.TokenInterceptor
 import com.hansarang.android.data.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -17,7 +18,9 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun providesOkHttpClient() =
-        OkHttpClient.Builder().build()
+        OkHttpClient.Builder()
+            .addInterceptor(TokenInterceptor())
+            .build()
 
     @Provides
     @Singleton

@@ -1,44 +1,54 @@
 package com.hansarang.android.air.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentSignInBinding
-import com.hansarang.android.air.ui.viewmodel.factory.SignInViewModelFactory
+import com.hansarang.android.air.ui.activity.MainActivity
+import com.hansarang.android.air.ui.livedata.EventObserver
+import com.hansarang.android.air.ui.util.SharedPreferenceHelper.token
 import com.hansarang.android.air.ui.viewmodel.fragment.SignInViewModel
-import com.hansarang.android.domain.usecase.user.GetRequestAuthUseCase
-import com.hansarang.android.domain.usecase.user.PostSendAuthCodeUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
 
-    @Inject
-    lateinit var getRequestAuthUseCase: GetRequestAuthUseCase
-
-    @Inject
-    lateinit var postSendAuthCodeUseCase: PostSendAuthCodeUseCase
-
     private val navController by lazy { findNavController() }
     private lateinit var binding: FragmentSignInBinding
-    private lateinit var viewModel: SignInViewModel
+    private val viewModel: SignInViewModel by viewModels()
+    private val countDownTimer by lazy {
+        object : CountDownTimer((5 * 60 * 1000).toLong(), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val millis = millisUntilFinished / 1000
+                val minute = String.format("%02d", millis / 60)
+                val second = String.format("%02d", millis % 60)
+                val time = "$minute:$second"
+                binding.tvCountdownTimer.text = time
+            }
+
+            override fun onFinish() {
+                binding.tvCountdownTimer.text = "시간 초과"
+            }
+        }.start()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignInBinding.inflate(inflater)
-
-        val factory = SignInViewModelFactory(getRequestAuthUseCase, postSendAuthCodeUseCase)
-        viewModel = ViewModelProvider(this, factory)[SignInViewModel::class.java]
         binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }
@@ -46,21 +56,44 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSubmitSignIn.setOnClickListener {
-            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
+        observe()
+    }
+
+    private fun observe() = with(viewModel) {
+        email.observe(viewLifecycleOwner) {
+            val emailChk = Patterns.EMAIL_ADDRESS
+            binding.tilEmailSignIn.error =
+                if (!emailChk.matcher(it).matches()) {
+                    resources.getString(R.string.please_set_validate_email)
+                } else {
+                    ""
+                }
         }
 
-        with(viewModel) {
-            email.observe(viewLifecycleOwner) {
-                val emailChk = Patterns.EMAIL_ADDRESS
-                binding.tilEmailSignIn.error =
-                    if (!emailChk.matcher(it).matches()) {
-                        resources.getString(R.string.please_set_validate_email)
-                    } else {
-                        ""
-                    }
-            }
+        authCode.observe(viewLifecycleOwner) {
+            signInButtonEnabled.value = it.isNotEmpty()
         }
+
+        isFailure.observe(viewLifecycleOwner, EventObserver {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
+
+        isExistEmail.observe(viewLifecycleOwner, EventObserver {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+        })
+
+        isEmailNotExist.observe(viewLifecycleOwner) {
+
+            if (it == true && binding.tvCountdownTimer.text != "시간 초과")
+                countDownTimer.start()
+        }
+
+        isAuthSuccess.observe(viewLifecycleOwner, EventObserver {
+            token = it
+            navController.navigate(R.id.action_signInFragment_to_signUpFragment)
+        })
     }
 
 }

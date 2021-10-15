@@ -11,12 +11,12 @@ class UserRemote @Inject constructor(
     override val service: UserService
 ): BaseRemote<UserService>() {
 
-    suspend fun getRequestAuth(email: String): AuthData {
-        return getResponse(service.getRequestAuth(email))
+    suspend fun postRequestAuth(email: String): AuthData {
+        return getResponse(service.postRequestAuth(email))
     }
 
-    suspend fun postSendAuthCode(email: String, auth: String): TokenData {
-        return getResponse(service.postSendAuthCode(email, auth))
+    suspend fun putSendAuthCode(email: String, auth: String): TokenData {
+        return getResponse(service.putSendAuthCode(email, auth))
     }
 
     suspend fun putModifyUsername(name: String): String {
@@ -27,8 +27,8 @@ class UserRemote @Inject constructor(
         return getDetail(service.putModifyEmail(email))
     }
 
-    suspend fun getUserBasicInfo(email: String): UserData {
-        return getResponse(service.getUserBasicInfo(email))
+    suspend fun getUserBasicInfo(): UserData {
+        return getResponse(service.getUserBasicInfo())
     }
 
 }

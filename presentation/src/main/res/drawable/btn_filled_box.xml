@@ -2,11 +2,22 @@
 <ripple android:color="@color/main_sub"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/main"/>
-            <stroke android:color="@color/main"
-                android:width="2dp"/>
-            <corners android:radius="5dp"/>
-        </shape>
+        <selector>
+            <item android:state_enabled="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/main"/>
+                    <stroke android:color="@color/main"
+                        android:width="2dp"/>
+                    <corners android:radius="5dp"/>
+                </shape>
+            </item>
+
+            <item android:state_enabled="false">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/grey_disabled"/>
+                    <corners android:radius="5dp"/>
+                </shape>
+            </item>
+        </selector>
     </item>
 </ripple>

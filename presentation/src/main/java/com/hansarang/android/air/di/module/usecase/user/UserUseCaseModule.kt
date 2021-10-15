@@ -13,13 +13,13 @@ import javax.inject.Singleton
 object UserUseCaseModule {
     @Provides
     @Singleton
-    fun providesGetRequestAuthUseCase(userRepository: UserRepository): GetRequestAuthUseCase =
-        GetRequestAuthUseCase(userRepository)
+    fun providesGetRequestAuthUseCase(userRepository: UserRepository): PostRequestAuthUseCase =
+        PostRequestAuthUseCase(userRepository)
 
     @Provides
     @Singleton
-    fun providesPostSendAuthCodeUseCase(userRepository: UserRepository): PostSendAuthCodeUseCase =
-        PostSendAuthCodeUseCase(userRepository)
+    fun providesPostSendAuthCodeUseCase(userRepository: UserRepository): PutSendAuthCodeUseCase =
+        PutSendAuthCodeUseCase(userRepository)
 
     @Provides
     @Singleton

@@ -5,14 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import coil.load
 import com.hansarang.android.air.databinding.FragmentSignUpBinding
 import com.hansarang.android.air.ui.activity.MainActivity
-import com.hansarang.android.air.ui.viewmodel.factory.SignUpViewModelFactory
+import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.viewmodel.fragment.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var viewModel: SignUpViewModel
+    private val viewModel: SignUpViewModel by viewModels()
     private lateinit var launcher: ActivityResultLauncher<String>
 
     override fun onCreateView(
@@ -28,8 +29,8 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this, SignUpViewModelFactory())[SignUpViewModel::class.java]
         binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -37,12 +38,6 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-
-        binding.btnSubmitSignUp.setOnClickListener {
-            val intent = Intent(context, MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
-        }
 
         binding.btnAddImageSignUp.setOnClickListener {
             launcher.launch("image/*")
@@ -60,11 +55,22 @@ class SignUpFragment : Fragment() {
             nickname.observe(viewLifecycleOwner) {
                 binding.tilNicknameSignUp.error =
                     if (it.length < 2) {
+                        finishButtonEnabled.value = true
                         "닉네임은 두자 이상 입력해 주세요."
                     } else {
                         ""
                     }
             }
+
+            isSuccess.observe(viewLifecycleOwner, EventObserver {
+                val intent = Intent(context, MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            })
+
+            isFailure.observe(viewLifecycleOwner, EventObserver {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            })
         }
     }
 

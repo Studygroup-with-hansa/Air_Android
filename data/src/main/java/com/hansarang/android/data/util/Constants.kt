@@ -1,5 +1,5 @@
 package com.hansarang.android.data.util
 
 object Constants {
-    val TEST_SERVER = "http://서버주소:01"
+    const val TEST_SERVER = "http://13.124.172.240:8000/v1/"
 }
