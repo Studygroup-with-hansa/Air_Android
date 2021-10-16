@@ -6,9 +6,6 @@ import com.hansarang.android.data.network.remote.UserRemote
 import com.hansarang.android.domain.entity.dto.Auth
 import com.hansarang.android.domain.entity.dto.Token
 import com.hansarang.android.domain.entity.dto.User
-import com.hansarang.android.domain.entity.request.AuthCode
-import com.hansarang.android.domain.entity.request.Email
-import com.hansarang.android.domain.entity.request.Name
 import javax.inject.Inject
 
 class UserDataSource @Inject constructor(

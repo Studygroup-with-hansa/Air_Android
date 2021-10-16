@@ -3,9 +3,6 @@ package com.hansarang.android.data.network.service
 import com.hansarang.android.data.entity.AuthData
 import com.hansarang.android.data.entity.TokenData
 import com.hansarang.android.data.entity.UserData
-import com.hansarang.android.domain.entity.request.AuthCode
-import com.hansarang.android.domain.entity.request.Email
-import com.hansarang.android.domain.entity.request.Name
 import com.hansarang.android.domain.entity.response.BaseResponse
 import retrofit2.http.*
 

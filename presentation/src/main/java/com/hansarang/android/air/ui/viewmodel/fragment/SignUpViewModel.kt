@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
-import com.hansarang.android.domain.entity.request.Name
 import com.hansarang.android.domain.usecase.user.PutModifyUsernameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
