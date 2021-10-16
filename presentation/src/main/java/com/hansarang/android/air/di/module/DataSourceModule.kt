@@ -1,7 +1,9 @@
 package com.hansarang.android.air.di.module
 
 import com.hansarang.android.data.datasource.UserDataSource
+import com.hansarang.android.data.datasource.WeeklyStatsDataSource
 import com.hansarang.android.data.network.remote.UserRemote
+import com.hansarang.android.data.network.remote.WeeklyStatsRemote
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ object DataSourceModule {
     @Singleton
     fun providesUserDataSource(userRemote: UserRemote): UserDataSource =
         UserDataSource(userRemote)
+
+    @Provides
+    @Singleton
+    fun providesWeeklyStatsDataSource(weeklyStatsRemote: WeeklyStatsRemote): WeeklyStatsDataSource =
+        WeeklyStatsDataSource(weeklyStatsRemote)
 }

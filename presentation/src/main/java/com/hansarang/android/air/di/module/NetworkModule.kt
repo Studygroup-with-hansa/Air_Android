@@ -1,6 +1,7 @@
 package com.hansarang.android.air.di.module
 
 import com.hansarang.android.data.network.service.UserService
+import com.hansarang.android.data.network.service.WeeklyStatsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,4 +16,9 @@ object NetworkModule {
     @Singleton
     fun providesUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesWeeklyStatsService(retrofit: Retrofit): WeeklyStatsService =
+        retrofit.create(WeeklyStatsService::class.java)
 }

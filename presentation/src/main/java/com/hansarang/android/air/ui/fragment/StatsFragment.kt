@@ -52,36 +52,38 @@ class StatsFragment : Fragment() {
     private fun init() {
         weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
         weekdayDatePickerAdapterViewModel.stats.observe(viewLifecycleOwner) {
-            if (it.totalStudyTime != 0) {
-                binding.achievement = with(it) { totalStudyTime.toFloat() / goal.toFloat() }
-                val pieColorList = ArrayList<Int>()
-                val pieEntryList = ArrayList<PieEntry>()
-                it.subject.forEach { subject ->
-                    pieColorList.add(Color.parseColor(subject.color))
-                    pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
-                }
-                val pieDataSet = PieDataSet(pieEntryList, "")
-                    .apply {
-                        sliceSpace = 3f
-                        selectionShift = 5f
-                        colors = pieColorList
+            with(it) {
+                if (totalStudyTime != null && goal != null && subject != null) {
+                    binding.achievement = totalStudyTime!!.toFloat() / goal!!.toFloat()
+                    val pieColorList = ArrayList<Int>()
+                    val pieEntryList = ArrayList<PieEntry>()
+                    subject!!.forEach { subject ->
+                        pieColorList.add(Color.parseColor(subject.color))
+                        pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
                     }
-                val pieData = PieData(pieDataSet)
+                    val pieDataSet = PieDataSet(pieEntryList, "")
+                        .apply {
+                            sliceSpace = 3f
+                            selectionShift = 5f
+                            colors = pieColorList
+                        }
+                    val pieData = PieData(pieDataSet)
 
-                with(binding.chartStudyTimeStats) {
-                    rotationAngle = 270f
-                    data = pieData.apply { setDrawValues(false) }
-                    legend.isEnabled = false
-                    description.text = ""
-                    holeRadius = 60f
-                    dragDecelerationFrictionCoef = 0.95f
-                    setDrawEntryLabels(false)
-                    animateY(500, Easing.EaseInOutQuart)
+                    with(binding.chartStudyTimeStats) {
+                        rotationAngle = 270f
+                        data = pieData.apply { setDrawValues(false) }
+                        legend.isEnabled = false
+                        description.text = ""
+                        holeRadius = 60f
+                        dragDecelerationFrictionCoef = 0.95f
+                        setDrawEntryLabels(false)
+                        animateY(500, Easing.EaseInOutQuart)
+                    }
+
+                    chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
+                    chartLegendListAdapter.submitList(pieEntryList)
+                    binding.rvChartLegendStats.adapter = chartLegendListAdapter
                 }
-
-                chartLegendListAdapter = ChartLegendListAdapter(pieColorList)
-                chartLegendListAdapter.submitList(pieEntryList)
-                binding.rvChartLegendStats.adapter = chartLegendListAdapter
             }
         }
 

@@ -23,23 +23,27 @@ class WeekdayDatePickerAdapter(
     inner class ViewHolder(private val binding: ItemWeekdayDatePickerBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(stats: Stats) {
-            val sdf = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
             val dayOfWeek = SimpleDateFormat("EEEE", Locale.KOREA)
             val date = stats.date
             val achievement = with(stats) {
-                totalStudyTime.toFloat() / goal.toFloat()
+                if (totalStudyTime != null && goal != null) {
+                    totalStudyTime!!.toFloat() / goal!!.toFloat()
+                } else {
+                    0f
+                }
             }
 
             with(binding) {
                 tvDayWeekdayDatePicker.text = dayOfWeek.format(sdf.parse(date)?:"").replace("요일", "")
                 with(cbDateWeekdayDatePicker) {
                     viewBackgroundColor.alpha =
-                        if (stats.totalStudyTime > 0) {
+                        if (stats.totalStudyTime != null) {
                             setTextColor(ContextCompat.getColor(context, R.color.white))
                             if (achievement > 0.3f) achievement else 0.3f
                         } else {
                             setTextColor(ContextCompat.getColor(context, R.color.black))
-                            0f
+                            achievement
                         }
 
                     text = DateFormat.format("dd", sdf.parse(date))

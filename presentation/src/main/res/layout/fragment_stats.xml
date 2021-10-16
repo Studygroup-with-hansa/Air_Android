@@ -66,7 +66,7 @@
                 android:id="@+id/tv_no_data_stats"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{weekdayDatePickerAdapterVm.stats.totalStudyTime > 0 ? View.GONE : View.VISIBLE}"
+                android:visibility="@{weekdayDatePickerAdapterVm.stats.totalStudyTime != null ? View.GONE : View.VISIBLE}"
                 android:text="공부 기록이 없습니다"
                 android:textSize="18sp"
                 android:gravity="center"/>
@@ -75,7 +75,7 @@
                 android:id="@+id/linearLayout_data_graph_stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{weekdayDatePickerAdapterVm.stats.totalStudyTime > 0 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{weekdayDatePickerAdapterVm.stats.totalStudyTime != null ? View.VISIBLE : View.GONE}"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
