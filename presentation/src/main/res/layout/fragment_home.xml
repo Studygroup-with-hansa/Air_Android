@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel" />
+    </data>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout_home"
         android:layout_width="match_parent"
@@ -69,7 +75,8 @@
                                 android:clickable="true"
                                 android:paddingHorizontal="5dp"
                                 android:background="?selectableItemBackground"
-                                android:text="목표 시간 05H 00M 00S"
+                                app:setPattern="@{@string/target_time}"
+                                app:setTime="@{vm.goal}"
                                 android:textSize="20sp"
                                 android:alpha="0.8"
                                 android:textColor="@color/white" />

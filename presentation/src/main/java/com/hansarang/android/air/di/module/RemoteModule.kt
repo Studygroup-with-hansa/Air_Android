@@ -1,7 +1,9 @@
 package com.hansarang.android.air.di.module
 
+import com.hansarang.android.data.network.remote.SubjectRemote
 import com.hansarang.android.data.network.remote.UserRemote
 import com.hansarang.android.data.network.remote.WeeklyStatsRemote
+import com.hansarang.android.data.network.service.SubjectService
 import com.hansarang.android.data.network.service.UserService
 import com.hansarang.android.data.network.service.WeeklyStatsService
 import dagger.Module
@@ -22,4 +24,8 @@ object RemoteModule {
     @Singleton
     fun providesWeeklyStatsRemote(weeklyStatsService: WeeklyStatsService): WeeklyStatsRemote =
         WeeklyStatsRemote(weeklyStatsService)
+
+    @Provides
+    fun providesSubjectRemote(subjectService: SubjectService): SubjectRemote =
+        SubjectRemote(subjectService)
 }

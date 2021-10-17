@@ -27,14 +27,15 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var timerSubjectListAdapter: TimerSubjectListAdapter
 
-    private val factory by lazy { HomeViewModelFactory() }
-    private val viewModel: HomeViewModel by viewModels { factory }
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
+        binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -45,6 +46,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getSubjectList()
         init()
         listener()
         observe()

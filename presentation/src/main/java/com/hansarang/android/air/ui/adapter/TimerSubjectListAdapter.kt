@@ -31,7 +31,8 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
                                 viewModel.deleteSubject(subject)
                             }
                             R.id.modify_subject_list -> {
-                                viewModel.modifySubject(subject)
+                                //TODO OldSubject, NewSubject, NewSubject's Color
+                                //viewModel.modifySubject()
                             }
                         }
                         true
