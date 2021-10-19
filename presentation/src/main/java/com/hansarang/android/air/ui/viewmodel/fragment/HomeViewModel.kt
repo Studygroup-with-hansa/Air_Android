@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,8 +26,13 @@ class HomeViewModel @Inject constructor(
 
     fun deleteSubject(subject: Subject) {
         viewModelScope.launch {
-            val params = DeleteSubjectUseCase.Params(subject.title)
-            deleteSubjectUseCase.buildParamsUseCaseSuspend(params)
+            try {
+                val params = DeleteSubjectUseCase.Params(subject.title)
+                deleteSubjectUseCase.buildParamsUseCaseSuspend(params)
+                Log.d("TAG", "deleteSubject: 성공")
+            } catch (e: Throwable) {
+                Log.d("TAG", "deleteSubject: ${e.message}")
+            }
         }
     }
 
