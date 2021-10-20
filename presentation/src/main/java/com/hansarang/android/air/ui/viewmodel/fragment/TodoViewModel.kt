@@ -1,6 +1,5 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,25 +36,18 @@ class TodoViewModel @Inject constructor(
             .build()
         calendar.add(Calendar.DAY_OF_MONTH, amount)
         _date.value = calendar.timeInMillis
-        getTodoList()
+        getTodos()
     }
 
-    fun getTodoList() {
+    fun getTodos() {
         progressBarVisibility.value = View.VISIBLE
         val date = _date.value ?: 0L
         viewModelScope.launch {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
             val params = GetCheckListUseCase.Params(sdf.format(date))
-            val baseTodo = getCheckListUseCase.buildParamsUseCaseSuspend(params)
-            _todoList.value = if (sdf.format(date) == "2021-10-19") {
-                memo.value = "메모"
-                arrayListOf(
-                    Todo("국어", arrayListOf(TodoListItem(true, "뭐할까요?"), TodoListItem(true, "ㅇ?"))),
-                    Todo("수학", arrayListOf(TodoListItem(true, "뭐할까요?"), TodoListItem(true, "ㅇ?")))
-                )
-            } else {
-                memo.value = baseTodo.memo
-                ArrayList(baseTodo.subjects)
+            getCheckListUseCase.buildParamsUseCaseSuspend(params).apply {
+                this@TodoViewModel.memo.value = this.memo
+                _todoList.value = ArrayList(this.subjects)
             }
             progressBarVisibility.value = View.GONE
         }
