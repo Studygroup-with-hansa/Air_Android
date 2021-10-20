@@ -9,64 +9,105 @@
             type="com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.fragment.TodoFragment">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/main"
-            android:gravity="center">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:elevation="2dp"
+            android:visibility="@{vm.progressBarVisibility}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="?selectableItemBackground"
-                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), -1)}"
-                android:src="@drawable/ic_left_arrow" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:alpha="0.3"/>
 
-            <TextView
-                android:id="@+id/tv_date_todo"
-                style="@style/BoldTextWhiteMiddle"
+            <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                app:setDateTime="@{vm.date}"
-                app:setPattern="@{@string/date_pattern}"
-                tools:text="2021.09.06" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="?selectableItemBackground"
-                android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), 1)}"
-                android:src="@drawable/ic_right_arrow" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@color/main"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?selectableItemBackground"
+                    android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), -1)}"
+                    android:src="@drawable/ic_left_arrow"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/tv_date_todo"
+                    style="@style/BoldTextWhiteMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    app:setDateTime="@{vm.date}"
+                    app:setPattern="@{@string/date_pattern}"
+                    tools:text="2021.09.06" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?selectableItemBackground"
+                    android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), 1)}"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_todoList_todo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_todo" />
+
+            <EditText
+                style="@style/CustomEditText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/memo_background"
+                android:gravity="top"
+                android:hint="@string/please_set_memo"
+                android:padding="10dp"
+                android:textSize="15sp" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_todoList_todo"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.4"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_todo"/>
-
-        <EditText
-            style="@style/CustomEditText"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:textSize="15sp"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:hint="@string/please_set_memo"
-            android:gravity="top"
-            android:background="@drawable/memo_background"/>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -9,12 +9,11 @@ import com.hansarang.android.domain.usecase.subject.PutSubjectUseCase
 
 class HomeViewModelFactory(
     private val getSubjectUseCase: GetSubjectUseCase,
-    private val deleteSubjectUseCase: DeleteSubjectUseCase,
-    private val putSubjectUseCase: PutSubjectUseCase
+    private val deleteSubjectUseCase: DeleteSubjectUseCase
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(getSubjectUseCase, deleteSubjectUseCase, putSubjectUseCase) as T
+            return HomeViewModel(getSubjectUseCase, deleteSubjectUseCase) as T
         } else {
             throw IllegalArgumentException()
         }

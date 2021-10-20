@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,9 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val putModifyUsernameUseCase: PutModifyUsernameUseCase
 ): ViewModel() {
+
+    val progressBarVisibility = MutableLiveData(View.GONE)
+
     private val _isSuccess = MutableLiveData<Event<String>>()
     val isSuccess: LiveData<Event<String>> = _isSuccess
 
@@ -27,6 +31,8 @@ class SignUpViewModel @Inject constructor(
     val nickname = MutableLiveData<String>()
 
     fun putModifyUsername() {
+        progressBarVisibility.value = View.VISIBLE
+
         val nickname = nickname.value?:""
 
         viewModelScope.launch {
@@ -44,9 +50,12 @@ class SignUpViewModel @Inject constructor(
                         "401" -> _isFailure.value = Event("유효하지 않은 토큰입니다.")
                         else -> _isFailure.value = Event("오류 발생")
                     }
+                } finally {
+                    progressBarVisibility.value = View.GONE
                 }
             } else {
                 _isFailure.value = Event("이메일을 입력해 주세요.")
+                progressBarVisibility.value = View.GONE
             }
         }
     }

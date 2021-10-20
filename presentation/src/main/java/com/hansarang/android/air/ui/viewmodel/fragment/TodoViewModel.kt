@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class TodoViewModel: ViewModel() {
+    val progressBarVisibility = MutableLiveData(View.GONE)
+
     private val _date = MutableLiveData(System.currentTimeMillis())
     val date: LiveData<Long> = _date
 

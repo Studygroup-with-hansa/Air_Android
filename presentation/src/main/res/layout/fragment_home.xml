@@ -15,147 +15,181 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.HomeFragment">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stateListAnimator="@null">
-
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar_home"
-                        android:layout_width="match_parent"
-                        android:layout_height="165dp"
-                        app:layout_collapseMode="pin"
-                        app:navigationIcon="@drawable/ic_baseline_menu_24" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        app:layout_collapseMode="parallax"
-                        android:layout_width="match_parent"
-                        android:layout_height="256dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/tv_date_home"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="2021.08.21"
-                                android:textSize="20sp"
-                                android:textColor="@color/white" />
-
-                            <TextView
-                                android:id="@+id/tv_time_home"
-                                style="@style/BoldTextWhiteBiggest"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="01H 47M 26S"
-                                android:text="01H 47M 26S"/>
-
-                            <TextView
-                                android:id="@+id/tv_target_time_home"
-                                android:layout_width="wrap_content"
-                                android:layout_height="48dp"
-                                android:layout_marginTop="2dp"
-                                android:gravity="center"
-                                android:clickable="true"
-                                android:paddingHorizontal="5dp"
-                                android:background="?selectableItemBackground"
-                                app:setPattern="@{@string/target_time}"
-                                app:setTime="@{vm.goal}"
-                                android:textSize="20sp"
-                                android:alpha="0.8"
-                                android:textColor="@color/white" />
-
-                        </LinearLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                <ProgressBar
-                    android:id="@+id/progress_bar_now_to_target_home"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    app:setProgressBar="@{70}"
-                    android:progressDrawable="@drawable/progress_indicator" />
-
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.core.widget.NestedScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/progress_bar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                tools:ignore="SpeakableTextPresentCheck">
+                android:gravity="center"
+                android:elevation="2dp"
+                android:visibility="@{vm.progressBarVisibility}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    android:alpha="0.3"/>
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:stateListAnimator="@null">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginHorizontal="15dp">
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                        <TextView
-                            style="@style/BoldTextBlackMiddle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/subject"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar_home"
+                            android:layout_width="match_parent"
+                            android:layout_height="165dp"
+                            app:layout_collapseMode="pin"
+                            app:navigationIcon="@drawable/ic_baseline_menu_24" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/fab_add_subject_home"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_add_24"
-                            app:maxImageSize="15dp"
-                            app:fabCustomSize="30dp"
-                            app:backgroundTint="@color/main"
-                            app:elevation="0dp"
-                            app:tint="@color/white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_collapseMode="parallax"
+                            android:layout_width="match_parent"
+                            android:layout_height="256dp">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_subject_home"
+                                <TextView
+                                    android:id="@+id/tv_date_home"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="2021.08.21"
+                                    android:textSize="20sp"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/tv_time_home"
+                                    style="@style/BoldTextWhiteBiggest"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="01H 47M 26S"
+                                    android:text="01H 47M 26S"/>
+
+                                <TextView
+                                    android:id="@+id/tv_target_time_home"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="48dp"
+                                    android:layout_marginTop="2dp"
+                                    android:gravity="center"
+                                    android:clickable="true"
+                                    android:paddingHorizontal="5dp"
+                                    android:background="?selectableItemBackground"
+                                    app:setPattern="@{@string/target_time}"
+                                    app:setTime="@{vm.goal}"
+                                    android:textSize="20sp"
+                                    android:alpha="0.8"
+                                    android:textColor="@color/white" />
+
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_now_to_target_home"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        app:setProgressBar="@{70}"
+                        android:progressDrawable="@drawable/progress_indicator" />
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                    tools:ignore="SpeakableTextPresentCheck">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:overScrollMode="never"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_timer_subject" />
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginHorizontal="15dp">
 
-            </androidx.core.widget.NestedScrollView>
+                            <TextView
+                                style="@style/BoldTextBlackMiddle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/subject"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/fab_add_subject_home"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_add_24"
+                                app:maxImageSize="15dp"
+                                app:fabCustomSize="30dp"
+                                app:backgroundTint="@color/main"
+                                app:elevation="0dp"
+                                app:tint="@color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_subject_home"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_timer_subject" />
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view_main"
@@ -164,4 +198,5 @@
             android:layout_gravity="start"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>

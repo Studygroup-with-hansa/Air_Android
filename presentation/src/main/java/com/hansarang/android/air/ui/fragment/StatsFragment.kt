@@ -38,6 +38,7 @@ class StatsFragment : Fragment() {
     ): View {
         binding = FragmentStatsBinding.inflate(inflater)
         binding.weekdayDatePickerAdapterVm = weekdayDatePickerAdapterViewModel
+        binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

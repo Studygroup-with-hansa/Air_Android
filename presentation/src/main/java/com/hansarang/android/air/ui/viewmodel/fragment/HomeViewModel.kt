@@ -1,6 +1,7 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,15 +17,18 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getSubjectUseCase: GetSubjectUseCase,
-    private val deleteSubjectUseCase: DeleteSubjectUseCase,
-    private val putSubjectUseCase: PutSubjectUseCase
+    private val deleteSubjectUseCase: DeleteSubjectUseCase
 ) : ViewModel() {
+    val progressBarVisibility = MutableLiveData(View.GONE)
+
     val goal = MutableLiveData(0L)
 
     private val _subjectList = MutableLiveData(ArrayList<Subject>())
     val subjectList: LiveData<ArrayList<Subject>> = _subjectList
 
     fun deleteSubject(subject: Subject) {
+        progressBarVisibility.value = View.VISIBLE
+
         viewModelScope.launch {
             try {
                 val params = DeleteSubjectUseCase.Params(subject.title)
@@ -32,22 +36,20 @@ class HomeViewModel @Inject constructor(
                 getSubjectList()
             } catch (e: Throwable) {
                 Log.d("TAG", "deleteSubject: ${e.message}")
+            } finally {
+                progressBarVisibility.value = View.GONE
             }
         }
     }
 
-    fun modifySubject(oldSubject: Subject, newSubject: Subject) {
-        viewModelScope.launch {
-            val params = PutSubjectUseCase.Params(oldSubject.title, newSubject.title, newSubject.color)
-            putSubjectUseCase.buildParamsUseCaseSuspend(params)
-        }
-    }
-
     fun getSubjectList() {
+        progressBarVisibility.value = View.VISIBLE
+
         viewModelScope.launch {
             val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
             _subjectList.value = ArrayList(baseSubject.subject)
             goal.value = baseSubject.goal
+            progressBarVisibility.value = View.GONE
         }
     }
 }

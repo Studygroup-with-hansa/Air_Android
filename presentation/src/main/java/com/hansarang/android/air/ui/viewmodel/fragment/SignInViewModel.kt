@@ -47,17 +47,17 @@ class SignInViewModel @Inject constructor(
                         val auth = postRequestAuthUseCase.buildParamsUseCaseSuspend(params)
                         isExistEmail = auth.isEmailExist
                         isEmailSent.value = true
-                        progressBarVisibility.value = View.GONE
                     }
                 } catch (e: TimeoutCancellationException) {
                     _isFailure.value = Event("시간 초과")
-                    progressBarVisibility.value = View.GONE
                 } catch (e: Throwable) {
                     _isFailure.value = if (e.message == "400") {
                         Event("이메일 전송에 실패하였습니다. 재시도 해주세요.")
                     } else {
                         Event("오류 발생")
                     }
+
+                } finally {
                     progressBarVisibility.value = View.GONE
                 }
             } else {
