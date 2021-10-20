@@ -40,8 +40,12 @@ class SignUpViewModel @Inject constructor(
                 val params = PutModifyUsernameUseCase.Params(nickname)
                 try {
                     withTimeout(10000) {
-                        putModifyUsernameUseCase.buildParamsUseCaseSuspend(params)
-                        _isSuccess.value = Event("Success")
+                        if (nickname.length !in 2..8 || nickname.isEmpty()) {
+                            _isSuccess.value = Event("닉네임은 두자 이상 8자 이내로 입력해 주세요.")
+                        } else {
+                            putModifyUsernameUseCase.buildParamsUseCaseSuspend(params)
+                            _isSuccess.value = Event("Success")
+                        }
                     }
                 } catch (e: TimeoutCancellationException) {
                     _isFailure.value = Event("시간 초과")

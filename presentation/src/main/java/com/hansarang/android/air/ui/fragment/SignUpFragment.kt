@@ -55,8 +55,8 @@ class SignUpFragment : Fragment() {
             nickname.observe(viewLifecycleOwner) {
                 finishButtonEnabled.value = it.length >= 2
                 binding.tilNicknameSignUp.error =
-                    if (it.length < 2) {
-                        "닉네임은 두자 이상 입력해 주세요."
+                    if (it.length !in 2..8 || it.isEmpty()) {
+                        "닉네임은 두자 이상 8자 이내로 입력해 주세요."
                     } else {
                         ""
                     }
