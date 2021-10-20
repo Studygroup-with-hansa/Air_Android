@@ -21,9 +21,13 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
     ): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(todo: Todo, position: Int) = with(binding) {
-            ivExpendTodo.setToggleEnabled(false)
-            btnExpendTodo.isSelected = false
-            nestedScrollViewCheckListTodo.setCollapse()
+            ivExpendTodo.setToggleEnabled(todo.isExpended)
+            btnExpendTodo.isSelected = todo.isExpended
+            if (todo.isExpended) {
+                nestedScrollViewCheckListTodo.setExpend()
+            } else {
+                nestedScrollViewCheckListTodo.setCollapse()
+            }
 
             val checkListAdapter = CheckListAdapter()
 
