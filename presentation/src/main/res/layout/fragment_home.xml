@@ -55,7 +55,7 @@
                                 android:id="@+id/tv_date_home"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2021.08.21"
+                                tools:text="2021.08.21"
                                 android:textSize="20sp"
                                 android:textColor="@color/white" />
 
@@ -64,7 +64,8 @@
                                 style="@style/BoldTextWhiteBiggest"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="01H 47M 26S" />
+                                tools:text="01H 47M 26S"
+                                android:text="01H 47M 26S"/>
 
                             <TextView
                                 android:id="@+id/tv_target_time_home"

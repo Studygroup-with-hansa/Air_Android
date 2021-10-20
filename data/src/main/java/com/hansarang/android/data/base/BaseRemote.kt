@@ -18,9 +18,7 @@ abstract class BaseRemote<SV> {
 
     private fun <T> checkError(response: retrofit2.Response<BaseResponse<T>>) {
         if (!response.isSuccessful) {
-            val gson = Gson()
-            val errorBody = gson.fromJson(response.errorBody()!!.charStream(), BaseResponse::class.java)
-            throw Throwable(errorBody.status.toString())
+            throw Throwable(response.code().toString())
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemTimerSubjectBinding
+import com.hansarang.android.air.ui.activity.AddSubjectActivity
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import com.hansarang.android.domain.entity.dto.Subject
 
@@ -31,8 +33,13 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
                                 viewModel.deleteSubject(subject)
                             }
                             R.id.modify_subject_list -> {
-                                //TODO OldSubject, NewSubject, NewSubject's Color
-                                //viewModel.modifySubject()
+                                with(subject) {
+                                    val intent = Intent(it.context, AddSubjectActivity::class.java)
+                                    intent.putExtra("btnText", "수정")
+                                    intent.putExtra("oldTitle", title)
+                                    intent.putExtra("oldColor", color)
+                                    it.context.startActivity(intent)
+                                }
                             }
                         }
                         true

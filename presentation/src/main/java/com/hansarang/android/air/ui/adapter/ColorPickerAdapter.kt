@@ -7,24 +7,30 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.databinding.ItemColorPickerBinding
+import com.hansarang.android.air.ui.viewmodel.activity.AddSubjectViewModel
 
-class ColorPickerAdapter: ListAdapter<ColorPickerAdapter.ColorValue, ColorPickerAdapter.ViewHolder>(diffUtil) {
+class ColorPickerAdapter(private val viewModel: AddSubjectViewModel): ListAdapter<String, ColorPickerAdapter.ViewHolder>(diffUtil) {
 
-    val colorList: ArrayList<ColorValue> = arrayListOf(
-        ColorValue("#ED6A5E"),
-        ColorValue("#F6C343"),
-        ColorValue("#79D16E"),
-        ColorValue("#97BAFF"),
-        ColorValue("#8886FF"),
+    val colorList: ArrayList<String> = arrayListOf(
+        "#ED6A5E",
+        "#F6C343",
+        "#79D16E",
+        "#97BAFF",
+        "#8886FF",
     )
 
-    var checkedItem = 0
-
-    data class ColorValue(val color: String)
+    var checkedItem = -1
+        set(value) {
+            notifyItemChanged(checkedItem)
+            field = value
+            if (value > -1) {
+                viewModel.color.value = colorList[value]
+            }
+        }
 
     inner class ViewHolder(private val binding: ItemColorPickerBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(colorValue: ColorValue) = with(binding) {
-            color = Color.parseColor(colorValue.color)
+        fun bind(colorValue: String) = with(binding) {
+            color = Color.parseColor(colorValue)
             chkColorPicker.isChecked = checkedItem == adapterPosition
             chkColorPicker.setOnClickListener {
                 if (checkedItem != adapterPosition) {
@@ -41,17 +47,18 @@ class ColorPickerAdapter: ListAdapter<ColorPickerAdapter.ColorValue, ColorPicker
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        if (position > -1)
+            holder.bind(getItem(position))
     }
 
     companion object {
 
-        val diffUtil = object : DiffUtil.ItemCallback<ColorValue>() {
-            override fun areItemsTheSame(oldItem: ColorValue, newItem: ColorValue): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<String>() {
+            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ColorValue, newItem: ColorValue): Boolean {
+            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
                 return oldItem == newItem
             }
 
