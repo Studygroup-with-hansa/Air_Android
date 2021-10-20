@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:hint="과목 이름을 입력해주세요."
             android:textSize="14sp"
-            android:text="@{vm.title}"
+            android:text="@={vm.title}"
             android:paddingVertical="15dp"
             android:background="@android:color/transparent"
             android:layout_marginHorizontal="20dp" />

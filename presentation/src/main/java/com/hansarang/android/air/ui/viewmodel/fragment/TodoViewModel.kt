@@ -49,6 +49,13 @@ class TodoViewModel @Inject constructor(
                 this@TodoViewModel.memo.value = this.memo
                 _todoList.value = ArrayList(this.subjects)
             }
+//            _todoList.value = if (Date(date).time < sdf.parse("2021-10-20")!!.time) {
+//                memo.value = baseTodo.memo
+//                ArrayList(baseTodo.subjects)
+//            } else {
+//                memo.value = ""
+//                ArrayList()
+//            }
             progressBarVisibility.value = View.GONE
         }
     }
