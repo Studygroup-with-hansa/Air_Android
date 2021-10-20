@@ -9,7 +9,7 @@ import javax.inject.Inject
 class WeeklyStatsRemote @Inject constructor(
     override val service: WeeklyStatsService
 ): BaseRemote<WeeklyStatsService>() {
-    suspend fun getStats(startDate: String, endDate: String): List<StatsData> {
-        return getResponse(service.getStats(startDate, endDate)).stats
+    suspend fun getStats(startDate: String, endDate: String): BaseStatsData {
+        return getResponse(service.getStats(startDate, endDate))
     }
 }
