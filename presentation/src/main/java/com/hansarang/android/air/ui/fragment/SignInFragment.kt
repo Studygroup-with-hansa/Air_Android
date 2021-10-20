@@ -29,6 +29,12 @@ class SignInFragment : Fragment() {
     private val countDownTimer by lazy {
         object : CountDownTimer((5 * 60 * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                binding.tvCountdownTimer.visibility =
+                    if (viewModel.isEmailSent.value == false) {
+                        View.GONE
+                    } else {
+                        View.VISIBLE
+                    }
                 val millis = millisUntilFinished / 1000
                 val minute = String.format("%02d", millis / 60)
                 val second = String.format("%02d", millis % 60)
@@ -85,7 +91,7 @@ class SignInFragment : Fragment() {
 
         isAuthSuccess.observe(viewLifecycleOwner, EventObserver {
             token = it
-            if (isExistEmail) {
+            if (isEmailExist.value == true) {
                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)

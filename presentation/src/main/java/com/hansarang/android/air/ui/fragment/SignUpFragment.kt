@@ -53,9 +53,9 @@ class SignUpFragment : Fragment() {
 
         with(viewModel) {
             nickname.observe(viewLifecycleOwner) {
+                finishButtonEnabled.value = it.length >= 2
                 binding.tilNicknameSignUp.error =
                     if (it.length < 2) {
-                        finishButtonEnabled.value = true
                         "닉네임은 두자 이상 입력해 주세요."
                     } else {
                         ""

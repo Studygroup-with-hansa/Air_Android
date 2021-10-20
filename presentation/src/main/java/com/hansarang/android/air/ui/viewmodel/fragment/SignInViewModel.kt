@@ -1,5 +1,7 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
+import android.util.Log
+import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,11 +28,10 @@ class SignInViewModel @Inject constructor(
     private val _isAuthSuccess = MutableLiveData<Event<String>>()
     val isAuthSuccess: LiveData<Event<String>> = _isAuthSuccess
 
-    var isExistEmail = false
-
     val email = MutableLiveData<String>()
     val authCode = MutableLiveData<String>()
-    val isEmailSent = MutableLiveData(false)
+    val isEmailSent = MutableLiveData<Boolean>()
+    val isEmailExist = MutableLiveData<Boolean>()
     val signInButtonEnabled = MutableLiveData(false)
 
     val progressBarVisibility = MutableLiveData(View.GONE)
@@ -44,18 +45,28 @@ class SignInViewModel @Inject constructor(
                 val params = PostRequestAuthUseCase.Params(email)
                 try {
                     withTimeout(10000) {
-                        val auth = postRequestAuthUseCase.buildParamsUseCaseSuspend(params)
-                        isExistEmail = auth.isEmailExist
-                        isEmailSent.value = true
+                        val emailChk = Patterns.EMAIL_ADDRESS
+                        if (emailChk.matcher(email).matches()) {
+                            val auth = postRequestAuthUseCase.buildParamsUseCaseSuspend(params)
+                            isEmailSent.value = auth.emailSent
+                            isEmailExist.value = auth.isEmailExist
+                        } else {
+                            isEmailSent.value = false
+                            isEmailExist.value = false
+                            _isFailure.value =
+                                Event("이메일 전송에 실패하였습니다. 재시도 해주세요.")
+                        }
                     }
                 } catch (e: TimeoutCancellationException) {
                     _isFailure.value = Event("시간 초과")
+                    isEmailSent.value = false
                 } catch (e: Throwable) {
                     _isFailure.value = if (e.message == "400") {
                         Event("이메일 전송에 실패하였습니다. 재시도 해주세요.")
                     } else {
                         Event("오류 발생")
                     }
+                    isEmailSent.value = false
 
                 } finally {
                     progressBarVisibility.value = View.GONE
