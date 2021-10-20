@@ -1,6 +1,5 @@
 package com.hansarang.android.air.ui.adapter
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -12,8 +11,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemCheckListBinding
+import com.hansarang.android.domain.entity.dto.TodoListItem
 
-class CheckListAdapter: ListAdapter<String, CheckListAdapter.ViewHolder>(diffUtil) {
+class CheckListAdapter: ListAdapter<TodoListItem, CheckListAdapter.ViewHolder>(diffUtil) {
 
     lateinit var onClickDeleteListener: OnClickDeleteListener
     interface OnClickDeleteListener {
@@ -41,32 +41,32 @@ class CheckListAdapter: ListAdapter<String, CheckListAdapter.ViewHolder>(diffUti
     }
 
     inner class ViewHolder(private val binding: ItemCheckListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(value: String) = with(binding) {
-            etTodoCheckList.setText(value)
+        fun bind(value: TodoListItem) = with(binding) {
+            setChecked(value.isitDone)
+            etTodoCheckList.setText(value.todo)
             btnDeleteTodoCheckList.setOnClickListener {
-                onClickDeleteListener.onClick(value)
+                onClickDeleteListener.onClick(value.todo)
             }
             etTodoCheckList.setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
-                    onClickModifyListener.onClick(value, etTodoCheckList.text.toString())
+                    onClickModifyListener.onClick(value.todo, etTodoCheckList.text.toString())
                 }
                 return@setOnKeyListener true
             }
 
             chkTodoCheckList.setOnCheckedChangeListener { view, isChecked ->
-                with(etTodoCheckList) {
-                    paintFlags =
-                        if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG
-                        else 0
-
-                    setTextColor(ContextCompat.getColor(view.context,
-                        if (isChecked) R.color.grey_disabled
-                        else R.color.black
-                    ))
-
-                    isFocusable = !isChecked
-                }
+                setChecked(isChecked)
             }
+        }
+
+        private fun setChecked(isChecked: Boolean) = with(binding) {
+            chkTodoCheckList.isChecked = isChecked
+            etTodoCheckList.isFocusable = !isChecked
+            etTodoCheckList.paintFlags = if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG else 0
+            etTodoCheckList.setTextColor(ContextCompat.getColor(etTodoCheckList.context,
+                if (isChecked) R.color.grey_disabled
+                else R.color.black
+            ))
         }
     }
 
@@ -85,12 +85,12 @@ class CheckListAdapter: ListAdapter<String, CheckListAdapter.ViewHolder>(diffUti
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<TodoListItem>() {
+            override fun areItemsTheSame(oldItem: TodoListItem, newItem: TodoListItem): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+            override fun areContentsTheSame(oldItem: TodoListItem, newItem: TodoListItem): Boolean {
                 return oldItem == newItem
             }
 

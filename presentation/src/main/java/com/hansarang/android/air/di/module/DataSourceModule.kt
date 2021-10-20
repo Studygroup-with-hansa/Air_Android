@@ -1,8 +1,10 @@
 package com.hansarang.android.air.di.module
 
+import com.hansarang.android.data.datasource.CheckListDataSource
 import com.hansarang.android.data.datasource.SubjectDataSource
 import com.hansarang.android.data.datasource.UserDataSource
 import com.hansarang.android.data.datasource.WeeklyStatsDataSource
+import com.hansarang.android.data.network.remote.CheckListRemote
 import com.hansarang.android.data.network.remote.SubjectRemote
 import com.hansarang.android.data.network.remote.UserRemote
 import com.hansarang.android.data.network.remote.WeeklyStatsRemote
@@ -29,4 +31,9 @@ object DataSourceModule {
     @Singleton
     fun providesSubjectDataSource(subjectRemote: SubjectRemote): SubjectDataSource =
         SubjectDataSource(subjectRemote)
+
+    @Provides
+    @Singleton
+    fun providesCheckListDataSource(checkListRemote: CheckListRemote): CheckListDataSource =
+        CheckListDataSource(checkListRemote)
 }

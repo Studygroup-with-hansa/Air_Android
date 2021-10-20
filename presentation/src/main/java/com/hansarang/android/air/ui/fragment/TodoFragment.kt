@@ -22,8 +22,7 @@ class TodoFragment : Fragment() {
     private lateinit var todoListAdapter: TodoListAdapter
     private lateinit var binding: FragmentTodoBinding
     private lateinit var recyclerView: RecyclerView
-    private val factory by lazy { TodoViewModelFactory() }
-    private val viewModel: TodoViewModel by viewModels { factory }
+    private val viewModel: TodoViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

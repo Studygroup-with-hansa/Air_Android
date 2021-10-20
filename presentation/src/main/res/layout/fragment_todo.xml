@@ -105,6 +105,7 @@
                 android:background="@drawable/memo_background"
                 android:gravity="top"
                 android:hint="@string/please_set_memo"
+                android:text="@{vm.memo}"
                 android:padding="10dp"
                 android:textSize="15sp" />
         </LinearLayout>
