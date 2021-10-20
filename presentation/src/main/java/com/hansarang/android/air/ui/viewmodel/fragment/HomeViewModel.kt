@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
             try {
                 val params = DeleteSubjectUseCase.Params(subject.title)
                 deleteSubjectUseCase.buildParamsUseCaseSuspend(params)
-                Log.d("TAG", "deleteSubject: 성공")
+                getSubjectList()
             } catch (e: Throwable) {
                 Log.d("TAG", "deleteSubject: ${e.message}")
             }
