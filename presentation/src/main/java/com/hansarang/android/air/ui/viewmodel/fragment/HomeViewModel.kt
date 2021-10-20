@@ -21,6 +21,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val progressBarVisibility = MutableLiveData(View.GONE)
 
+    val totalTime = MutableLiveData(0L)
     val goal = MutableLiveData(0L)
 
     private val _subjectList = MutableLiveData(ArrayList<Subject>())
@@ -46,8 +47,11 @@ class HomeViewModel @Inject constructor(
         progressBarVisibility.value = View.VISIBLE
 
         viewModelScope.launch {
+            var totaltime = 0L
             val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
             _subjectList.value = ArrayList(baseSubject.subject)
+            baseSubject.subject.forEach { totaltime += it.time }
+            totalTime.value = totaltime
             goal.value = baseSubject.goal
             progressBarVisibility.value = View.GONE
         }

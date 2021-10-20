@@ -88,6 +88,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     tools:text="2021.08.21"
+                                    android:text="0000.00.00"
                                     android:textSize="20sp"
                                     android:textColor="@color/white" />
 
@@ -97,7 +98,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     tools:text="01H 47M 26S"
-                                    android:text="01H 47M 26S"/>
+                                    app:setPattern="@{@string/time}"
+                                    app:setTime="@{vm.totalTime}"/>
 
                                 <TextView
                                     android:id="@+id/tv_target_time_home"
@@ -125,7 +127,7 @@
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
-                        app:setProgressBar="@{70}"
+                        app:setProgressBar="@{(int)(vm.totalTime /(vm.goal > 0L ? vm.goal : 1L)) * 100}"
                         android:progressDrawable="@drawable/progress_indicator" />
 
                 </com.google.android.material.appbar.AppBarLayout>
