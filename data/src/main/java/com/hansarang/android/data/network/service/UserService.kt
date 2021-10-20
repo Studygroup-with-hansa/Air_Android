@@ -16,25 +16,22 @@ interface UserService {
     ): retrofit2.Response<BaseResponse<AuthData>>
 
     // 인증 실행
-    @FormUrlEncoded
     @PUT("user/manage/signin/")
     suspend fun putSendAuthCode(
-        @Field("email") email: String,
-        @Field("auth") auth: String
+        @Query("email") email: String,
+        @Query("auth") auth: String
     ): retrofit2.Response<BaseResponse<TokenData>>
 
     // 유저 이름 수정
-    @FormUrlEncoded
     @PUT("user/info/manage/basic/name/")
     suspend fun putModifyUsername(
-        @Field("name") name: String
+        @Query("name") name: String
     ): retrofit2.Response<BaseResponse<Any?>>
 
     // 유저 이메일 수정
-    @FormUrlEncoded
     @PUT("user/info/manage/basic/email/")
     suspend fun putModifyEmail(
-        @Field("email") email: String
+        @Query("email") email: String
     ): retrofit2.Response<BaseResponse<Any?>>
 
     // 유저 기본 정보 받아오기
