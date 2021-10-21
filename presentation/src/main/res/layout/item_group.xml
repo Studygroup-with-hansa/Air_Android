@@ -7,6 +7,9 @@
         <variable
             name="group"
             type="com.hansarang.android.domain.entity.dto.Group" />
+        <variable
+            name="onClickGroup"
+            type="com.hansarang.android.air.ui.adapter.GroupAdapter.OnClickGroup" />
     </data>
 
     <FrameLayout
@@ -19,6 +22,7 @@
             android:layout_height="wrap_content"
             tools:layout_marginVertical="10dp"
             android:padding="15dp"
+            android:onClick="@{() -> onClickGroup.onClick(group.code)}"
             android:background="@drawable/btn_group_background_box">
 
             <TextView

@@ -14,12 +14,25 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemGroupBinding
+import com.hansarang.android.air.ui.viewmodel.fragment.GroupViewModel
 import com.hansarang.android.domain.entity.dto.Group
 
-class GroupAdapter: ListAdapter<Group, GroupAdapter.ViewHolder>(diffUtil) {
+class GroupAdapter(
+    private val viewModel: GroupViewModel
+): ListAdapter<Group, GroupAdapter.ViewHolder>(diffUtil) {
+
+    interface OnClickGroup {
+        fun onClick(code: String)
+    }
+
     inner class ViewHolder(private val binding: ItemGroupBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group) = with(binding) {
             binding.group = group
+            onClickGroup = object: OnClickGroup {
+                override fun onClick(code: String) {
+                    viewModel.groupCode.value = code
+                }
+            }
             with(itemView) {
                 for (i in 1..group.userCount) {
                     if (i > 5) {

@@ -8,6 +8,7 @@ import com.hansarang.android.domain.entity.dto.Group
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 class GroupViewModel(): ViewModel() {
+    val groupCode = MutableLiveData<String>()
     val progressBarVisibility = MutableLiveData(View.GONE)
 
     private val _groupList = MutableLiveData<ArrayList<Group>>()

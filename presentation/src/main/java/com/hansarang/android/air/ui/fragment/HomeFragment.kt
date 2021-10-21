@@ -42,6 +42,11 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getSubjectList()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         init()
         listener()
         observe()

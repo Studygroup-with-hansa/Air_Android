@@ -9,6 +9,8 @@ import android.view.animation.OvershootInterpolator
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentGroupBinding
 import com.hansarang.android.air.ui.adapter.GroupAdapter
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
@@ -23,6 +25,7 @@ class GroupFragment : Fragment() {
     private var isOpened: Boolean = false
     private lateinit var groupAdapter: GroupAdapter
     private val viewModel: GroupViewModel by viewModels()
+    private val navController by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +51,7 @@ class GroupFragment : Fragment() {
     }
 
     private fun init() = with(binding) {
-        groupAdapter = GroupAdapter()
+        groupAdapter = GroupAdapter(viewModel)
         rvGroupList.adapter = groupAdapter
         rvGroupList.addItemDecoration(ItemDividerDecorator(5.dp))
     }
@@ -56,6 +59,11 @@ class GroupFragment : Fragment() {
     private fun observe() = with(viewModel) {
         groupList.observe(viewLifecycleOwner) {
             groupAdapter.submitList(it)
+        }
+        groupCode.observe(viewLifecycleOwner) {
+            val bundle = Bundle()
+            bundle.putString("code", it)
+            navController.navigate(R.id.action_groupFragment_to_groupDetailFragment2)
         }
     }
 

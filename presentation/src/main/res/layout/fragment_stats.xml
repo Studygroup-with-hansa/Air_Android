@@ -194,10 +194,10 @@
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/chart_study_time_stats"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
                         android:layout_width="200dp"
-                        android:layout_height="200dp"/>
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_chart_legend_stats"

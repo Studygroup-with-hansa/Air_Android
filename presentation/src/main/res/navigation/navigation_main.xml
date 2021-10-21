@@ -19,7 +19,11 @@
         android:id="@+id/groupFragment"
         android:name="com.hansarang.android.air.ui.fragment.GroupFragment"
         android:label=""
-        tools:layout="@layout/fragment_group" />
+        tools:layout="@layout/fragment_group">
+        <action
+            android:id="@+id/action_groupFragment_to_groupDetailFragment2"
+            app:destination="@id/groupDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/todoFragment"
         android:name="com.hansarang.android.air.ui.fragment.TodoFragment"
@@ -30,4 +34,9 @@
         android:name="com.hansarang.android.air.ui.fragment.MemoFragment"
         android:label=""
         tools:layout="@layout/fragment_memo" />
+    <fragment
+        android:id="@+id/groupDetailFragment"
+        android:name="com.hansarang.android.air.ui.fragment.GroupDetailFragment"
+        android:label="fragment_group_detail"
+        tools:layout="@layout/fragment_group_detail" />
 </navigation>
