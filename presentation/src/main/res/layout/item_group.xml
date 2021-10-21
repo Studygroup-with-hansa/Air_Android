@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="group"
+            type="com.hansarang.android.domain.entity.dto.Group" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_marginVertical="10dp"
+            android:padding="15dp"
+            android:background="@drawable/btn_group_background_box">
+
+            <TextView
+                android:id="@+id/tv_name_item_group"
+                style="@style/BoldTextBlackMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="박상아님의 그룹"
+                android:text="@{@string/group_name(group.leader)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf= "parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_item_group">
+
+                <TextView
+                    android:id="@+id/tv_moderator_item_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="박상아"
+                    android:text="@{group.firstPlace}" />
+
+                <TextView
+                    android:id="@+id/tv_total_time_item_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:setTime="@{group.firstPlaceStudyTime}"
+                    app:setPattern="@{@string/time}"
+                    tools:text="12H 32M 02S" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_total_number_item_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/number_of_people(group.userCount)}"
+                tools:text="10명"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_name_item_group" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flb_number_drawing_item_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_name_item_group" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

@@ -34,4 +34,6 @@
     <string name="please_set_validate_email">옳은 이메일 주소를 입력해 주세요.</string>
     <string name="all_time">총 공부 시간</string>
     <string name="goal_achievement_rate_stats">목표 달성률 %.1f%%</string>
+    <string name="group_name">%s님의 그룹</string>
+    <string name="number_of_people">%d명</string>
 </resources>
