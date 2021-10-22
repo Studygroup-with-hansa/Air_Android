@@ -1,6 +1,8 @@
 package com.hansarang.android.air.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +27,6 @@ class GroupFragment : Fragment() {
     private var isOpened: Boolean = false
     private lateinit var groupAdapter: GroupAdapter
     private val viewModel: GroupViewModel by viewModels()
-    private val navController by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,11 +60,6 @@ class GroupFragment : Fragment() {
     private fun observe() = with(viewModel) {
         groupList.observe(viewLifecycleOwner) {
             groupAdapter.submitList(it)
-        }
-        groupCode.observe(viewLifecycleOwner) {
-            val bundle = Bundle()
-            bundle.putString("code", it)
-            navController.navigate(R.id.action_groupFragment_to_groupDetailFragment2)
         }
     }
 

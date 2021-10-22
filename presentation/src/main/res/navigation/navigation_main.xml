@@ -21,7 +21,7 @@
         android:label=""
         tools:layout="@layout/fragment_group">
         <action
-            android:id="@+id/action_groupFragment_to_groupDetailFragment2"
+            android:id="@+id/action_groupFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
     </fragment>
     <fragment

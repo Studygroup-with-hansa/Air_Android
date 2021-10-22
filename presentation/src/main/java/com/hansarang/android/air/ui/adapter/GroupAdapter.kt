@@ -1,6 +1,7 @@
 package com.hansarang.android.air.ui.adapter
 
 import android.content.res.Resources
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +32,9 @@ class GroupAdapter(
             binding.group = group
             onClickGroup = object: OnClickGroup {
                 override fun onClick(code: String) {
-                    viewModel.groupCode.value = code
+                    val bundle = Bundle()
+                    bundle.putString("code", code)
+                    itemView.findNavController().navigate(R.id.action_groupFragment_to_groupDetailFragment)
                 }
             }
             with(itemView) {
