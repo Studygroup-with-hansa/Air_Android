@@ -54,11 +54,11 @@ class StatsFragment : Fragment() {
         weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
         weekdayDatePickerAdapterViewModel.stats.observe(viewLifecycleOwner) {
             with(it) {
-                if (totalStudyTime != null && goal != null && subject != null) {
-                    binding.achievement = totalStudyTime!!.toFloat() / goal!!.toFloat()
+                if (goal != null) {
+                    binding.achievement = totalStudyTime.toFloat() / goal!!.toFloat()
                     val pieColorList = ArrayList<Int>()
                     val pieEntryList = ArrayList<PieEntry>()
-                    subject!!.forEach { subject ->
+                    subject.forEach { subject ->
                         pieColorList.add(Color.parseColor(subject.color))
                         pieEntryList.add(PieEntry(subject.time.toFloat(), subject.title))
                     }

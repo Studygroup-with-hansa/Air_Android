@@ -7,7 +7,7 @@ fun StatsData.toEntity(): Stats {
     return Stats(
         this.date,
         this.goal,
-        this.subject?.map {
+        this.subject.map {
             it.toEntity()
         },
         this.totalStudyTime
@@ -18,7 +18,7 @@ fun Stats.toData(): StatsData {
     return StatsData(
         this.date,
         this.goal,
-        this.subject?.map {
+        this.subject.map {
             it.toData()
         },
         this.totalStudyTime

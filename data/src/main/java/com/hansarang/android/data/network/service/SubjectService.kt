@@ -7,13 +7,12 @@ import retrofit2.http.*
 interface SubjectService {
 
     // 오늘 데이터 가져오기
-    @POST("user/data/subject/")
+    @GET("user/data/subject/")
     suspend fun getSubject(): retrofit2.Response<BaseResponse<BaseSubjectData>>
 
     // 날짜에 따른 데이터 가져오기
-    @FormUrlEncoded
-    @POST("user/data/subject/")
-    suspend fun getSubjectByDate(@Field("date") date: String): retrofit2.Response<BaseResponse<BaseSubjectData>>
+    @GET
+    suspend fun getSubjectByDate(@Query("date") date: String): retrofit2.Response<BaseResponse<BaseSubjectData>>
 
     // 새 과목 추가
     @FormUrlEncoded
