@@ -1,13 +1,7 @@
 package com.hansarang.android.air.di.module
 
-import com.hansarang.android.data.datasource.CheckListDataSource
-import com.hansarang.android.data.datasource.SubjectDataSource
-import com.hansarang.android.data.datasource.UserDataSource
-import com.hansarang.android.data.datasource.WeeklyStatsDataSource
-import com.hansarang.android.data.network.remote.CheckListRemote
-import com.hansarang.android.data.network.remote.SubjectRemote
-import com.hansarang.android.data.network.remote.UserRemote
-import com.hansarang.android.data.network.remote.WeeklyStatsRemote
+import com.hansarang.android.data.datasource.*
+import com.hansarang.android.data.network.remote.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +30,9 @@ object DataSourceModule {
     @Singleton
     fun providesCheckListDataSource(checkListRemote: CheckListRemote): CheckListDataSource =
         CheckListDataSource(checkListRemote)
+
+    @Provides
+    @Singleton
+    fun providesGroupDataSource(groupRemote: GroupRemote): GroupDataSource =
+        GroupDataSource(groupRemote)
 }

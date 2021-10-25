@@ -1,17 +1,8 @@
 package com.hansarang.android.air.di.module
 
-import com.hansarang.android.data.datasource.CheckListDataSource
-import com.hansarang.android.data.datasource.SubjectDataSource
-import com.hansarang.android.data.datasource.UserDataSource
-import com.hansarang.android.data.datasource.WeeklyStatsDataSource
-import com.hansarang.android.data.repository.CheckListRepositoryImpl
-import com.hansarang.android.data.repository.SubjectRepositoryImpl
-import com.hansarang.android.data.repository.UserRepositoryImpl
-import com.hansarang.android.data.repository.WeeklyStatsRepositoryImpl
-import com.hansarang.android.domain.repository.CheckListRepository
-import com.hansarang.android.domain.repository.SubjectRepository
-import com.hansarang.android.domain.repository.UserRepository
-import com.hansarang.android.domain.repository.WeeklyStatsRepository
+import com.hansarang.android.data.datasource.*
+import com.hansarang.android.data.repository.*
+import com.hansarang.android.domain.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,4 +31,9 @@ object RepositoryModule {
     @Singleton
     fun providesCheckListRepository(checkListDataSource: CheckListDataSource): CheckListRepository =
         CheckListRepositoryImpl(checkListDataSource)
+
+    @Provides
+    @Singleton
+    fun providesGroupRepository(groupDataSource: GroupDataSource): GroupRepository =
+        GroupRepositoryImpl(groupDataSource)
 }

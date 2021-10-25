@@ -1,9 +1,6 @@
 package com.hansarang.android.air.di.module
 
-import com.hansarang.android.data.network.service.CheckListService
-import com.hansarang.android.data.network.service.SubjectService
-import com.hansarang.android.data.network.service.UserService
-import com.hansarang.android.data.network.service.WeeklyStatsService
+import com.hansarang.android.data.network.service.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +30,9 @@ object NetworkModule {
     @Singleton
     fun providesCheckListService(retrofit: Retrofit): CheckListService =
         retrofit.create(CheckListService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesGroupService(retrofit: Retrofit): GroupService =
+        retrofit.create(GroupService::class.java)
 }

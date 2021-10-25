@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.hansarang.android.air.databinding.FragmentGroupBinding
 import com.hansarang.android.air.ui.adapter.GroupAdapter
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
+import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.viewmodel.fragment.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -61,6 +63,10 @@ class GroupFragment : Fragment() {
         groupList.observe(viewLifecycleOwner) {
             groupAdapter.submitList(it)
         }
+
+        isFailure.observe(viewLifecycleOwner, EventObserver {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun listener() = with(binding) {

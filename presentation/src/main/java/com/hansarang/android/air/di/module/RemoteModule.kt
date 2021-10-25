@@ -1,13 +1,7 @@
 package com.hansarang.android.air.di.module
 
-import com.hansarang.android.data.network.remote.CheckListRemote
-import com.hansarang.android.data.network.remote.SubjectRemote
-import com.hansarang.android.data.network.remote.UserRemote
-import com.hansarang.android.data.network.remote.WeeklyStatsRemote
-import com.hansarang.android.data.network.service.CheckListService
-import com.hansarang.android.data.network.service.SubjectService
-import com.hansarang.android.data.network.service.UserService
-import com.hansarang.android.data.network.service.WeeklyStatsService
+import com.hansarang.android.data.network.remote.*
+import com.hansarang.android.data.network.service.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +30,9 @@ object RemoteModule {
     @Singleton
     fun providesCheckListRemote(checkListService: CheckListService): CheckListRemote =
         CheckListRemote(checkListService)
+
+    @Provides
+    @Singleton
+    fun providesGroupRemote(groupService: GroupService): GroupRemote =
+        GroupRemote(groupService)
 }

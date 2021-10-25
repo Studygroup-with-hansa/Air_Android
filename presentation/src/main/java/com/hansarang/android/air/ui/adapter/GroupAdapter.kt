@@ -1,7 +1,7 @@
 package com.hansarang.android.air.ui.adapter
 
-import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -24,17 +24,18 @@ class GroupAdapter(
 ): ListAdapter<Group, GroupAdapter.ViewHolder>(diffUtil) {
 
     interface OnClickGroup {
-        fun onClick(code: String)
+        fun onClick(code: String, leader: String)
     }
 
     inner class ViewHolder(private val binding: ItemGroupBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group) = with(binding) {
             binding.group = group
             onClickGroup = object: OnClickGroup {
-                override fun onClick(code: String) {
+                override fun onClick(code: String, leader: String) {
                     val bundle = Bundle()
-                    bundle.putString("code", code)
-                    itemView.findNavController().navigate(R.id.action_groupFragment_to_groupDetailFragment)
+                    bundle.putString("groupCode", code)
+                    bundle.putString("leader", leader)
+                    itemView.findNavController().navigate(R.id.action_groupFragment_to_groupDetailFragment, bundle)
                 }
             }
             with(itemView) {
