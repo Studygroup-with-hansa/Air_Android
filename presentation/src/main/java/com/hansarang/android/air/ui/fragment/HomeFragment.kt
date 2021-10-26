@@ -2,20 +2,15 @@ package com.hansarang.android.air.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import androidx.recyclerview.widget.RecyclerView
-import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentHomeBinding
 import com.hansarang.android.air.ui.activity.AddSubjectActivity
 import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
-import com.hansarang.android.air.ui.viewmodel.factory.HomeViewModelFactory
+import com.hansarang.android.air.ui.dialog.SetGoalDialogFragment
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -56,6 +51,11 @@ class HomeFragment : Fragment() {
         fabAddSubjectHome.setOnClickListener {
             val intent = Intent(requireContext(), AddSubjectActivity::class.java)
             startActivity(intent)
+        }
+
+        tvTargetTimeHome.setOnClickListener {
+            val setGoalDialogFragment = SetGoalDialogFragment.newInstance()
+            setGoalDialogFragment.show(parentFragmentManager, "setGoalDialogFragment")
         }
     }
 

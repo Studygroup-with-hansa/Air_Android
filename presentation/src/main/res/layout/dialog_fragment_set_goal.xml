@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.dialog.SetGoalDialogViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.dialog.SetGoalDialogFragment"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="25dp"
+            android:text="목표 시간을 설정해주세요"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <EditText
+                android:id="@+id/et_hour_set_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:paddingHorizontal="17dp"
+                android:hint="@string/_00"
+                android:digits="0123456789"
+                android:inputType="number"
+                android:text="@={vm.hour}"
+                android:afterTextChanged="@{(text) -> vm.onHourChanged(text)}"
+                android:maxLength="3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="5dp"
+                android:text="H" />
+
+            <EditText
+                android:id="@+id/et_minute_set_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:paddingHorizontal="17dp"
+                android:hint="@string/_00"
+                android:inputType="number"
+                android:text="@={vm.minute}"
+                android:afterTextChanged="@{(text) -> vm.onMinuteChanged(text)}"
+                android:maxLength="3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="5dp"
+                android:text="M" />
+
+            <EditText
+                android:id="@+id/et_second_set_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:afterTextChanged="@{(text) -> vm.onSecondChanged(text)}"
+                android:hint="@string/_00"
+                android:inputType="number"
+                android:maxLength="3"
+                android:paddingHorizontal="17dp"
+                android:text="@={vm.second}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginStart="5dp"
+                android:text="S" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:id="@+id/btn_save_set_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="@{() -> vm.onClickCancel()}"
+                android:paddingVertical="5dp">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_no_background"
+                    android:minWidth="0dp"
+                    android:minHeight="40dp"
+                    android:clickable="false"
+                    android:text="저장"
+                    android:textColor="@color/main"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_cancel_set_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="@{() -> vm.onClickCancel()}"
+                android:layout_marginEnd="5dp"
+                android:paddingVertical="5dp">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_no_background"
+                    android:minWidth="0dp"
+                    android:minHeight="40dp"
+                    android:clickable="false"
+                    android:text="취소"
+                    android:textColor="@color/red"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -31,4 +31,5 @@
     <color name="first">#FFD900</color>
     <color name="second">#C4C4C4</color>
     <color name="third">#EEA65E</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -27,4 +27,8 @@ class SubjectRepositoryImpl @Inject constructor(
     override suspend fun putSubject(title: String, titleNew: String, color: String): String {
         return subjectDataSource.putSubject(title, titleNew, color)
     }
+
+    override suspend fun postTargetTime(targetTime: String): String {
+        return subjectDataSource.postTargetTime(targetTime)
+    }
 }

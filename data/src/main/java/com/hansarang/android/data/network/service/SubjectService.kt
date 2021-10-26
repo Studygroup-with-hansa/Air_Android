@@ -11,8 +11,9 @@ interface SubjectService {
     suspend fun getSubject(): retrofit2.Response<BaseResponse<BaseSubjectData>>
 
     // 날짜에 따른 데이터 가져오기
-    @GET
-    suspend fun getSubjectByDate(@Query("date") date: String): retrofit2.Response<BaseResponse<BaseSubjectData>>
+    @FormUrlEncoded
+    @POST("user/data/subject")
+    suspend fun getSubjectByDate(@Field("date") date: String): retrofit2.Response<BaseResponse<BaseSubjectData>>
 
     // 새 과목 추가
     @FormUrlEncoded
@@ -32,6 +33,12 @@ interface SubjectService {
         @Query("title") title: String,
         @Query("title_new") titleNew: String,
         @Query("color") color: String
+    ): retrofit2.Response<BaseResponse<Any?>>
+
+    @FormUrlEncoded
+    @POST("user/data/subject/targettime")
+    suspend fun postTargetTime(
+        @Field("targetTime") targetTime: String
     ): retrofit2.Response<BaseResponse<Any?>>
 
 }

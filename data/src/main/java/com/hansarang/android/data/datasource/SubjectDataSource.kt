@@ -37,4 +37,10 @@ class SubjectDataSource @Inject constructor(
         return remote.putSubject(title, titleNew, color)
     }
 
+    suspend fun postTargetTime(
+        targetTime: String
+    ): String {
+        return remote.postTargetTime(targetTime)
+    }
+
 }

@@ -8,4 +8,5 @@ interface SubjectRepository {
     suspend fun postSubject(title: String, color: String): String
     suspend fun deleteSubject(title: String): String
     suspend fun putSubject(title: String, titleNew: String, color: String): String
+    suspend fun postTargetTime(targetTime: String): String
 }

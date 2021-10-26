@@ -36,4 +36,10 @@ class SubjectRemote @Inject constructor(
         return getDetail(service.putSubject(title, titleNew, color))
     }
 
+    suspend fun postTargetTime(
+        targetTime: String
+    ): String {
+        return getDetail(service.postTargetTime(targetTime))
+    }
+
 }

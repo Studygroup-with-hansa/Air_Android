@@ -31,9 +31,9 @@
         tools:layout="@layout/fragment_todo" />
     <fragment
         android:id="@+id/memoFragment"
-        android:name="com.hansarang.android.air.ui.fragment.MemoFragment"
+        android:name="com.hansarang.android.air.ui.fragment.SettingFragment"
         android:label=""
-        tools:layout="@layout/fragment_memo" />
+        tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/groupDetailFragment"
         android:name="com.hansarang.android.air.ui.fragment.GroupDetailFragment"

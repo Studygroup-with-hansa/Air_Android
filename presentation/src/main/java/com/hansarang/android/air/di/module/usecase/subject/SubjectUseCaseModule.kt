@@ -35,4 +35,9 @@ object SubjectUseCaseModule {
     @Singleton
     fun providesPutSubjectUseCase(subjectRepository: SubjectRepository): PutSubjectUseCase =
         PutSubjectUseCase(subjectRepository)
+
+    @Provides
+    @Singleton
+    fun providesPostTargetTimeUseCase(subjectRepository: SubjectRepository): PostTargetTimeUseCase =
+        PostTargetTimeUseCase(subjectRepository)
 }
