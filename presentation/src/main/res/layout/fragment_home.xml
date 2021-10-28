@@ -93,7 +93,7 @@
                                     android:textColor="@color/white" />
 
                                 <TextView
-                                    android:id="@+id/tv_time_home"
+                                    android:id="@+id/tv_time_timer"
                                     style="@style/BoldTextWhiteBiggest"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

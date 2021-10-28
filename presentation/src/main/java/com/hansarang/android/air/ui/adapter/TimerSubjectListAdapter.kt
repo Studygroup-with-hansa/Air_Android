@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemTimerSubjectBinding
 import com.hansarang.android.air.ui.activity.AddSubjectActivity
+import com.hansarang.android.air.ui.activity.TimerActivity
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import com.hansarang.android.domain.entity.dto.Subject
 
@@ -46,6 +47,13 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
                     }
                 }
                 popupMenu.show()
+            }
+            binding.fabPlayTimerSubject.setOnClickListener {
+                val intent = Intent(it.context, TimerActivity::class.java)
+                intent.putExtra("title", subject.title)
+                intent.putExtra("time", subject.time)
+                intent.putExtra("goal", viewModel.goal.value?:0L)
+                it.context.startActivity(intent)
             }
         }
     }

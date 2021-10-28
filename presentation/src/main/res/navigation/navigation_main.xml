@@ -30,7 +30,7 @@
         android:label=""
         tools:layout="@layout/fragment_todo" />
     <fragment
-        android:id="@+id/memoFragment"
+        android:id="@+id/settingFragment"
         android:name="com.hansarang.android.air.ui.fragment.SettingFragment"
         android:label=""
         tools:layout="@layout/fragment_setting" />
