@@ -102,7 +102,7 @@ class SetGoalDialogViewModel: ViewModel() {
         val min = minute.value?:""
         val sec = second.value?:""
 
-        if (hour.isNotEmpty() && hour.isNotEmpty() && sec.isNotEmpty()) {
+        if (hour.isNotEmpty() && min.isNotEmpty() && sec.isNotEmpty()) {
             _isDismissed.value = Event("완료되었습니다.")
         } else {
             _isFailure.value = Event("시간이 모두 입력되었는지 확인해 주세요.")
