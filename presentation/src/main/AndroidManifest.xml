@@ -3,7 +3,9 @@
     package="com.hansarang.android.air">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
         android:name=".di.application.DaggerApplication"
@@ -15,13 +17,18 @@
         android:theme="@style/Theme.Air"
         android:usesCleartextTraffic="true">
         <service
+            android:name=".background.service.TimerRestartService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
             android:name=".background.service.TimerService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".ui.activity.TimerActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleInstance" />
         <activity
             android:name=".ui.activity.AddSubjectActivity"
             android:exported="true" />
