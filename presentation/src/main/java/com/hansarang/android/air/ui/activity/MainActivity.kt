@@ -2,14 +2,19 @@
 package com.hansarang.android.air.ui.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -17,23 +22,14 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.hansarang.android.air.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val permissionLauncher: ActivityResultLauncher<Array<String>> = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { map ->
-        for (isGranted in map.values) {
-            if (isGranted) {
-                Toast.makeText(this, "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+    private lateinit var permissionLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -45,14 +41,45 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         bottomNavigationView = binding.bottomNavigationViewMain
 
+        permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+
+            if (Settings.canDrawOverlays(this)) {
+                val snackBar = Snackbar.make(
+                    this,
+                    binding.root,
+                    "권한이 허용되었습니다.",
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                snackBar.setAction("확인") {
+                    snackBar.dismiss()
+                }.show()
+            } else {
+                val snackBar = Snackbar.make(
+                    this,
+                    binding.root,
+                    "권한이 허용되지 않았습니다.",
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                snackBar
+                    .setAction("허용하기") {
+                        permissionLauncher.launch(
+                            Intent(ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                        )
+                        snackBar.dismiss()
+                    }.show()
+            }
+        }
+
         if (
             ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.USE_FULL_SCREEN_INTENT,
+                Manifest.permission.SYSTEM_ALERT_WINDOW,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             permissionLauncher.launch(
-                arrayOf(Manifest.permission.FOREGROUND_SERVICE)
+                Intent(ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             )
         }
     }

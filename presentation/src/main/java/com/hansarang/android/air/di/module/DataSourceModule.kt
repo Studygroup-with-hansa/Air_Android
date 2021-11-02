@@ -35,4 +35,9 @@ object DataSourceModule {
     @Singleton
     fun providesGroupDataSource(groupRemote: GroupRemote): GroupDataSource =
         GroupDataSource(groupRemote)
+
+    @Provides
+    @Singleton
+    fun providesTimerDataSource(timerRemote: TimerRemote): TimerDataSource =
+        TimerDataSource(timerRemote)
 }

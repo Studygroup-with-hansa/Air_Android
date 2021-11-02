@@ -35,4 +35,9 @@ object RemoteModule {
     @Singleton
     fun providesGroupRemote(groupService: GroupService): GroupRemote =
         GroupRemote(groupService)
+
+    @Provides
+    @Singleton
+    fun providesTimerRemote(timerService: TimerService): TimerRemote =
+        TimerRemote(timerService)
 }

@@ -35,4 +35,9 @@ object NetworkModule {
     @Singleton
     fun providesGroupService(retrofit: Retrofit): GroupService =
         retrofit.create(GroupService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesTimerService(retrofit: Retrofit): TimerService =
+        retrofit.create(TimerService::class.java)
 }

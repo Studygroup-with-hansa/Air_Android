@@ -36,4 +36,9 @@ object RepositoryModule {
     @Singleton
     fun providesGroupRepository(groupDataSource: GroupDataSource): GroupRepository =
         GroupRepositoryImpl(groupDataSource)
+
+    @Provides
+    @Singleton
+    fun providesTimerRepository(timerDataSource: TimerDataSource): TimerRepository =
+        TimerRepositoryImpl(timerDataSource)
 }
