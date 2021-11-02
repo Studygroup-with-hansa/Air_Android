@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -52,7 +53,7 @@ class SignUpViewModel @Inject constructor(
                 } catch (e: Throwable) {
                     when (e.message) {
                         "401" -> _isFailure.value = Event("유효하지 않은 토큰입니다.")
-                        else -> _isFailure.value = Event("오류 발생")
+                        else -> _isFailure.value = Event("${e.message} 오류 발생")
                     }
                 } finally {
                     progressBarVisibility.value = View.GONE

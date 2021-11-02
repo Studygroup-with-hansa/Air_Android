@@ -1,7 +1,10 @@
 package com.hansarang.android.air.ui.activity
 
 import android.app.NotificationManager
+import android.content.Intent
+import com.hansarang.android.air.R
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
@@ -23,8 +26,12 @@ class TimerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val inflater = LayoutInflater.from(this)
+        binding = ActivityTimerBinding.inflate(inflater)
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+        setContentView(binding.root)
 
-        init()
         initIntent()
         observe()
         listener()
@@ -32,7 +39,8 @@ class TimerActivity : AppCompatActivity() {
 
     private fun listener() = with(binding) {
         toolbar.setNavigationOnClickListener {
-            finish()
+            activityFinish()
+            viewModel.isStarted.value = false
         }
     }
 
@@ -47,24 +55,18 @@ class TimerActivity : AppCompatActivity() {
                 postTimerStart()
                 timer.schedule(timerTask, 1000L, 1000L)
             } else {
+                if (this@TimerActivity::timerTask.isInitialized) {
+                    activityFinish()
+                    timerTask.cancel()
+                }
+
                 timer.cancel()
                 postTimerStop()
 
                 val notificationManager = getSystemService(NotificationManager::class.java)
                 notificationManager.cancel(1)
-
-                if (this@TimerActivity::timerTask.isInitialized) {
-                    timerTask.cancel()
-                }
             }
         }
-    }
-
-    private fun init() = with(viewModel) {
-        binding = ActivityTimerBinding.inflate(layoutInflater)
-        binding.vm = viewModel
-        binding.lifecycleOwner = this@TimerActivity
-        setContentView(binding.root)
     }
 
     private fun initIntent() = with(viewModel) {
@@ -136,6 +138,12 @@ class TimerActivity : AppCompatActivity() {
 //            intent.putExtra("title", title.value)
 //            startForegroundService(intent)
         }
+    }
+
+    private fun activityFinish() {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 
 }

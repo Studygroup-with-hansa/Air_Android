@@ -1,5 +1,6 @@
 package com.hansarang.android.air.ui.viewmodel.activity
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,11 +34,14 @@ class TimerViewModel @Inject constructor(
                 )
             } catch (e: Throwable) {
                 when(e.message) {
-                    "401" -> _isFailure.value = "유효하지 않은 토큰입니다."
+                    "401" -> _isFailure.postValue("유효하지 않은 토큰입니다.")
                     "409" -> {
 
                     }
-                    else -> throw IllegalArgumentException()
+                    else -> {
+                        _isFailure.postValue("${e.message} 오류 발생")
+                        Log.d("TimerViewModel", "postTimerStart: ${e.message}")
+                    }
                 }
             }
         }
@@ -51,11 +55,14 @@ class TimerViewModel @Inject constructor(
                 )
             } catch (e: Throwable) {
                 when(e.message) {
-                    "401" -> _isFailure.value = "유효하지 않은 토큰입니다."
+                    "401" -> _isFailure.postValue("유효하지 않은 토큰입니다.")
                     "409" -> {
 
                     }
-                    else -> throw IllegalArgumentException()
+                    else -> {
+                        _isFailure.postValue("${e.message} 오류 발생")
+                        Log.d("TimerViewModel", "postTimerStop: ${e.message}")
+                    }
                 }
             }
         }

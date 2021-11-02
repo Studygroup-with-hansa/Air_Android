@@ -90,11 +90,11 @@ class SignInFragment : Fragment() {
         }
 
         isAuthSuccess.observe(viewLifecycleOwner, EventObserver {
-            token = it
+            token = "Token $it"
             if (isEmailExist.value == true) {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
+                requireActivity().finish()
             } else {
                 navController.navigate(R.id.action_signInFragment_to_signUpFragment)
             }

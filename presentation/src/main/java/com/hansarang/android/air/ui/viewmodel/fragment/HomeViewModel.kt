@@ -47,13 +47,17 @@ class HomeViewModel @Inject constructor(
         progressBarVisibility.value = View.VISIBLE
 
         viewModelScope.launch {
-            var totaltime = 0L
-            val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
-            _subjectList.value = ArrayList(baseSubject.subject)
-            baseSubject.subject.forEach { totaltime += it.time }
-            totalTime.value = totaltime
-            goal.value = baseSubject.goal
-            progressBarVisibility.value = View.GONE
+            try {
+                var totaltime = 0L
+                val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
+                _subjectList.value = ArrayList(baseSubject.subject)
+                baseSubject.subject.forEach { totaltime += it.time }
+                totalTime.value = totaltime
+                goal.value = baseSubject.goal
+                progressBarVisibility.value = View.GONE
+            } catch (e: Throwable) {
+                //Log.d("HomeViewModel", "getSubjectList: ${e.message}")
+            }
         }
     }
 }

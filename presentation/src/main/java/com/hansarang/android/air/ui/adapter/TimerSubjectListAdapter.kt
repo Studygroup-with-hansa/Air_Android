@@ -26,7 +26,7 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
         fun bind(subject: Subject) {
             binding.subject = subject
             binding.ibtOptionTimerSubject.setOnClickListener {
-                val popupMenu = PopupMenu(it.context, it).apply {
+                val popupMenu = PopupMenu(binding.root.context, it).apply {
                     inflate(R.menu.menu_timer_subject_list)
                     setOnMenuItemClickListener { menuItem ->
                         when(menuItem.itemId) {
@@ -35,11 +35,11 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
                             }
                             R.id.modify_subject_list -> {
                                 with(subject) {
-                                    val intent = Intent(it.context, AddSubjectActivity::class.java)
+                                    val intent = Intent(binding.root.context, AddSubjectActivity::class.java)
                                     intent.putExtra("btnText", "수정")
                                     intent.putExtra("oldTitle", title)
                                     intent.putExtra("oldColor", color)
-                                    it.context.startActivity(intent)
+                                    binding.root.context.startActivity(intent)
                                 }
                             }
                         }
@@ -49,11 +49,11 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
                 popupMenu.show()
             }
             binding.fabPlayTimerSubject.setOnClickListener {
-                val intent = Intent(it.context, TimerActivity::class.java)
+                val intent = Intent(binding.root.context, TimerActivity::class.java)
                 intent.putExtra("title", subject.title)
                 intent.putExtra("time", subject.time)
                 intent.putExtra("goal", viewModel.goal.value?:0L)
-                it.context.startActivity(intent)
+                binding.root.context.startActivity(intent)
             }
         }
     }

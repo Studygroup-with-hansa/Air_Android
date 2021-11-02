@@ -72,12 +72,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.SYSTEM_ALERT_WINDOW,
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (!Settings.canDrawOverlays(this)) {
             permissionLauncher.launch(
                 Intent(ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             )
