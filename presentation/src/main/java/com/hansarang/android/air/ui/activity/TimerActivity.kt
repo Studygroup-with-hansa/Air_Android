@@ -1,9 +1,10 @@
 package com.hansarang.android.air.ui.activity
 
+import android.app.Activity
 import android.app.NotificationManager
 import android.content.Intent
-import com.hansarang.android.air.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,9 @@ import com.hansarang.android.air.ui.viewmodel.activity.TimerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.concurrent.timerTask
+import android.util.TypedValue
+import androidx.annotation.AttrRes
+import com.hansarang.android.air.R
 
 @AndroidEntryPoint
 class TimerActivity : AppCompatActivity() {
@@ -144,6 +148,7 @@ class TimerActivity : AppCompatActivity() {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
+        overridePendingTransition(R.anim.nav_default_pop_enter_anim, R.anim.nav_default_pop_exit_anim)
     }
 
 }
