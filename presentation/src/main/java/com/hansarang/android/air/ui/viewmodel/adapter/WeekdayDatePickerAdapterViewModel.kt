@@ -6,5 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.hansarang.android.domain.entity.dto.Stats
 
 class WeekdayDatePickerAdapterViewModel: ViewModel() {
+    var checkedItem = 6
     val stats = MutableLiveData<Stats>()
 }

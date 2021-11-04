@@ -1,6 +1,6 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
-import android.view.View
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +19,10 @@ import kotlin.collections.ArrayList
 class StatsViewModel @Inject constructor(
     private val getWeeklyStatsUseCase: GetWeeklyStatsUseCase
 ): ViewModel() {
-    val progressBarVisibility = MutableLiveData(View.GONE)
+    var isFirstLoad = true
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _isFailure = MutableLiveData<Event<String>>()
     val isFailure: LiveData<Event<String>> = _isFailure
@@ -28,7 +31,7 @@ class StatsViewModel @Inject constructor(
     val stats: LiveData<ArrayList<Stats>> = _stats
 
     fun getStats() {
-        progressBarVisibility.value = View.VISIBLE
+        _isLoading.value = true
 
         viewModelScope.launch {
             try {
@@ -39,17 +42,22 @@ class StatsViewModel @Inject constructor(
                             "-${decimalFormat.format(currentDate.get(Calendar.MONTH) + 1)}" +
                             "-${decimalFormat.format(currentDate.get(Calendar.DATE))}"
 
+                currentDate.add(Calendar.DAY_OF_MONTH, -6)
                 val startDate =
                     "${currentDate.get(Calendar.YEAR)}" +
                             "-${decimalFormat.format(currentDate.get(Calendar.MONTH) + 1)}" +
                             "-${decimalFormat.format(currentDate.get(Calendar.DATE))}"
 
+                Log.d("Stats", "getStats: $startDate $endDate")
+
                 val params = GetWeeklyStatsUseCase.Params(startDate, endDate)
                 _stats.value = ArrayList(getWeeklyStatsUseCase.buildParamsUseCaseSuspend(params).stats)
+
+                isFirstLoad = true
             } catch (e: Throwable) {
                 _isFailure.value = Event(e.message?:"")
             } finally {
-                progressBarVisibility.value = View.GONE
+                _isLoading.value = false
             }
         }
     }

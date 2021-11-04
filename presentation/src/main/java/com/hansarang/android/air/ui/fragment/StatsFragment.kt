@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
@@ -29,8 +30,8 @@ class StatsFragment : Fragment() {
     private lateinit var binding: FragmentStatsBinding
     private lateinit var weekDayDatePickerAdapter: WeekdayDatePickerAdapter
     private lateinit var chartLegendListAdapter: ChartLegendListAdapter
-    private val viewModel: StatsViewModel by viewModels()
-    private val weekdayDatePickerAdapterViewModel: WeekdayDatePickerAdapterViewModel by viewModels()
+    private val viewModel: StatsViewModel by activityViewModels()
+    private val weekdayDatePickerAdapterViewModel: WeekdayDatePickerAdapterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,16 +47,21 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        viewModel.getStats()
-        binding.rvWeekdayDatePickerStats.adapter = weekDayDatePickerAdapter
+        observe()
+        listener()
     }
 
-    private fun init() {
-        weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
+    private fun listener() = with(binding) {
+        srlStats.setOnRefreshListener {
+            viewModel.getStats()
+        }
+    }
+
+    private fun observe() {
         weekdayDatePickerAdapterViewModel.stats.observe(viewLifecycleOwner) {
             with(it) {
-                if (goal != null) {
-                    binding.achievement = totalStudyTime.toFloat() / goal!!.toFloat()
+                if (goal >= 0) {
+                    binding.achievement = totalStudyTime.toFloat() / goal.toFloat()
                     val pieColorList = ArrayList<Int>()
                     val pieEntryList = ArrayList<PieEntry>()
                     subject.forEach { subject ->
@@ -88,7 +94,18 @@ class StatsFragment : Fragment() {
             }
         }
 
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            if (!it) binding.srlStats.isRefreshing = false
+        }
+
         viewModel.stats.observe(viewLifecycleOwner) { weekDayDatePickerAdapter.submitList(it) }
     }
+
+    private fun init() {
+        weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
+        if (viewModel.isFirstLoad) viewModel.getStats()
+        binding.rvWeekdayDatePickerStats.adapter = weekDayDatePickerAdapter
+    }
+
 
 }

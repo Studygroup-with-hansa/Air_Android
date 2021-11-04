@@ -13,7 +13,7 @@ object SharedPreferenceHelper {
         get() = sharedPreferences.getString("token", "")!!
         set(value) {
             val edit = sharedPreferences.edit()
-            edit.putString(token, value)
+            edit.putString("token", value)
             edit.apply()
         }
 }

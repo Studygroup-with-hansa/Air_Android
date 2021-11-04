@@ -6,17 +6,19 @@ import com.hansarang.android.domain.entity.dto.Stats
 fun StatsData.toEntity(): Stats {
     return Stats(
         this.date,
+        this.achievementRate,
         this.goal,
         this.subject.map {
             it.toEntity()
         },
-        this.totalStudyTime
+        this.totalStudyTime,
     )
 }
 
 fun Stats.toData(): StatsData {
     return StatsData(
         this.date,
+        this.achievementRate,
         this.goal,
         this.subject.map {
             it.toData()
