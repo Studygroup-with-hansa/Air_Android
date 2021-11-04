@@ -1,34 +1,27 @@
 
 package com.hansarang.android.air.ui.activity
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.hansarang.android.air.databinding.ActivityMainBinding
+import com.hansarang.android.air.ui.util.BackPressedHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var backPressedHandler: BackPressedHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var binding: ActivityMainBinding
@@ -44,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         permissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
         ) { result ->
-
             if (Settings.canDrawOverlays(this)) {
                 val snackBar = Snackbar.make(
                     this,
@@ -83,6 +75,12 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         navController = findNavController(binding.navHostFragmentMain.id)
         bottomNavigationView.setupWithNavController(navController)
+    }
+
+    override fun onBackPressed() {
+        if (!this::backPressedHandler.isInitialized)
+            backPressedHandler = BackPressedHandler(this)
+        backPressedHandler.onBackPressed()
     }
 
 }
