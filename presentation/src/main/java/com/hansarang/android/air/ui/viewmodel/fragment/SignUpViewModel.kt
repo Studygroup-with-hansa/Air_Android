@@ -1,6 +1,5 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +19,11 @@ class SignUpViewModel @Inject constructor(
     private val putModifyUsernameUseCase: PutModifyUsernameUseCase
 ): ViewModel() {
 
-    val progressBarVisibility = MutableLiveData(View.GONE)
+    lateinit var image: MultipartBody.Part
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
 
     private val _isSuccess = MutableLiveData<Event<String>>()
     val isSuccess: LiveData<Event<String>> = _isSuccess
@@ -32,12 +36,12 @@ class SignUpViewModel @Inject constructor(
     val nickname = MutableLiveData<String>()
 
     fun putModifyUsername() {
-        progressBarVisibility.value = View.VISIBLE
+        _isLoading.value = true
 
         val nickname = nickname.value?:""
 
         viewModelScope.launch {
-            if (nickname.isNotEmpty()) {
+            if (nickname.isNotEmpty() && this@SignUpViewModel::image.isInitialized) {
                 val params = PutModifyUsernameUseCase.Params(nickname)
                 try {
                     withTimeout(10000) {
@@ -56,11 +60,11 @@ class SignUpViewModel @Inject constructor(
                         else -> _isFailure.value = Event("${e.message} 오류 발생")
                     }
                 } finally {
-                    progressBarVisibility.value = View.GONE
+                    _isLoading.value = false
                 }
             } else {
-                _isFailure.value = Event("이메일을 입력해 주세요.")
-                progressBarVisibility.value = View.GONE
+                _isFailure.value = Event("이메일을 입력하거나 사진을 추가해 주세요.")
+                _isLoading.value = false
             }
         }
     }

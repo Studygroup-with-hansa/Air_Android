@@ -34,11 +34,12 @@ class SignInViewModel @Inject constructor(
     val isEmailExist = MutableLiveData<Boolean>()
     val signInButtonEnabled = MutableLiveData(false)
 
-    val progressBarVisibility = MutableLiveData(View.GONE)
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun getRequestAuth() {
         val email = email.value?:""
-        progressBarVisibility.value = View.VISIBLE
+        _isLoading.value = true
 
         viewModelScope.launch {
             if (email.isNotEmpty()) {
@@ -70,11 +71,11 @@ class SignInViewModel @Inject constructor(
                     isEmailSent.value = false
 
                 } finally {
-                    progressBarVisibility.value = View.GONE
+                    _isLoading.value = false
                 }
             } else {
                 _isFailure.value = Event("이메일을 입력해 주세요.")
-                progressBarVisibility.value = View.GONE
+                _isLoading.value = false
             }
         }
     }
@@ -82,7 +83,7 @@ class SignInViewModel @Inject constructor(
     fun postSendAuthCode() {
         val email = email.value?:""
         val authCode = authCode.value?:""
-        progressBarVisibility.value = View.VISIBLE
+        _isLoading.value = true
 
         viewModelScope.launch {
             if (authCode.isNotEmpty()) {
@@ -92,10 +93,8 @@ class SignInViewModel @Inject constructor(
                         val token = putSendAuthCodeUseCase.buildParamsUseCaseSuspend(params)
                         _isAuthSuccess.value = token.token
                     }
-                    progressBarVisibility.value = View.GONE
                 } catch (e: TimeoutCancellationException) {
                     _isFailure.value = Event("시간 초과")
-                    progressBarVisibility.value = View.GONE
                 } catch (e: Throwable) {
                     val failureStatus = e.message ?: ""
                     when (failureStatus) {
@@ -103,11 +102,12 @@ class SignInViewModel @Inject constructor(
                         "410" -> Event("시간이 초과된 인증 코드입니다. 재시도 해주세요.")
                         else -> Event("오류 발생")
                     }.also { _isFailure.value = it }
-                    progressBarVisibility.value = View.GONE
+                } finally {
+                    _isLoading.value = false
                 }
             } else {
                 _isFailure.value = Event("인증번호를 입력해 주세요.")
-                progressBarVisibility.value = View.GONE
+                _isLoading.value = false
             }
         }
     }

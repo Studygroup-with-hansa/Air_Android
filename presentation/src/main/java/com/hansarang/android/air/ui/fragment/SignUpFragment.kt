@@ -2,6 +2,7 @@ package com.hansarang.android.air.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.FileUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,11 @@ import androidx.fragment.app.viewModels
 import coil.load
 import com.hansarang.android.air.databinding.FragmentSignUpBinding
 import com.hansarang.android.air.ui.activity.MainActivity
+import com.hansarang.android.air.ui.extention.asMultipart
 import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.viewmodel.fragment.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -48,6 +51,14 @@ class SignUpFragment : Fragment() {
         launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
                 binding.ivProfileSignUp.load(it)
+                with(requireContext()) {
+                    viewModel.image =
+                        it.asMultipart(
+                            "profileImage",
+                            File(it.toString()),
+                            contentResolver
+                        )!!
+                }
             }
         }
 
