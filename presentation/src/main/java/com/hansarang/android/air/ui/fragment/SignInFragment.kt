@@ -3,6 +3,7 @@ package com.hansarang.android.air.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -89,8 +90,9 @@ class SignInFragment : Fragment() {
                 countDownTimer.start()
         }
 
-        isAuthSuccess.observe(viewLifecycleOwner, EventObserver {
+        isAuthSuccess.observe(viewLifecycleOwner) {
             token = "Token $it"
+            Log.d("SignInViewModel", "postSendAuthCode: ${token}")
             if (isEmailExist.value == true) {
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
@@ -98,7 +100,7 @@ class SignInFragment : Fragment() {
             } else {
                 navController.navigate(R.id.action_signInFragment_to_signUpFragment)
             }
-        })
+        }
     }
 
 }

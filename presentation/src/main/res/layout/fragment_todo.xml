@@ -16,35 +16,6 @@
         android:orientation="vertical"
         tools:context=".ui.fragment.TodoFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:elevation="2dp"
-            android:visibility="@{vm.progressBarVisibility}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
-                android:alpha="0.3"/>
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -89,48 +60,134 @@
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.4">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_todoList_todo"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="@{vm.todoList.size() > 0 ? View.VISIBLE : View.INVISIBLE}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/item_todo" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="공부 기록이 존재하지 않습니다."
-                    android:visibility="@{vm.todoList.size() > 0 ? View.INVISIBLE : View.VISIBLE}"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                            android:id="@+id/srl_todo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
-            <EditText
-                style="@style/CustomEditText"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/memo_background"
-                android:gravity="top"
-                android:hint="@string/please_set_memo"
-                android:text="@{vm.memo}"
-                android:padding="10dp"
-                android:textSize="15sp" />
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rv_todoList_todo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:listitem="@layout/item_todo"
+                                    android:visibility="@{!vm.isLoading ? (!vm.isEmpty ? View.VISIBLE : View.GONE) : View.GONE}"/>
+
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/sfl_todo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}">
+
+                                    <androidx.core.widget.NestedScrollView
+                                        android:id="@+id/nestedScrollView_todo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginBottom="5dp"
+                                                app:alpha="@{1.0f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.8f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.6f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.4f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.2f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.1f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.0f}"/>
+
+                                        </LinearLayout>
+
+                                    </androidx.core.widget.NestedScrollView>
+
+
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                            </FrameLayout>
+
+                        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="공부 기록이 존재하지 않습니다."
+                            android:visibility="@{vm.isEmpty ? (!vm.isLoading ? View.VISIBLE : View.GONE) : View.GONE}"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <EditText
+                        android:id="@+id/et_memo_todo"
+                        style="@style/CustomEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/memo_background"
+                        android:gravity="top"
+                        android:hint="@string/please_set_memo"
+                        android:text="@{vm.memo}"
+                        android:padding="10dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

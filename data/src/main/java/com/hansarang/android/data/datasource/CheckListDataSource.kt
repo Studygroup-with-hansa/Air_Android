@@ -9,7 +9,27 @@ import javax.inject.Inject
 class CheckListDataSource @Inject constructor(
     override val remote: CheckListRemote
 ): BaseDataSource<CheckListRemote>() {
-    suspend fun getCheckList(date: String): BaseTodo {
-        return remote.getCheckList(date).toEntity()
+    suspend fun getTodoList(date: String): BaseTodo {
+        return remote.getTodoList(date).toEntity()
+    }
+
+    suspend fun putModifyCheckList(pk: Int, todo: String): String {
+        return remote.putModifyCheckList(pk, todo)
+    }
+
+    suspend fun postCheckList(
+        subject: String,
+        date: String,
+        todo: String
+    ): String {
+        return remote.postCheckList(subject, date, todo)
+    }
+
+    suspend fun putStatusChangeCheckList(pk: Int): String {
+        return remote.putStatusChangeCheckList(pk)
+    }
+
+    suspend fun postMemoTodoList(date: String, memo: String): String {
+        return remote.postMemoTodoList(date, memo)
     }
 }

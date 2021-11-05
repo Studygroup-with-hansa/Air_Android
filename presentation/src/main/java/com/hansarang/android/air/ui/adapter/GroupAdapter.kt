@@ -24,17 +24,18 @@ class GroupAdapter(
 ): ListAdapter<Group, GroupAdapter.ViewHolder>(diffUtil) {
 
     interface OnClickGroup {
-        fun onClick(code: String, leader: String)
+        fun onClick(code: String, leader: String)//, email: String)
     }
 
     inner class ViewHolder(private val binding: ItemGroupBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group) = with(binding) {
             binding.group = group
             onClickGroup = object: OnClickGroup {
-                override fun onClick(code: String, leader: String) {
+                override fun onClick(code: String, leader: String) {//, email: String) {
                     val bundle = Bundle()
                     bundle.putString("groupCode", code)
                     bundle.putString("leader", leader)
+                    //bundle.putString("email", email)
                     itemView.findNavController().navigate(R.id.action_groupFragment_to_groupDetailFragment, bundle)
                 }
             }
@@ -78,7 +79,7 @@ class GroupAdapter(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Group>() {
             override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean {
-                return oldItem == newItem
+                return oldItem.code.hashCode() == newItem.code.hashCode()
             }
 
             override fun areContentsTheSame(oldItem: Group, newItem: Group): Boolean {

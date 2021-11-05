@@ -4,27 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.graphics.Color"/>
         <variable
-            name="subject"
-            type="com.hansarang.android.domain.entity.dto.Subject" />
+            name="alpha"
+            type="Float" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_marginBottom="15dp">
+        android:alpha="@{alpha}"
+        android:padding="15dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_play_timer_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_play"
-            tools:backgroundTint="@color/red"
-            android:stateListAnimator="@null"
+            android:clickable="false"
+            android:enabled="false"
             app:elevation="0dp"
-            app:backgroundTint="@{subject.color}"
+            app:layout_constrainedWidth="true"
+            app:backgroundTint="@color/main_grey"
             app:fabCustomSize="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,32 +36,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            app:layout_constrainedWidth="true"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fab_play_timer_subject"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_subject_name_timer_subject"
-                android:text="@{subject.title}"
-                style="@style/BoldTextBlack"
-                android:textSize="18sp"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="국어" />
+                app:cardBackgroundColor="@color/main_grey"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="5dp">
 
-            <TextView
-                android:id="@+id/tv_time_timer_subject"
+                <TextView
+                    style="@style/BoldTextBlack"
+                    android:textSize="18sp"
+                    android:layout_width="33dp"
+                    android:layout_height="wrap_content" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:setTime="@{subject.time}"
-                app:setPattern="@{@string/time_pattern}"
-                tools:text="01:47:26" />
+                app:cardBackgroundColor="@color/main_grey"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="5dp">
+                <TextView
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content" />
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ibt_option_timer_subject"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:gravity="center"
@@ -70,15 +79,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:clickable="false"
-                android:background="?selectableItemBackground"
-                android:src="@drawable/ic_option"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/main_grey"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:clickable="false"
+                    android:background="@color/transparent"
+                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

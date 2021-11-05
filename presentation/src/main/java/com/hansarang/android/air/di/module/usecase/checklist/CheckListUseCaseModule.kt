@@ -1,7 +1,7 @@
 package com.hansarang.android.air.di.module.usecase.checklist
 
 import com.hansarang.android.domain.repository.CheckListRepository
-import com.hansarang.android.domain.usecase.checklist.GetCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +14,25 @@ object CheckListUseCaseModule {
     @Provides
     @Singleton
     fun providesGetCheckListUseCase(checkListRepository: CheckListRepository) =
-        GetCheckListUseCase(checkListRepository)
+        GetTodoListUseCase(checkListRepository)
+
+    @Provides
+    @Singleton
+    fun providesPutModifyCheckListUseCase(checkListRepository: CheckListRepository) =
+        PutModifyCheckListUseCase(checkListRepository)
+
+    @Provides
+    @Singleton
+    fun providesPostCheckListUseCase(checkListRepository: CheckListRepository) =
+        PostCheckListUseCase(checkListRepository)
+
+    @Provides
+    @Singleton
+    fun providesPutStatusChangeCheckListUseCase(checkListRepository: CheckListRepository) =
+        PutStatusChangeCheckList(checkListRepository)
+
+    @Provides
+    @Singleton
+    fun providesPostMemoTodoListUseCase(checkListRepository: CheckListRepository) =
+        PostMemoTodoListUseCase(checkListRepository)
 }

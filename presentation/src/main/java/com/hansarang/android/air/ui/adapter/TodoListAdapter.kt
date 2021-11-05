@@ -1,8 +1,10 @@
 package com.hansarang.android.air.ui.adapter
 
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,6 +15,8 @@ import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
 import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
 import com.hansarang.android.domain.entity.dto.Todo
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, TodoListAdapter.ViewHolder>(diffUtil) {
 
@@ -21,6 +25,14 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
     ): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(todo: Todo, position: Int) = with(binding) {
+
+            with(todo) {
+                var todoDoneCount = 0
+                todoList.forEach { if (it.isitDone) todoDoneCount++ }
+                val todoListCount = todoList.size
+                tvPercentsTodo.text = String.format("%d%% 달성", (todoDoneCount.toFloat() / todoListCount.toFloat()).toInt() * 100)
+            }
+
             ivExpendTodo.setToggleEnabled(todo.isExpended)
             btnExpendTodo.isSelected = todo.isExpended
             if (todo.isExpended) {
@@ -29,7 +41,7 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
                 nestedScrollViewCheckListTodo.setCollapse()
             }
 
-            val checkListAdapter = CheckListAdapter()
+            val checkListAdapter = CheckListAdapter(viewModel)
 
             rvCheckListTodo.run {
                 adapter = checkListAdapter
@@ -52,10 +64,14 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
                 }
             }
 
-            etAddCheckListTodo.setOnKeyListener { _, keyCode, keyEvent ->
+            etAddCheckListTodo.setOnKeyListener { view, keyCode, keyEvent ->
+                val editText = view as EditText
                 if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
+                    Log.d("Todo", "bind: ${editText.text}")
                     if (etAddCheckListTodo.text.isNotEmpty()) {
-                        viewModel.postCheckList(todo.subject, etAddCheckListTodo.text.toString())
+                        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+                        val date = sdf.format(Date(System.currentTimeMillis()))
+                        viewModel.postCheckList(todo.subject, date, etAddCheckListTodo.text.toString())
                         etAddCheckListTodo.setText("")
                         notifyItemChanged(position)
                     }
@@ -63,13 +79,13 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
                 return@setOnKeyListener true
             }
 
-            checkListAdapter.setOnClickDeleteListener { value ->
-                viewModel.deleteCheckList(todo.subject, value)
+            checkListAdapter.setOnClickDeleteListener { pk, todo ->
+                viewModel.deleteCheckList(pk, todo)
                 notifyItemChanged(position)
             }
 
-            checkListAdapter.setOnClickModifyListener { beforeValue, afterValue ->
-                viewModel.putCheckList(todo.subject, beforeValue, afterValue)
+            checkListAdapter.setOnClickModifyListener { pk, todo ->
+                viewModel.putCheckList(pk, todo)
             }
         }
     }
@@ -91,11 +107,11 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<Todo>() {
             override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-                return false
+                return oldItem.subject.hashCode() == newItem.subject.hashCode()
             }
 
             override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-                return false
+                return oldItem == newItem
             }
         }
     }

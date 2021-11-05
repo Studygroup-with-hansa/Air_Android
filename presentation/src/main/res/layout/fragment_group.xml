@@ -29,36 +29,94 @@
                 android:gravity="center"
                 android:text="내 그룹" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/srl_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_group_list"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:listitem="@layout/item_group" />
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="참여 중인 그룹이 없습니다"
-                    android:textSize="18sp"
-                    android:visibility="@{vm.groupList.size() == 0 ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_group_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:visibility="@{!vm.isLoading ? (!vm.isEmpty ? View.VISIBLE : View.GONE) : View.GONE}"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:listitem="@layout/item_group" />
+
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/nestedScrollView_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}">
+
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/sfl_rv_group_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <include layout="@layout/shimmer_item_group"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginBottom="5dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="match_parent"
+                                        app:alpha="@{1.0f}"/>
+
+                                    <include layout="@layout/shimmer_item_group"
+                                        app:alpha="@{0.6f}"/>
+                                    <include layout="@layout/shimmer_item_group"
+                                        app:alpha="@{0.4f}"/>
+                                    <include layout="@layout/shimmer_item_group"
+                                        app:alpha="@{0.2f}"/>
+                                    <include layout="@layout/shimmer_item_group"
+                                        app:alpha="@{0.1f}"/>
+                                    <include layout="@layout/shimmer_item_group"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="match_parent"
+                                        app:alpha="@{0.0f}"/>
+
+                                </LinearLayout>
+
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+
+                        </androidx.core.widget.NestedScrollView>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="참여 중인 그룹이 없습니다"
+                        android:textSize="18sp"
+                        android:visibility="@{vm.isEmpty ? (!vm.isLoading ? View.VISIBLE : View.GONE) : View.GONE}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.PopupMenu
+import androidx.activity.result.ActivityResultLauncher
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,14 +18,24 @@ import com.hansarang.android.air.ui.activity.TimerActivity
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import com.hansarang.android.domain.entity.dto.Subject
 
-class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapter<Subject, TimerSubjectListAdapter.TimeSubjectListViewHolder>(diffUtil) {
+class TimerSubjectListAdapter(
+    private val viewModel: HomeViewModel,
+    private val activityResultLauncher: ActivityResultLauncher<Intent>
+) : ListAdapter<Subject, TimerSubjectListAdapter.TimeSubjectListViewHolder>(diffUtil) {
 
     inner class TimeSubjectListViewHolder(
         private val binding: ItemTimerSubjectBinding,
         private val viewModel: HomeViewModel
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(subject: Subject) {
+
+            subject.color = when (subject.color) {
+                "#ffffff" -> "#8a8a8a"
+                "#000000" -> "#404040"
+                else -> subject.color
+            }
             binding.subject = subject
+
             binding.ibtOptionTimerSubject.setOnClickListener {
                 val popupMenu = PopupMenu(binding.root.context, it).apply {
                     inflate(R.menu.menu_timer_subject_list)
@@ -39,7 +50,7 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
                                     intent.putExtra("btnText", "수정")
                                     intent.putExtra("oldTitle", title)
                                     intent.putExtra("oldColor", color)
-                                    binding.root.context.startActivity(intent)
+                                    activityResultLauncher.launch(intent)
                                 }
                             }
                         }
@@ -72,7 +83,7 @@ class TimerSubjectListAdapter(private val viewModel: HomeViewModel) : ListAdapte
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Subject>() {
             override fun areItemsTheSame(oldItem: Subject, newItem: Subject): Boolean {
-                return oldItem == newItem
+                return oldItem.title == newItem.title
             }
 
             override fun areContentsTheSame(oldItem: Subject, newItem: Subject): Boolean {

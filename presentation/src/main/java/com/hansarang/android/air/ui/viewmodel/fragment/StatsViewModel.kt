@@ -52,11 +52,10 @@ class StatsViewModel @Inject constructor(
 
                 val params = GetWeeklyStatsUseCase.Params(startDate, endDate)
                 _stats.value = ArrayList(getWeeklyStatsUseCase.buildParamsUseCaseSuspend(params).stats)
-
-                isFirstLoad = true
             } catch (e: Throwable) {
                 _isFailure.value = Event(e.message?:"")
             } finally {
+                isFirstLoad = false
                 _isLoading.value = false
             }
         }

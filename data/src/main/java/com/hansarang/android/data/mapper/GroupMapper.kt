@@ -7,6 +7,7 @@ fun GroupData.toEntity(): Group {
     return Group(
         this.code,
         this.leader,
+        //this.email,
         this.firstPlace,
         this.firstPlaceStudyTime,
         this.userCount
@@ -17,6 +18,7 @@ fun Group.toData(): GroupData {
     return GroupData(
         this.code,
         this.leader,
+        //this.email,
         this.firstPlace,
         this.firstPlaceStudyTime,
         this.userCount

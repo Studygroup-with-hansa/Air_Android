@@ -11,6 +11,8 @@ import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
+import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hansarang.android.air.R
@@ -28,7 +30,7 @@ class GroupFragment : Fragment() {
     private lateinit var binding: FragmentGroupBinding
     private var isOpened: Boolean = false
     private lateinit var groupAdapter: GroupAdapter
-    private val viewModel: GroupViewModel by viewModels()
+    private val viewModel: GroupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +44,10 @@ class GroupFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.groupList()
+
+        if (viewModel.isFirstLoad) {
+            viewModel.groupList()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,6 +72,16 @@ class GroupFragment : Fragment() {
         isFailure.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
+
+        isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.sflRvGroupList.startShimmer()
+            } else {
+                binding.sflRvGroupList.stopShimmer()
+                binding.srlGroup.isRefreshing = false
+                binding.nestedScrollViewGroup.fullScroll(NestedScrollView.FOCUS_UP)
+            }
+        }
     }
 
     private fun listener() = with(binding) {
@@ -77,6 +92,9 @@ class GroupFragment : Fragment() {
         viewFabBackground.setOnClickListener {
             closeFAB()
             isOpened = false
+        }
+        srlGroup.setOnRefreshListener {
+            viewModel.groupList()
         }
     }
 

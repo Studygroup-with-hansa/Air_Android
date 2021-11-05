@@ -32,11 +32,11 @@
         </receiver>
         <activity
             android:name=".ui.activity.TimerActivity"
-            android:exported="true"
-            android:launchMode="singleInstance" />
+            android:exported="true" />
         <activity
             android:name=".ui.activity.AddSubjectActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.AuthActivity"
             android:exported="true">

@@ -25,8 +25,8 @@ class SignInViewModel @Inject constructor(
     private val _isFailure = MutableLiveData<Event<String>>()
     val isFailure: LiveData<Event<String>> = _isFailure
 
-    private val _isAuthSuccess = MutableLiveData<Event<String>>()
-    val isAuthSuccess: LiveData<Event<String>> = _isAuthSuccess
+    private val _isAuthSuccess = MutableLiveData<String>()
+    val isAuthSuccess: LiveData<String> = _isAuthSuccess
 
     val email = MutableLiveData<String>()
     val authCode = MutableLiveData<String>()
@@ -64,6 +64,7 @@ class SignInViewModel @Inject constructor(
                     _isFailure.value = if (e.message == "400") {
                         Event("이메일 전송에 실패하였습니다. 재시도 해주세요.")
                     } else {
+                        Log.d("SignInViewModel", "getRequestAuth: ${e.message}")
                         Event("오류 발생")
                     }
                     isEmailSent.value = false
@@ -89,7 +90,7 @@ class SignInViewModel @Inject constructor(
                 try {
                     withTimeout(10000) {
                         val token = putSendAuthCodeUseCase.buildParamsUseCaseSuspend(params)
-                        _isAuthSuccess.value = Event(token.token)
+                        _isAuthSuccess.value = token.token
                     }
                     progressBarVisibility.value = View.GONE
                 } catch (e: TimeoutCancellationException) {

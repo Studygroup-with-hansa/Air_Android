@@ -10,67 +10,93 @@
             type="com.hansarang.android.domain.entity.dto.GroupRank" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_number_item_rank"
-            style="@style/BoldTextBlack"
-            android:layout_width="40sp"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/red">
+
+            <TextView
+                android:text="삭제"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="25dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="?selectableItemBackground"
+                android:layout_gravity="center_vertical|end"/>
+
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_rank_item"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            tools:text="1"
-            android:text="@{Integer.toString(groupRank.rank)}"
-            android:textSize="16sp"
-            android:textColor="@{groupRank.rank == 1 ? @color/first : (groupRank.rank == 2 ? @color/second : (groupRank.rank == 3 ? @color/third : @color/black))}"
-            android:layout_marginStart="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tv_name_item_rank"
-            android:layout_width="60sp"
-            android:layout_height="wrap_content"
-            android:text="@{groupRank.name}"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:text="이름"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_time_item_rank"
-            app:layout_constraintStart_toEndOf="@+id/tv_number_item_rank"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_number_item_rank"
+                style="@style/BoldTextBlack"
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@{Integer.toString(groupRank.rank)}"
+                android:textAlignment="center"
+                android:textColor="@{groupRank.rank == 1 ? @color/first : (groupRank.rank == 2 ? @color/second : (groupRank.rank == 3 ? @color/third : @color/black))}"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_moderator"
-            android:visibility="@{groupRank.itOwner ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_name_item_rank"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            <TextView
+                android:id="@+id/tv_name_item_rank"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:text="@{groupRank.name}"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_time_item_rank"
+                app:layout_constraintStart_toEndOf="@+id/tv_number_item_rank"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="이름" />
 
-        <TextView
-            android:id="@+id/tv_time_item_rank"
-            android:layout_width="100sp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:setPattern="@{@string/time}"
-            app:setTime="@{groupRank.todayStudyTime}"
-            tools:text="12H 10M 09S" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_moderator"
+                android:visibility="@{groupRank.itOwner ? View.VISIBLE : View.GONE, default = gone}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_name_item_rank"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_time_item_rank"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:setPattern="@{@string/time}"
+                app:setTime="@{groupRank.todayStudyTime}"
+                tools:text="12H 10M 09S" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 </layout>

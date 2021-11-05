@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentGroupDetailBinding
 import com.hansarang.android.air.ui.adapter.GroupRankAdapter
 import com.hansarang.android.air.ui.livedata.EventObserver
+import com.hansarang.android.air.ui.rvhelper.SwipeHelperCallback
 import com.hansarang.android.air.ui.viewmodel.fragment.GroupDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,6 +35,7 @@ class GroupDetailFragment : Fragment() {
     ): View {
         binding = FragmentGroupDetailBinding.inflate(inflater)
         binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -43,6 +46,13 @@ class GroupDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        with(viewModel) {
+            groupCode.value = requireArguments().getString("groupCode") ?: ""
+            leader.value = requireArguments().getString("leader") ?: ""
+            leaderEmail.value = requireArguments().getString("leaderEmail") ?: ""
+            isGroupLeader()
+        }
 
         init()
         observe()
@@ -60,12 +70,15 @@ class GroupDetailFragment : Fragment() {
     private fun init() = with(binding) {
         groupRankAdapter = GroupRankAdapter()
         rvRankGroupDetail.adapter = groupRankAdapter
+        if (viewModel.isGroupLeader.value == true) {
+            val swipeHelperCallback = SwipeHelperCallback().apply {
+                setClamp(200f)
+            }
+            val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+            itemTouchHelper.attachToRecyclerView(rvRankGroupDetail)
+        }
         toolbarGroupDetail.setNavigationOnClickListener {
             navController.navigateUp()
-        }
-        with(viewModel) {
-            groupCode.value = requireArguments().getString("groupCode") ?: ""
-            leader.value = requireArguments().getString("leader") ?: ""
         }
     }
 

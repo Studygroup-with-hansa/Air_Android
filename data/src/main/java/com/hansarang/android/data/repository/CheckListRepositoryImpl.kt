@@ -8,7 +8,27 @@ import javax.inject.Inject
 class CheckListRepositoryImpl @Inject constructor(
     private val checkListDataSource: CheckListDataSource
 ): CheckListRepository {
-    override suspend fun getCheckList(date: String): BaseTodo {
-        return checkListDataSource.getCheckList(date)
+    override suspend fun getTodoList(date: String): BaseTodo {
+        return checkListDataSource.getTodoList(date)
+    }
+
+    override suspend fun putModifyCheckList(pk: Int, todo: String): String {
+        return checkListDataSource.putModifyCheckList(pk, todo)
+    }
+
+    override suspend fun postCheckList(
+        subject: String,
+        date: String,
+        todo: String
+    ): String {
+        return checkListDataSource.postCheckList(subject, date, todo)
+    }
+
+    override suspend fun putStatusChangeCheckList(pk: Int): String {
+        return checkListDataSource.putStatusChangeCheckList(pk)
+    }
+
+    override suspend fun postMemoTodoList(date: String, memo: String): String {
+        return checkListDataSource.postMemoTodoList(date, memo)
     }
 }

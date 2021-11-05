@@ -20,6 +20,7 @@ class GroupRankAdapter: ListAdapter<GroupRank, RecyclerView.ViewHolder>(diffUtil
     inner class ItemViewHolder(
         private val binding: ItemRankBinding
     ): RecyclerView.ViewHolder(binding.root) {
+        val rankItem = binding.constraintLayoutRankItem
         fun bind(groupRank: GroupRank) {
             binding.groupRank = groupRank
         }
@@ -69,7 +70,7 @@ class GroupRankAdapter: ListAdapter<GroupRank, RecyclerView.ViewHolder>(diffUtil
 
         val diffUtil = object: DiffUtil.ItemCallback<GroupRank>() {
             override fun areItemsTheSame(oldItem: GroupRank, newItem: GroupRank): Boolean {
-                return oldItem == newItem
+                return oldItem.email.hashCode() == newItem.email.hashCode()
             }
 
             override fun areContentsTheSame(oldItem: GroupRank, newItem: GroupRank): Boolean {

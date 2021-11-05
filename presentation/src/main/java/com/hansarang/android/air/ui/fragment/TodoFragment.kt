@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.databinding.FragmentTodoBinding
@@ -20,7 +22,7 @@ class TodoFragment : Fragment() {
     private lateinit var todoListAdapter: TodoListAdapter
     private lateinit var binding: FragmentTodoBinding
     private lateinit var recyclerView: RecyclerView
-    private val viewModel: TodoViewModel by viewModels()
+    private val viewModel: TodoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +41,27 @@ class TodoFragment : Fragment() {
 
         init()
         observe()
+        listener()
+    }
+
+    private fun listener() = with(binding) {
+        srlTodo.setOnRefreshListener {
+            viewModel.getTodos()
+        }
     }
 
     private fun observe() = with(viewModel) {
         todoList.observe(viewLifecycleOwner) {
             todoListAdapter.submitList(it)
+        }
+        isLoading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.sflTodo.startShimmer()
+            } else {
+                binding.sflTodo.stopShimmer()
+                binding.srlTodo.isRefreshing = false
+                binding.nestedScrollViewTodo.fullScroll(NestedScrollView.FOCUS_UP)
+            }
         }
     }
 

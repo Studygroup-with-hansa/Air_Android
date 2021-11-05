@@ -9,9 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.hansarang.android.domain.entity.dto.Subject
 import com.hansarang.android.domain.usecase.subject.DeleteSubjectUseCase
 import com.hansarang.android.domain.usecase.subject.GetSubjectUseCase
-import com.hansarang.android.domain.usecase.subject.PutSubjectUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +21,13 @@ class HomeViewModel @Inject constructor(
     private val getSubjectUseCase: GetSubjectUseCase,
     private val deleteSubjectUseCase: DeleteSubjectUseCase
 ) : ViewModel() {
-    val progressBarVisibility = MutableLiveData(View.GONE)
+    var isFirstLoad = true
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _isEmpty = MutableLiveData(false)
+    val isEmpty: LiveData<Boolean> = _isEmpty
 
     val totalTime = MutableLiveData(0L)
     val goal = MutableLiveData(0L)
@@ -28,35 +36,47 @@ class HomeViewModel @Inject constructor(
     val subjectList: LiveData<ArrayList<Subject>> = _subjectList
 
     fun deleteSubject(subject: Subject) {
-        progressBarVisibility.value = View.VISIBLE
+        _isLoading.value = true
 
         viewModelScope.launch {
             try {
-                val params = DeleteSubjectUseCase.Params(subject.title)
-                deleteSubjectUseCase.buildParamsUseCaseSuspend(params)
-                getSubjectList()
+                withTimeout(10000) {
+                    val params = DeleteSubjectUseCase.Params(subject.title)
+                    deleteSubjectUseCase.buildParamsUseCaseSuspend(params)
+                    getSubjectList()
+                }
+            } catch (e: TimeoutCancellationException) {
+
             } catch (e: Throwable) {
                 Log.d("TAG", "deleteSubject: ${e.message}")
-            } finally {
-                progressBarVisibility.value = View.GONE
             }
         }
     }
 
     fun getSubjectList() {
-        progressBarVisibility.value = View.VISIBLE
+        _isLoading.value = true
 
         viewModelScope.launch {
             try {
-                var totaltime = 0L
-                val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
-                _subjectList.value = ArrayList(baseSubject.subject)
-                baseSubject.subject.forEach { totaltime += it.time }
-                totalTime.value = totaltime
-                goal.value = baseSubject.goal
-                progressBarVisibility.value = View.GONE
+                delay(1000)
+                withTimeout(10000) {
+                    var totaltime = 0L
+                    val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
+                    val subjectList = ArrayList(baseSubject.subject)
+
+                    _subjectList.value = subjectList
+                    baseSubject.subject.forEach { totaltime += it.time }
+                    totalTime.value = totaltime
+                    goal.value = baseSubject.goal
+                    _isEmpty.value = subjectList.isEmpty()
+                }
+            } catch (e: TimeoutCancellationException) {
+
             } catch (e: Throwable) {
-                //Log.d("HomeViewModel", "getSubjectList: ${e.message}")
+                _isEmpty.value = true
+            } finally {
+                isFirstLoad = false
+                _isLoading.value = false
             }
         }
     }

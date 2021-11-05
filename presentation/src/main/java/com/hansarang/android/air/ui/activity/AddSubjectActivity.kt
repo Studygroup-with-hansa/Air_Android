@@ -44,9 +44,11 @@ class AddSubjectActivity : AppCompatActivity() {
 
     private fun observe() {
         viewModel.isSuccess.observe(this, EventObserver {
+            setResult(RESULT_OK)
             finish()
         })
         viewModel.isFailure.observe(this, EventObserver {
+            setResult(RESULT_CANCELED)
             val snackBar = Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE)
             snackBar.setAction("확인") {
                 snackBar.dismiss()

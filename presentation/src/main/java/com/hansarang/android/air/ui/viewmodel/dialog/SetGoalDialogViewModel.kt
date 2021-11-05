@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.hansarang.android.air.ui.livedata.Event
 
 class SetGoalDialogViewModel: ViewModel() {
+    val goal = MutableLiveData(0L)
+
     val hour = MutableLiveData<String>()
     val minute = MutableLiveData<String>()
     val second = MutableLiveData<String>()
