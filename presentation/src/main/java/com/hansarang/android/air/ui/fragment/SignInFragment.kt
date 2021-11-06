@@ -46,7 +46,7 @@ class SignInFragment : Fragment() {
             override fun onFinish() {
                 binding.tvCountdownTimer.text = "시간 초과"
             }
-        }.start()
+        }
     }
 
     override fun onCreateView(
@@ -86,7 +86,7 @@ class SignInFragment : Fragment() {
         })
 
         isEmailSent.observe(viewLifecycleOwner) {
-            if (it == true && binding.tvCountdownTimer.text != "시간 초과")
+            if (it == true)
                 countDownTimer.start()
         }
 
