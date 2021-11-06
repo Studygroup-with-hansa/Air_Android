@@ -17,7 +17,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (this::backPressedHandler.isInitialized)
+        if (!this::backPressedHandler.isInitialized)
             backPressedHandler = BackPressedHandler(this)
         backPressedHandler.onBackPressed()
     }
