@@ -55,7 +55,7 @@ class SignUpFragment : Fragment() {
                     viewModel.image =
                         it.asMultipart(
                             "profileImage",
-                            File(it.toString()),
+                            cacheDir,
                             contentResolver
                         )!!
                 }
@@ -64,10 +64,13 @@ class SignUpFragment : Fragment() {
 
         with(viewModel) {
             nickname.observe(viewLifecycleOwner) {
-                finishButtonEnabled.value = it.length >= 2
+                val regex = Regex("^[ㄱ-ㅎ가-힣]*\$")
+                finishButtonEnabled.value = it.length in 2..8 || regex.matches(it)
                 binding.tilNicknameSignUp.error =
                     if (it.length !in 2..8 || it.isEmpty()) {
                         "닉네임은 두자 이상 8자 이내로 입력해 주세요."
+                    } else if (!regex.matches(it)) {
+                        "닉네임은 한글만 입력 가능합니다."
                     } else {
                         ""
                     }

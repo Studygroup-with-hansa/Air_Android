@@ -24,7 +24,6 @@ class SignUpViewModel @Inject constructor(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-
     private val _isSuccess = MutableLiveData<Event<String>>()
     val isSuccess: LiveData<Event<String>> = _isSuccess
 
@@ -41,12 +40,15 @@ class SignUpViewModel @Inject constructor(
         val nickname = nickname.value?:""
 
         viewModelScope.launch {
-            if (nickname.isNotEmpty() && this@SignUpViewModel::image.isInitialized) {
+            if (nickname.isNotEmpty()) {
                 val params = PutModifyUsernameUseCase.Params(nickname)
                 try {
                     withTimeout(10000) {
+                        val regex = Regex("^[ㄱ-ㅎ가-힣]*\$")
                         if (nickname.length !in 2..8 || nickname.isEmpty()) {
-                            _isSuccess.value = Event("닉네임은 두자 이상 8자 이내로 입력해 주세요.")
+                            _isFailure.value = Event("닉네임은 두자 이상 8자 이내로 입력해 주세요.")
+                        } else if (!regex.matches(nickname)) {
+                            _isFailure.value = Event("닉네임은 한글만 입력 가능합니다.")
                         } else {
                             putModifyUsernameUseCase.buildParamsUseCaseSuspend(params)
                             _isSuccess.value = Event("Success")
@@ -63,7 +65,7 @@ class SignUpViewModel @Inject constructor(
                     _isLoading.value = false
                 }
             } else {
-                _isFailure.value = Event("이메일을 입력하거나 사진을 추가해 주세요.")
+                _isFailure.value = Event("닉네임을 입력해 주세요.")
                 _isLoading.value = false
             }
         }
