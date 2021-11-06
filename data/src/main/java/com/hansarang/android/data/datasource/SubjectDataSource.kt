@@ -4,6 +4,7 @@ import com.hansarang.android.data.base.BaseDataSource
 import com.hansarang.android.data.mapper.toEntity
 import com.hansarang.android.data.network.remote.SubjectRemote
 import com.hansarang.android.domain.entity.dto.BaseSubject
+import com.hansarang.android.domain.entity.dto.TargetTime
 import javax.inject.Inject
 
 class SubjectDataSource @Inject constructor(
@@ -38,9 +39,13 @@ class SubjectDataSource @Inject constructor(
     }
 
     suspend fun postTargetTime(
-        targetTime: String
+        targetTime: Long
     ): String {
         return remote.postTargetTime(targetTime)
+    }
+
+    suspend fun getTargetTime(): TargetTime {
+        return remote.getTargetTime().toEntity()
     }
 
 }

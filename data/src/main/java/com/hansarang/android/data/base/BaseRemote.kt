@@ -19,11 +19,12 @@ abstract class BaseRemote<SV> {
     }
 
     private fun <T> checkError(response: retrofit2.Response<BaseResponse<T>>) {
-        Log.d("BaseRemote", "checkError: ${(response.raw())}")
+        Log.d("BaseRemote", "checkError: ${response.raw().request()}")
         Log.d("BaseRemote", "checkError: ${(response.body())}")
         if (!response.isSuccessful) {
-            Log.d("BaseRemote", "checkError: ${Gson().fromJson(response.errorBody()?.charStream(), BaseResponse::class.java)}")
-            throw Throwable(response.code().toString())
+            val errorBody = Gson().fromJson(response.errorBody()?.charStream(), BaseResponse::class.java)
+            Log.d("BaseRemote", "checkError: $errorBody")
+            throw Throwable(errorBody.status.toString())
         }
     }
 }

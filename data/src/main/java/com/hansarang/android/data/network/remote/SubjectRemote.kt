@@ -2,6 +2,7 @@ package com.hansarang.android.data.network.remote
 
 import com.hansarang.android.data.base.BaseRemote
 import com.hansarang.android.data.entity.BaseSubjectData
+import com.hansarang.android.data.entity.TargetTimeData
 import com.hansarang.android.data.network.service.SubjectService
 import javax.inject.Inject
 
@@ -37,9 +38,13 @@ class SubjectRemote @Inject constructor(
     }
 
     suspend fun postTargetTime(
-        targetTime: String
+        targetTime: Long
     ): String {
         return getDetail(service.postTargetTime(targetTime))
+    }
+
+    suspend fun getTargetTime(): TargetTimeData {
+        return getResponse(service.getTargetTime())
     }
 
 }

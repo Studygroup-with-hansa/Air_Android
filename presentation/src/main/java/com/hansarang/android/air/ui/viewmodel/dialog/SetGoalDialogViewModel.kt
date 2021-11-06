@@ -1,11 +1,22 @@
 package com.hansarang.android.air.ui.viewmodel.dialog
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
+import com.hansarang.android.domain.usecase.subject.GetTargetTimeUseCase
+import com.hansarang.android.domain.usecase.subject.PostTargetTimeUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class SetGoalDialogViewModel: ViewModel() {
+@HiltViewModel
+class SetGoalDialogViewModel @Inject constructor(
+    private val getTargetTimeUseCase: GetTargetTimeUseCase,
+    private val postTargetTimeUseCase: PostTargetTimeUseCase
+): ViewModel() {
     val goal = MutableLiveData(0L)
 
     val hour = MutableLiveData<String>()
@@ -17,6 +28,17 @@ class SetGoalDialogViewModel: ViewModel() {
 
     private val _isDismissed = MutableLiveData<Event<String>>()
     val isDismissed: LiveData<Event<String>> = _isDismissed
+
+    fun getTargetTime() {
+        viewModelScope.launch {
+            try {
+                val targetTime = getTargetTimeUseCase.buildUseCaseSuspend()
+                goal.value = targetTime.targetTime
+            } catch (e: Throwable) {
+                _isFailure.value = Event(e.message?:"")
+            }
+        }
+    }
 
     fun onHourChanged(s: CharSequence) {
         if (s.isNotEmpty()) {
@@ -100,14 +122,28 @@ class SetGoalDialogViewModel: ViewModel() {
     }
 
     fun onClickSave() {
-        val hour = hour.value?:""
-        val min = minute.value?:""
-        val sec = second.value?:""
 
-        if (hour.isNotEmpty() && min.isNotEmpty() && sec.isNotEmpty()) {
-            _isDismissed.value = Event("완료되었습니다.")
+        val hour = ((hour.value?:"0").toLong()) * 3600
+        val min = (minute.value?:"0").toLong() * 60
+        val sec = (second.value?:"0").toLong()
+
+        if (hour + min + sec != 0L) {
+            Log.d("TAG", "onClickSave: asdfs")
+            viewModelScope.launch {
+                try {
+                    withTimeout(10000) {
+                        val params = PostTargetTimeUseCase.Params(hour + min + sec)
+                        postTargetTimeUseCase.buildParamsUseCaseSuspend(params)
+                        _isDismissed.value = Event("완료되었습니다.")
+                    }
+                } catch (e: Throwable) {
+                    _isFailure.value = Event(e.message?:"")
+                } catch (e: TimeoutCancellationException) {
+                    _isFailure.value = Event("시간 초과")
+                }
+            }
         } else {
-            _isFailure.value = Event("시간이 모두 입력되었는지 확인해 주세요.")
+            _isDismissed.value = Event("완료되었습니다.")
         }
     }
 }

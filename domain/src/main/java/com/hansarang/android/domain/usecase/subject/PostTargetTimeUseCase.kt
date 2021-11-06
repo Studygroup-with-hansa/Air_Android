@@ -9,7 +9,7 @@ class PostTargetTimeUseCase @Inject constructor(
     private val subjectRepository: SubjectRepository
 ): BaseParamsUseCase<PostTargetTimeUseCase.Params, String>() {
     data class Params(
-        val targetTime: String
+        val targetTime: Long
     )
 
     override suspend fun buildParamsUseCaseSuspend(params: Params): String {

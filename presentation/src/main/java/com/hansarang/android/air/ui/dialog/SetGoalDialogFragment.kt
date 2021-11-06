@@ -11,11 +11,18 @@ import androidx.fragment.app.viewModels
 import com.hansarang.android.air.databinding.DialogFragmentSetGoalBinding
 import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.viewmodel.dialog.SetGoalDialogViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetGoalDialogFragment : DialogFragment() {
 
-    private val viewModel: SetGoalDialogViewModel by viewModels()
+    private lateinit var onClickSubmitButtonListener: OnClickSubmitButtonListener
+    interface OnClickSubmitButtonListener {
+        fun onClick()
+    }
+
     private lateinit var binding: DialogFragmentSetGoalBinding
+    private val viewModel: SetGoalDialogViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +31,7 @@ class SetGoalDialogFragment : DialogFragment() {
         binding = DialogFragmentSetGoalBinding.inflate(inflater)
         binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModelStore.clear()
+        viewModel.getTargetTime()
         dialog?.setCanceledOnTouchOutside(false)
         return binding.root
     }
@@ -36,6 +43,18 @@ class SetGoalDialogFragment : DialogFragment() {
     }
 
     private fun observe() = with(viewModel) {
+        goal.observe(viewLifecycleOwner) {
+            var secGoal = it
+            var minGoal = secGoal / 60
+            val hourGoal = minGoal / 60
+            secGoal %= 60
+            minGoal %= 60
+
+            hour.value = String.format("%02d", hourGoal)
+            minute.value = String.format("%02d", minGoal)
+            second.value = String.format("%02d", secGoal)
+        }
+
         hour.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 Selection.setSelection(
@@ -61,11 +80,21 @@ class SetGoalDialogFragment : DialogFragment() {
             }
         }
         isDismissed.observe(viewLifecycleOwner, EventObserver {
+            onClickSubmitButtonListener.onClick()
             dismiss()
         })
         isFailure.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    fun setOnClickSubmitButtonListener(listener: () -> Unit) {
+        onClickSubmitButtonListener = object : OnClickSubmitButtonListener {
+            override fun onClick() {
+                listener()
+            }
+
+        }
     }
 
     companion object {

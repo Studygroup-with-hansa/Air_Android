@@ -2,6 +2,7 @@ package com.hansarang.android.data.repository
 
 import com.hansarang.android.data.datasource.SubjectDataSource
 import com.hansarang.android.domain.entity.dto.BaseSubject
+import com.hansarang.android.domain.entity.dto.TargetTime
 import com.hansarang.android.domain.repository.SubjectRepository
 import javax.inject.Inject
 
@@ -28,7 +29,11 @@ class SubjectRepositoryImpl @Inject constructor(
         return subjectDataSource.putSubject(title, titleNew, color)
     }
 
-    override suspend fun postTargetTime(targetTime: String): String {
+    override suspend fun postTargetTime(targetTime: Long): String {
         return subjectDataSource.postTargetTime(targetTime)
+    }
+
+    override suspend fun getTargetTime(): TargetTime {
+        return subjectDataSource.getTargetTime()
     }
 }

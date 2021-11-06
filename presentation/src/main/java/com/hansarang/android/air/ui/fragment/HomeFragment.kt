@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.hansarang.android.air.databinding.FragmentHomeBinding
 import com.hansarang.android.air.ui.activity.AddSubjectActivity
 import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
@@ -17,7 +18,6 @@ import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.recyclerview.widget.SimpleItemAnimator
 
 
 @AndroidEntryPoint
@@ -70,6 +70,10 @@ class HomeFragment : Fragment() {
         tvTargetTimeHome.setOnClickListener {
             val setGoalDialogFragment = SetGoalDialogFragment.newInstance()
             setGoalDialogFragment.show(parentFragmentManager, "setGoalDialogFragment")
+            setGoalDialogFragment.setOnClickSubmitButtonListener {
+                viewModel.getSubjectList()
+            }
+
         }
 
         srlHome.setOnRefreshListener {

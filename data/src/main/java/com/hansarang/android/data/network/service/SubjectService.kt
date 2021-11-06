@@ -1,6 +1,7 @@
 package com.hansarang.android.data.network.service
 
 import com.hansarang.android.data.entity.BaseSubjectData
+import com.hansarang.android.data.entity.TargetTimeData
 import com.hansarang.android.domain.entity.response.BaseResponse
 import retrofit2.http.*
 
@@ -36,9 +37,12 @@ interface SubjectService {
     ): retrofit2.Response<BaseResponse<Any?>>
 
     @FormUrlEncoded
-    @POST("user/data/subject/targettime")
+    @POST("user/data/subject/targettime/")
     suspend fun postTargetTime(
-        @Field("targetTime") targetTime: String
+        @Field("targetTime") targetTime: Long
     ): retrofit2.Response<BaseResponse<Any?>>
+
+    @GET("user/data/subject/targettime/")
+    suspend fun getTargetTime(): retrofit2.Response<BaseResponse<TargetTimeData>>
 
 }
