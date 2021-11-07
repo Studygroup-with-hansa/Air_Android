@@ -23,6 +23,10 @@ class SplashActivity : AppCompatActivity() {
 
         if (token.isNotEmpty()) {
             viewModel.checkToken()
+        } else {
+            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
