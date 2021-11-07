@@ -38,4 +38,7 @@ interface UserService {
     @GET("user/info/basic/")
     suspend fun getUserBasicInfo(): retrofit2.Response<BaseResponse<UserData>>
 
+    @GET("user/info/manage/basic/checktoken/")
+    suspend fun getCheckToken(): retrofit2.Response<BaseResponse<Any?>>
+
 }

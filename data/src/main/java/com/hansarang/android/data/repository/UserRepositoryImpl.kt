@@ -29,4 +29,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserBasicInfo(): User {
         return userDataSource.getUserBasicInfo()
     }
+
+    override suspend fun getCheckToken(): String {
+        return userDataSource.getCheckToken()
+    }
 }

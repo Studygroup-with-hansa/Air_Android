@@ -10,4 +10,5 @@ interface UserRepository {
     suspend fun putModifyUsername(name: String): String
     suspend fun putModifyEmail(email: String): String
     suspend fun getUserBasicInfo(): User
+    suspend fun getCheckToken(): String
 }

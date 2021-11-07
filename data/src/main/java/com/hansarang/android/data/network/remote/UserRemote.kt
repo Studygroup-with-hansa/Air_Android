@@ -31,4 +31,8 @@ class UserRemote @Inject constructor(
         return getResponse(service.getUserBasicInfo())
     }
 
+    suspend fun getCheckToken(): String {
+        return getDetail(service.getCheckToken())
+    }
+
 }

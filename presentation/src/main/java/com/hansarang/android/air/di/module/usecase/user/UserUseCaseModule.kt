@@ -35,4 +35,9 @@ object UserUseCaseModule {
     @Singleton
     fun providesGetUserBasicInfoUseCase(userRepository: UserRepository): GetUserBasicInfoUseCase =
         GetUserBasicInfoUseCase(userRepository)
+
+    @Provides
+    @Singleton
+    fun providesGetCheckToken(userRepository: UserRepository): GetCheckTokenUseCase =
+        GetCheckTokenUseCase(userRepository)
 }

@@ -32,4 +32,8 @@ class UserDataSource @Inject constructor(
         return remote.getUserBasicInfo().toEntity()
     }
 
+    suspend fun getCheckToken(): String {
+        return remote.getCheckToken()
+    }
+
 }
