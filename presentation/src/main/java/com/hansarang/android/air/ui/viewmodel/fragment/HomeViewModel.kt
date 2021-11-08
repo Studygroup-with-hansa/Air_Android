@@ -1,24 +1,26 @@
 package com.hansarang.android.air.ui.viewmodel.fragment
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hansarang.android.domain.entity.dto.Subject
 import com.hansarang.android.domain.usecase.subject.DeleteSubjectUseCase
-import com.hansarang.android.domain.usecase.subject.GetSubjectUseCase
+import com.hansarang.android.domain.usecase.subject.GetSubjectByDateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getSubjectUseCase: GetSubjectUseCase,
+    private val getSubjectByDateUseCase: GetSubjectByDateUseCase,
     private val deleteSubjectUseCase: DeleteSubjectUseCase
 ) : ViewModel() {
     var isFirstLoad = true
@@ -49,6 +51,8 @@ class HomeViewModel @Inject constructor(
 
             } catch (e: Throwable) {
                 Log.d("TAG", "deleteSubject: ${e.message}")
+            } finally {
+                _isLoading.value = false
             }
         }
     }
@@ -61,7 +65,9 @@ class HomeViewModel @Inject constructor(
                 delay(1000)
                 withTimeout(10000) {
                     var totaltime = 0L
-                    val baseSubject = getSubjectUseCase.buildUseCaseSuspend()
+                    val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(System.currentTimeMillis()))
+                    val params = GetSubjectByDateUseCase.Params(date)
+                    val baseSubject = getSubjectByDateUseCase.buildParamsUseCaseSuspend(params)
                     val subjectList = ArrayList(baseSubject.subject)
 
                     _subjectList.value = subjectList

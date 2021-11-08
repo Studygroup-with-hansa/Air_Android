@@ -16,8 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SetGoalDialogFragment : DialogFragment() {
 
-    private lateinit var onClickSubmitButtonListener: OnClickSubmitButtonListener
-    interface OnClickSubmitButtonListener {
+    private lateinit var onDismissDialogListener: OnDismissDialogListener
+    interface OnDismissDialogListener {
         fun onClick()
     }
 
@@ -80,7 +80,7 @@ class SetGoalDialogFragment : DialogFragment() {
             }
         }
         isDismissed.observe(viewLifecycleOwner, EventObserver {
-            onClickSubmitButtonListener.onClick()
+            onDismissDialogListener.onClick()
             dismiss()
         })
         isFailure.observe(viewLifecycleOwner, EventObserver {
@@ -88,8 +88,8 @@ class SetGoalDialogFragment : DialogFragment() {
         })
     }
 
-    fun setOnClickSubmitButtonListener(listener: () -> Unit) {
-        onClickSubmitButtonListener = object : OnClickSubmitButtonListener {
+    fun setOnDismissDialogListener(listener: () -> Unit) {
+        onDismissDialogListener = object : OnDismissDialogListener {
             override fun onClick() {
                 listener()
             }

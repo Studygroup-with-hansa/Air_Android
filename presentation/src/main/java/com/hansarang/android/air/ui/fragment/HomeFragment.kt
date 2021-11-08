@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
         tvTargetTimeHome.setOnClickListener {
             val setGoalDialogFragment = SetGoalDialogFragment.newInstance()
             setGoalDialogFragment.show(parentFragmentManager, "setGoalDialogFragment")
-            setGoalDialogFragment.setOnClickSubmitButtonListener {
+            setGoalDialogFragment.setOnDismissDialogListener {
                 viewModel.getSubjectList()
             }
 
