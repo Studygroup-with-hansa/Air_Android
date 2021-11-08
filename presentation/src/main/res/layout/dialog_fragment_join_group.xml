@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="25dp"
-            android:text="수업 코드"
+            android:text="그룹 코드"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:text="@={vm.groupCode}"
             android:background="@color/transparent"
-            android:hint="수업 코드를 입력해주세요."
+            android:hint="그룹 코드를 입력해주세요."
             android:layout_height="48dp"
             android:textAlignment="center">
 
