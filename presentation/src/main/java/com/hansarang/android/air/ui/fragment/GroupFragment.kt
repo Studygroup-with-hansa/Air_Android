@@ -1,24 +1,23 @@
 package com.hansarang.android.air.ui.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.hansarang.android.air.R
+import androidx.fragment.app.setFragmentResultListener
 import com.hansarang.android.air.databinding.FragmentGroupBinding
 import com.hansarang.android.air.ui.adapter.GroupAdapter
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
+import com.hansarang.android.air.ui.dialog.DialogAlertFragment
+import com.hansarang.android.air.ui.dialog.JoinGroupDialogFragment
 import com.hansarang.android.air.ui.extention.dp
 import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.viewmodel.fragment.GroupViewModel
@@ -62,6 +61,36 @@ class GroupFragment : Fragment() {
         groupAdapter = GroupAdapter(viewModel)
         rvGroupList.adapter = groupAdapter
         rvGroupList.addItemDecoration(ItemDividerDecorator(5.dp))
+        fabCreateGroupAddGroup.setOnClickListener {
+            val alert = DialogAlertFragment.newInstance(
+                "알림",
+                "그룹을 추가하시겠습니까?",
+                "확인",
+                "취소"
+            )
+            alert.show(parentFragmentManager, "alert")
+            alert.setOnPositiveButtonClickListener {
+                viewModel.postGroup()
+                viewModel.groupList()
+                closeFAB()
+            }
+            alert.setOnNegativeButtonClickListener {
+                closeFAB()
+            }
+        }
+
+        fabJoinGroupAddGroup.setOnClickListener {
+            val joinGroupDialogFragment = JoinGroupDialogFragment.newInstance()
+            joinGroupDialogFragment.show(parentFragmentManager, "joinGroupDialogFragment")
+            joinGroupDialogFragment.setOnDismissDialogListener {
+                if (it.isNotEmpty()) {
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.groupList()
+                }
+                closeFAB()
+            }
+        }
     }
 
     private fun observe() = with(viewModel) {
@@ -87,63 +116,50 @@ class GroupFragment : Fragment() {
     private fun listener() = with(binding) {
         expandableFabAddGroup.setOnClickListener {
             if(!isOpened) openFAB() else closeFAB()
-            isOpened = !isOpened
         }
         viewFabBackground.setOnClickListener {
             closeFAB()
-            isOpened = false
         }
         srlGroup.setOnRefreshListener {
             viewModel.groupList()
         }
+        setFragmentResultListener(GroupDetailFragment.id) { _, bundle ->
+            if (bundle.getString("data") == "Reload") {
+                viewModel.groupList()
+            }
+        }
     }
 
     private fun openFAB() = with(binding) {
-        tvFabJoinGroupTitleAddGroup.visibility = View.VISIBLE
-        tvFabCreateGroupTitleAddGroup.visibility = View.VISIBLE
-        expandableFabAddGroup.animate()
+        isOpened = !isOpened
+        ViewCompat.animate(expandableFabAddGroup)
             .rotation(45.0f)
             .withLayer()
             .setDuration(300)
+            .setListener(object : ViewPropertyAnimatorListener {
+                override fun onAnimationStart(view: View?) {
+                    tvFabJoinGroupTitleAddGroup.visibility = View.VISIBLE
+                    tvFabCreateGroupTitleAddGroup.visibility = View.VISIBLE
+                }
+                override fun onAnimationEnd(view: View?) {}
+                override fun onAnimationCancel(view: View?) {}
+            })
             .setInterpolator(OvershootInterpolator(10.0f))
             .start()
 
-        fabCreateGroupAddGroup.animate()
+        ViewCompat.animate(linearLayoutCreateGroupAddGroup)
             .translationY(-180f)
             .withLayer()
             .setDuration(300)
             .setInterpolator(OvershootInterpolator(5.0f))
             .start()
 
-        ViewCompat.animate(tvFabCreateGroupTitleAddGroup)
+        ViewCompat.animate(linearLayoutJoinGroupAddGroup)
             .alpha(1f)
-            .withLayer()
-            .setDuration(300)
-            .setListener(object: ViewPropertyAnimatorListener {
-                override fun onAnimationStart(view: View?) { tvFabCreateGroupTitleAddGroup.visibility = View.VISIBLE }
-                override fun onAnimationEnd(view: View?) {}
-                override fun onAnimationCancel(view: View?) {
-                }
-            })
-            .start()
-
-        fabJoinGroupAddGroup.animate()
             .translationY(-360f)
             .withLayer()
             .setDuration(300)
             .setInterpolator(OvershootInterpolator(5.0f))
-            .start()
-
-        ViewCompat.animate(tvFabJoinGroupTitleAddGroup)
-            .alpha(1f)
-            .withLayer()
-            .setDuration(300)
-            .setListener(object: ViewPropertyAnimatorListener {
-                override fun onAnimationStart(view: View?) { tvFabJoinGroupTitleAddGroup.visibility = View.VISIBLE }
-                override fun onAnimationEnd(view: View?) {}
-                override fun onAnimationCancel(view: View?) {
-                }
-            })
             .start()
 
         ViewCompat.animate(viewFabBackground)
@@ -152,67 +168,41 @@ class GroupFragment : Fragment() {
             .setDuration(300)
             .setListener(object: ViewPropertyAnimatorListener {
                 override fun onAnimationStart(view: View?) { viewFabBackground.visibility = View.VISIBLE }
-                override fun onAnimationEnd(view: View?) {
-                    with(fabCreateGroupAddGroup) {
-                        isClickable = true
-
-                    }
-                    fabJoinGroupAddGroup.isClickable = true
-                }
-                override fun onAnimationCancel(view: View?) {
-                }
+                override fun onAnimationEnd(view: View?) {}
+                override fun onAnimationCancel(view: View?) {}
             })
             .start()
 
     }
     private fun closeFAB() = with(binding) {
-        expandableFabAddGroup.animate()
+        isOpened = !isOpened
+        ViewCompat.animate(expandableFabAddGroup)
             .rotation(0f)
             .withLayer()
             .setDuration(300)
+            .setListener(object : ViewPropertyAnimatorListener {
+                override fun onAnimationStart(view: View?) {}
+                override fun onAnimationEnd(view: View?) {}
+                override fun onAnimationCancel(view: View?) {
+                    tvFabJoinGroupTitleAddGroup.visibility = View.INVISIBLE
+                    tvFabCreateGroupTitleAddGroup.visibility = View.INVISIBLE
+                }
+            })
             .setInterpolator(OvershootInterpolator(10.0f))
             .start()
 
-        fabCreateGroupAddGroup.animate()
+        ViewCompat.animate(linearLayoutCreateGroupAddGroup)
             .translationY(0f)
             .withLayer()
             .setDuration(300)
             .setInterpolator(OvershootInterpolator(0f))
             .start()
 
-        ViewCompat.animate(tvFabCreateGroupTitleAddGroup)
-            .alpha(0f)
-            .withLayer()
-            .setDuration(300)
-            .setListener(object: ViewPropertyAnimatorListener {
-                override fun onAnimationEnd(view: View?) { tvFabCreateGroupTitleAddGroup.visibility = View.GONE }
-                override fun onAnimationStart(view: View?) {
-
-                }
-                override fun onAnimationCancel(view: View?) {
-                }
-            })
-            .start()
-
-        fabJoinGroupAddGroup.animate()
+        ViewCompat.animate(linearLayoutJoinGroupAddGroup)
             .translationY(0f)
             .withLayer()
             .setDuration(300)
             .setInterpolator(OvershootInterpolator(0f))
-            .start()
-
-        ViewCompat.animate(tvFabJoinGroupTitleAddGroup)
-            .alpha(0f)
-            .withLayer()
-            .setDuration(300)
-            .setListener(object: ViewPropertyAnimatorListener {
-                override fun onAnimationEnd(view: View?) { tvFabJoinGroupTitleAddGroup.visibility = View.GONE }
-                override fun onAnimationStart(view: View?) {
-
-                }
-                override fun onAnimationCancel(view: View?) {
-                }
-            })
             .start()
 
         ViewCompat.animate(viewFabBackground)
@@ -226,11 +216,7 @@ class GroupFragment : Fragment() {
                 }
                 override fun onAnimationCancel(view: View?) {
                 }
-                override fun onAnimationEnd(view: View?) {
-                    viewFabBackground.visibility = View.GONE
-                    tvFabJoinGroupTitleAddGroup.visibility = View.GONE
-                    tvFabCreateGroupTitleAddGroup.visibility = View.GONE
-                }
+                override fun onAnimationEnd(view: View?) { viewFabBackground.visibility = View.INVISIBLE }
             })
             .start()
     }

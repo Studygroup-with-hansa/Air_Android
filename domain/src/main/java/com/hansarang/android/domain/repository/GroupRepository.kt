@@ -9,5 +9,7 @@ interface GroupRepository {
     suspend fun postCreateUserGroup(): GroupCode
     suspend fun postViewGroupDetail(groupCode: String): BaseGroupDetail
     suspend fun putJoinGroup(groupCode: String): GroupCode
+    suspend fun deleteGroup(): String
+    suspend fun deleteLeaveGroup(groupCode: String): String
     suspend fun deleteGroupUser(userMail: String, groupCode: String): GroupCode
 }

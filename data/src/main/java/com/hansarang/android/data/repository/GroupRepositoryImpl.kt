@@ -26,6 +26,14 @@ class GroupRepositoryImpl @Inject constructor(
         return groupDataSource.putJoinGroup(groupCode)
     }
 
+    override suspend fun deleteGroup(): String {
+        return groupDataSource.deleteGroup()
+    }
+
+    override suspend fun deleteLeaveGroup(groupCode: String): String {
+        return groupDataSource.deleteLeaveGroup(groupCode)
+    }
+
     override suspend fun deleteGroupUser(userMail: String, groupCode: String): GroupCode {
         return groupDataSource.deleteGroupUser(userMail, groupCode)
     }

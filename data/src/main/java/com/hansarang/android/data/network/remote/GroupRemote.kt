@@ -26,6 +26,14 @@ class GroupRemote @Inject constructor(
         return getResponse(service.putJoinGroup(groupCode))
     }
 
+    suspend fun deleteGroup(): String {
+        return getDetail(service.deleteGroup())
+    }
+
+    suspend fun deleteLeaveGroup(groupCode: String): String {
+        return getDetail(service.deleteLeaveGroup(groupCode))
+    }
+
     suspend fun deleteGroupUser(
         userMail: String,
         groupCode: String

@@ -27,6 +27,14 @@ class GroupDataSource @Inject constructor(
         return remote.putJoinGroup(groupCode).toEntity()
     }
 
+    suspend fun deleteGroup(): String {
+        return remote.deleteGroup()
+    }
+
+    suspend fun deleteLeaveGroup(groupCode: String): String {
+        return remote.deleteLeaveGroup(groupCode)
+    }
+
     suspend fun deleteGroupUser(
         userMail: String,
         groupCode: String

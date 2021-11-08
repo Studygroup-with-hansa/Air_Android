@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
 import com.hansarang.android.domain.entity.dto.Group
 import com.hansarang.android.domain.usecase.group.GetGroupListUseCase
+import com.hansarang.android.domain.usecase.group.PostCreateUserGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroupViewModel @Inject constructor(
-    private val getGroupListUseCase: GetGroupListUseCase
+    private val getGroupListUseCase: GetGroupListUseCase,
+    private val postCreateUserGroupUseCase: PostCreateUserGroupUseCase
 ): ViewModel() {
     var isFirstLoad = true
 
@@ -50,6 +52,25 @@ class GroupViewModel @Inject constructor(
             } finally {
                 _isLoading.value = false
                 isFirstLoad = false
+            }
+        }
+    }
+
+    fun postGroup() {
+        _isLoading.value = true
+
+        viewModelScope.launch {
+            try {
+                postCreateUserGroupUseCase.buildUseCaseSuspend()
+            } catch (e: Throwable) {
+                _isFailure.value = when(e.message) {
+                    "500" -> Event("서버 오류입니다.")
+                    "401" -> Event("토큰이 유효하지 않습니다.")
+                    "409" -> Event("내 그룹이 이미 존재합니다.")
+                    else -> Event("코드 ${e.message} 오류가 발생했습니다.")
+                }
+            } finally {
+                _isLoading.value = false
             }
         }
     }

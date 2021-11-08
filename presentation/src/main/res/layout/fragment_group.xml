@@ -146,7 +146,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <LinearLayout
-            android:id="@+id/fab_create_group_add_group"
+            android:id="@+id/linear_layout_create_group_add_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -164,6 +164,7 @@
                 android:textSize="20sp"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_create_group_add_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -171,14 +172,13 @@
                 app:maxImageSize="40dp"
                 app:backgroundTint="@color/white"
                 app:elevation="0dp"
-                android:clickable="false"
                 app:tint="@color/main"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/fab_join_group_add_group"
+            android:id="@+id/linear_layout_join_group_add_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -196,6 +196,7 @@
                 android:textSize="20sp"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_join_group_add_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -203,7 +204,6 @@
                 app:maxImageSize="40dp"
                 app:backgroundTint="@color/white"
                 app:elevation="0dp"
-                android:clickable="false"
                 app:tint="@color/main"
                 tools:ignore="SpeakableTextPresentCheck" />
 

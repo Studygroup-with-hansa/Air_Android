@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
 import com.hansarang.android.domain.entity.dto.Group
 import com.hansarang.android.domain.entity.dto.GroupRank
+import com.hansarang.android.domain.usecase.group.DeleteGroupUseCase
+import com.hansarang.android.domain.usecase.group.DeleteGroupUserUseCase
+import com.hansarang.android.domain.usecase.group.DeleteLeaveGroupUseCase
 import com.hansarang.android.domain.usecase.group.PostViewGroupDetail
 import com.hansarang.android.domain.usecase.user.GetUserBasicInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupDetailViewModel @Inject constructor(
     private val postViewGroupDetail: PostViewGroupDetail,
-    private val getUserBasicInfoUseCase: GetUserBasicInfoUseCase
+    private val getUserBasicInfoUseCase: GetUserBasicInfoUseCase,
+    private val deleteGroupUseCase: DeleteGroupUseCase,
+    private val deleteLeaveGroupUseCase: DeleteLeaveGroupUseCase,
+    private val deleteGroupUserUseCase: DeleteGroupUserUseCase
 ): ViewModel() {
 
     private val _isGroupLeader = MutableLiveData(false)
@@ -37,13 +43,15 @@ class GroupDetailViewModel @Inject constructor(
     private val _isFailure = MutableLiveData<Event<String>>()
     val isFailure: LiveData<Event<String>> = _isFailure
 
-    fun isGroupLeader() {
+    private val _isLeaveSuccess = MutableLiveData<Event<String>>()
+    val isLeaveSuccess: LiveData<Event<String>> = _isLeaveSuccess
+
+    fun getIsGroupLeader() {
         viewModelScope.launch {
             try {
                 val user = getUserBasicInfoUseCase.buildUseCaseSuspend()
                 _isGroupLeader.value = (leader.value?:"") == user.name
             } catch (e: Throwable) {
-
             }
         }
     }
@@ -63,6 +71,40 @@ class GroupDetailViewModel @Inject constructor(
                 }
             } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun deleteGroup() {
+        viewModelScope.launch {
+            try {
+                _isLeaveSuccess.value =
+                    Event(deleteGroupUseCase.buildUseCaseSuspend())
+            } catch (e: Throwable) {
+                _isFailure.value = when(e.message) {
+                    "401" -> Event("토큰이 유효하지 않습니다.")
+                    "409" -> Event("그룹이 존재하지 않습니다.")
+                    else -> Event("코드 ${e.message} 오류 발생")
+                }
+            }
+        }
+    }
+
+    fun leaveGroup() {
+
+        val groupCode = groupCode.value ?: ""
+
+        viewModelScope.launch {
+            try {
+                val params = DeleteLeaveGroupUseCase.Params(groupCode)
+                _isLeaveSuccess.value =
+                    Event(deleteLeaveGroupUseCase.buildParamsUseCaseSuspend(params))
+            } catch (e: Throwable) {
+                _isFailure.value = when(e.message) {
+                    "401" -> Event("토큰이 유효하지 않습니다.")
+                    "400" -> Event("그룹장은 탈퇴할 수 없습니다.")
+                    else -> Event("코드 ${e.message} 오류 발생")
+                }
             }
         }
     }

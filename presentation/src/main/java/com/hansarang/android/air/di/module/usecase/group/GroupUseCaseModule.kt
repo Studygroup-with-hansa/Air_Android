@@ -33,6 +33,16 @@ object GroupUseCaseModule {
 
     @Provides
     @Singleton
+    fun providesDeleteGroupUseCase(groupRepository: GroupRepository) =
+        DeleteGroupUseCase(groupRepository)
+
+    @Provides
+    @Singleton
+    fun providesDeleteLeaveGroupUseCase(groupRepository: GroupRepository) =
+        DeleteLeaveGroupUseCase(groupRepository)
+
+    @Provides
+    @Singleton
     fun providesDeleteGroupUserUseCase(groupRepository: GroupRepository) =
         DeleteGroupUserUseCase(groupRepository)
 }
