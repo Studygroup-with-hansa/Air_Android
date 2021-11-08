@@ -26,20 +26,24 @@ class TimerViewModel @Inject constructor(
     private val _isFailure = MutableLiveData<String>()
     val isFailure: LiveData<String> = _isFailure
 
+    private val _isSuccessStop = MutableLiveData<String>()
+    val isSuccessStop: LiveData<String> = _isSuccessStop
+
+    private val _isSuccessStart = MutableLiveData<String>()
+    val isSuccessStart: LiveData<String> = _isSuccessStart
+
     fun postTimerStart() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 postTimerStartUseCase.buildParamsUseCaseSuspend(
                     PostTimerStartUseCase.Params(title.value ?: "")
                 )
+                _isSuccessStart.value = "시작 성공"
             } catch (e: Throwable) {
                 when(e.message) {
-                    "401" -> _isFailure.postValue("유효하지 않은 토큰입니다.")
-                    "409" -> {
-
-                    }
+                    "401" -> _isFailure.value = "유효하지 않은 토큰입니다."
                     else -> {
-                        _isFailure.postValue("${e.message} 오류 발생")
+                        _isFailure.value = "${e.message} 오류 발생"
                         Log.d("TimerViewModel", "postTimerStart: ${e.message}")
                     }
                 }
@@ -48,19 +52,20 @@ class TimerViewModel @Inject constructor(
     }
 
     fun postTimerStop() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 postTimerStopUseCase.buildParamsUseCaseSuspend(
                     PostTimerStopUseCase.Params(title.value ?: "")
                 )
+                _isSuccessStop.value = "종료 성공"
             } catch (e: Throwable) {
                 when(e.message) {
-                    "401" -> _isFailure.postValue("유효하지 않은 토큰입니다.")
+                    "401" -> _isFailure.value = "유효하지 않은 토큰입니다."
                     "409" -> {
 
                     }
                     else -> {
-                        _isFailure.postValue("${e.message} 오류 발생")
+                        _isFailure.value = "${e.message} 오류 발생"
                         Log.d("TimerViewModel", "postTimerStop: ${e.message}")
                     }
                 }

@@ -98,7 +98,7 @@ class TimerActivity : AppCompatActivity() {
             }
         } else {
             title.value = intent.getStringExtra("title")
-            time.value = intent.getLongExtra("totalTime", 0L)
+            time.value = intent.getLongExtra("time", 0L)
             goal.value = intent.getLongExtra("goal", 0L)
             isStarted.value = intent.getBooleanExtra("isStarted", false)
 

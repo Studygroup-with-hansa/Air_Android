@@ -24,7 +24,6 @@ import java.util.*
 class TimerWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted params: WorkerParameters,
-    private val postTimerStopUseCase: PostTimerStopUseCase
 ): CoroutineWorker(context, params) {
 
     companion object {
@@ -64,7 +63,7 @@ class TimerWorker @AssistedInject constructor(
             this@with,
             0,
             timerIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val notificationBuilder =

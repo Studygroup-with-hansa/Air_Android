@@ -12,6 +12,6 @@ class PostTimerStopUseCase @Inject constructor(
     )
 
     override suspend fun buildParamsUseCaseSuspend(params: Params): String {
-        return timerRepository.postTimerStart(params.title)
+        return timerRepository.postTimerStop(params.title)
     }
 }

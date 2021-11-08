@@ -13,7 +13,7 @@ interface SubjectService {
 
     // 날짜에 따른 데이터 가져오기
     @FormUrlEncoded
-    @POST("user/data/subject")
+    @POST("user/data/subject/history/")
     suspend fun getSubjectByDate(@Field("date") date: String): retrofit2.Response<BaseResponse<BaseSubjectData>>
 
     // 새 과목 추가
