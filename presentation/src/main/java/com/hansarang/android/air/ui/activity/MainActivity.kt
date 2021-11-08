@@ -78,9 +78,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (!this::backPressedHandler.isInitialized)
-            backPressedHandler = BackPressedHandler(this)
-        backPressedHandler.onBackPressed()
+        if (navController.previousBackStackEntry == null) {
+            if (!this::backPressedHandler.isInitialized)
+                backPressedHandler = BackPressedHandler(this)
+            backPressedHandler.onBackPressed()
+        } else {
+            navController.navigateUp()
+        }
     }
 
 }
