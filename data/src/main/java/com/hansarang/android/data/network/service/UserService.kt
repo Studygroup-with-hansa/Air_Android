@@ -35,7 +35,7 @@ interface UserService {
     ): retrofit2.Response<BaseResponse<Any?>>
 
     // 유저 기본 정보 받아오기
-    @GET("user/info/basic/")
+    @GET("user/info/manage/basic/")
     suspend fun getUserBasicInfo(): retrofit2.Response<BaseResponse<UserData>>
 
     @GET("user/info/manage/basic/checktoken/")
