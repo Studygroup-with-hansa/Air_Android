@@ -23,7 +23,6 @@ abstract class BaseRemote<SV> {
         Log.d("BaseRemote", "checkError: ${(response.body())}")
         if (!response.isSuccessful) {
             val errorBody = Gson().fromJson(response.errorBody()?.charStream(), BaseResponse::class.java)
-            Log.d("BaseRemote", "checkError: $errorBody")
             throw Throwable(errorBody.status.toString())
         }
     }

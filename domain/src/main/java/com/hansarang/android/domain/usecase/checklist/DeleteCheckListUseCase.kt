@@ -4,14 +4,14 @@ import com.hansarang.android.domain.base.BaseParamsUseCase
 import com.hansarang.android.domain.repository.CheckListRepository
 import javax.inject.Inject
 
-class PutStatusChangeCheckList @Inject constructor(
+class DeleteCheckListUseCase @Inject constructor(
     private val checkListRepository: CheckListRepository
-): BaseParamsUseCase<PutStatusChangeCheckList.Params, String>() {
+): BaseParamsUseCase<DeleteCheckListUseCase.Params, String>() {
     data class Params(
         val pk: Int
     )
 
     override suspend fun buildParamsUseCaseSuspend(params: Params): String {
-        return checkListRepository.putStatusChangeCheckList(params.pk)
+        return checkListRepository.deleteCheckList(params.pk)
     }
 }

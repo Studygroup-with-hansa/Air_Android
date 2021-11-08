@@ -2,6 +2,7 @@ package com.hansarang.android.data.network.remote
 
 import com.hansarang.android.data.base.BaseRemote
 import com.hansarang.android.data.entity.BaseTodoData
+import com.hansarang.android.data.entity.CheckListPkData
 import com.hansarang.android.data.network.service.CheckListService
 import javax.inject.Inject
 
@@ -20,12 +21,16 @@ class CheckListRemote @Inject constructor(
         subject: String,
         date: String,
         todo: String
-    ): String {
-        return getDetail(service.postCheckList(subject, date, todo))
+    ): CheckListPkData {
+        return getResponse(service.postCheckList(subject, date, todo))
     }
 
     suspend fun putStatusChangeCheckList(pk: Int): String {
         return getDetail(service.putStatusChangeCheckList(pk))
+    }
+
+    suspend fun deleteCheckList(pk: Int): String {
+        return getDetail(service.deleteSubject(pk))
     }
 
     suspend fun postMemoTodoList(date: String, memo: String): String {

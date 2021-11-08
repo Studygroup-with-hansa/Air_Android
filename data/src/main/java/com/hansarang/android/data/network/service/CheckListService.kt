@@ -1,6 +1,7 @@
 package com.hansarang.android.data.network.service
 
 import com.hansarang.android.data.entity.BaseTodoData
+import com.hansarang.android.data.entity.CheckListPkData
 import com.hansarang.android.domain.entity.response.BaseResponse
 import retrofit2.http.*
 
@@ -21,15 +22,20 @@ interface CheckListService {
         @Field("subject") subject: String,
         @Field("date") date: String,
         @Field("todo") todo: String
-    ): retrofit2.Response<BaseResponse<Any?>>
+    ): retrofit2.Response<BaseResponse<CheckListPkData>>
 
-    @PUT("user/data/subject/checklist/status")
+    @PUT("user/data/subject/checklist/status/")
     suspend fun putStatusChangeCheckList(
         @Query("pk") pk: Int
     ): retrofit2.Response<BaseResponse<Any?>>
 
+    @DELETE("user/data/subject/checklist/")
+    suspend fun deleteSubject(
+        @Query("pk") pk: Int
+    ): retrofit2.Response<BaseResponse<Any?>>
+
     @FormUrlEncoded
-    @POST("user/data/subject/checklist/memo")
+    @POST("user/data/subject/checklist/memo/")
     suspend fun postMemoTodoList(
         @Field("date") date: String,
         @Field("memo") memo: String

@@ -29,7 +29,12 @@ object CheckListUseCaseModule {
     @Provides
     @Singleton
     fun providesPutStatusChangeCheckListUseCase(checkListRepository: CheckListRepository) =
-        PutStatusChangeCheckList(checkListRepository)
+        PutStatusChangeCheckListUseCase(checkListRepository)
+
+    @Provides
+    @Singleton
+    fun providesDeleteCheckListUseCase(checkListRepository: CheckListRepository) =
+        DeleteCheckListUseCase(checkListRepository)
 
     @Provides
     @Singleton

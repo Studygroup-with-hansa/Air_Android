@@ -12,35 +12,62 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemCheckListBinding
+import com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel
 import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
 import com.hansarang.android.domain.entity.dto.CheckListItem
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CheckListAdapter(
-    private val viewModel: TodoViewModel
-): ListAdapter<CheckListItem, CheckListAdapter.ViewHolder>(diffUtil) {
+    private val viewModel: TodoListAdapterViewModel
+): RecyclerView.Adapter<CheckListAdapter.ViewHolder>() {
+
+    private val list = ArrayList<CheckListItem>()
+
+    fun submitList(list: List<CheckListItem>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    private fun getItem(position: Int): CheckListItem {
+        return list[position]
+    }
+
+    fun addItem(checkListItem: CheckListItem): MutableList<CheckListItem> {
+        val curList = list.toMutableList()
+        curList.add(checkListItem)
+        submitList(curList)
+        return curList
+    }
+
+    fun removeItem(checkListItem: CheckListItem): MutableList<CheckListItem> {
+        val curList = list.toMutableList()
+        curList.remove(checkListItem)
+        submitList(curList)
+        return curList
+    }
 
     lateinit var onClickDeleteListener: OnClickDeleteListener
     interface OnClickDeleteListener {
-        fun onClick(pk: Int, todo: String)
+        fun onClick(checkListItem: CheckListItem)
     }
-    fun setOnClickDeleteListener(listener: (Int, String) -> Unit) {
+    fun setOnClickDeleteListener(listener: (CheckListItem) -> Unit) {
         onClickDeleteListener = object : OnClickDeleteListener {
-            override fun onClick(pk: Int, todo: String) {
-                listener(pk, todo)
+            override fun onClick(checkListItem: CheckListItem) {
+                listener(checkListItem)
             }
         }
     }
 
     lateinit var onClickModifyListener: OnClickModifyListener
     interface OnClickModifyListener {
-        fun onClick(pk: Int, todo: String)
+        fun onClick(checkListItem: CheckListItem, newTitle: String)
     }
-    fun setOnClickModifyListener(listener: (Int, String) -> Unit) {
+    fun setOnClickModifyListener(listener: (CheckListItem, String) -> Unit) {
         onClickModifyListener = object : OnClickModifyListener {
-            override fun onClick(pk: Int, todo: String) {
-                listener(pk, todo)
+            override fun onClick(checkListItem: CheckListItem, newTitle: String) {
+                listener(checkListItem, newTitle)
             }
 
         }
@@ -50,7 +77,7 @@ class CheckListAdapter(
         fun bind(checkListItem: CheckListItem) = with(binding) {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
             val calendar = Calendar.getInstance().time
-            val isToday = sdf.format(Date(viewModel.date.value?:0)) == sdf.format(calendar)
+            val isToday = sdf.format(Date(viewModel.date)) == sdf.format(calendar)
 
             binding.isToday = isToday
 
@@ -60,14 +87,14 @@ class CheckListAdapter(
             
             btnDeleteTodoCheckList.setOnClickListener {
                 if (isToday) {
-                    onClickDeleteListener.onClick(checkListItem.pk, checkListItem.todo)
+                    onClickDeleteListener.onClick(checkListItem)
                 } else {
                     toast.show()
                 }
             }
             etTodoCheckList.setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
-                    onClickModifyListener.onClick(checkListItem.pk, etTodoCheckList.text.toString())
+                    onClickModifyListener.onClick(checkListItem, etTodoCheckList.text.toString())
                 }
                 return@setOnKeyListener true
             }
@@ -80,7 +107,7 @@ class CheckListAdapter(
 
         private fun setChecked(isChecked: Boolean) = with(binding) {
             chkTodoCheckList.isChecked = isChecked
-            etTodoCheckList.isFocusable = !isChecked
+            etTodoCheckList.isActivated = !isChecked
             etTodoCheckList.paintFlags = if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG else 0
             etTodoCheckList.setTextColor(ContextCompat.getColor(etTodoCheckList.context,
                 if (isChecked) R.color.grey_disabled
@@ -103,16 +130,7 @@ class CheckListAdapter(
         holder.bind(getItem(position))
     }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<CheckListItem>() {
-            override fun areItemsTheSame(oldItem: CheckListItem, newItem: CheckListItem): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(oldItem: CheckListItem, newItem: CheckListItem): Boolean {
-                return oldItem == newItem
-            }
-
-        }
+    override fun getItemCount(): Int {
+        return list.size
     }
 }

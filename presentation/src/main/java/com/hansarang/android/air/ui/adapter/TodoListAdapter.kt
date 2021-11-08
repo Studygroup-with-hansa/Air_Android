@@ -6,34 +6,99 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.core.view.doOnAttach
+import androidx.core.view.doOnDetach
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.databinding.ItemTodoBinding
 import com.hansarang.android.air.ui.bind.*
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
-import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
+import com.hansarang.android.air.ui.livedata.EventObserver
+import com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel
+import com.hansarang.android.domain.entity.dto.CheckListItem
 import com.hansarang.android.domain.entity.dto.Todo
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, TodoListAdapter.ViewHolder>(diffUtil) {
+class TodoListAdapter(private val viewModel: TodoListAdapterViewModel): RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
+
+    private val list = ArrayList<Todo>()
+
+    fun submitList(list: List<Todo>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    private fun getItem(position: Int): Todo {
+        return list[position]
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
 
     inner class ViewHolder(
         private val binding: ItemTodoBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(todo: Todo, position: Int) = with(binding) {
+        private val checkListAdapter = CheckListAdapter(viewModel)
+        private var lifecycleOwner: LifecycleOwner? = null
 
-            with(todo) {
-                var todoDoneCount = 0
-                todoList.forEach { if (it.isitDone) todoDoneCount++ }
-                val todoListCount = todoList.size
-                tvPercentsTodo.text = String.format("%d%% 달성", (todoDoneCount.toFloat() / todoListCount.toFloat()).toInt() * 100)
+        init {
+            itemView.doOnAttach {
+                lifecycleOwner = itemView.findViewTreeLifecycleOwner()
             }
+            itemView.doOnDetach {
+                lifecycleOwner = null
+            }
+        }
 
-            ivExpendTodo.setToggleEnabled(todo.isExpended)
+        private fun submitCheckList(
+            linearLayout: LinearLayout,
+            recyclerView: RecyclerView,
+            todoList: List<CheckListItem>
+        ) = with(binding) {
+            var todoDoneCount = 0
+            todoList.forEach { if (it.isitDone) todoDoneCount++ }
+            val todoListCount = todoList.size
+            tvPercentsTodo.text = String.format("%d%% 달성", (todoDoneCount.toFloat() / todoListCount.toFloat()).toInt() * 100)
+
+            recyclerView.run {
+                if (itemDecorationCount == 0) addItemDecoration(ItemDividerDecorator(5.dp))
+                linearLayout.setPadding(
+                    0, 0, 0,
+                    if (todoList.isEmpty()) 10.dp else 0
+                )
+            }
+        }
+
+        fun bind(todo: Todo) {
+            itemView.doOnAttach {
+                binding.todo = todo
+                init(todo)
+                observe()
+            }
+        }
+
+        private fun observe() {
+            viewModel.isPostCheckListSuccess.observe(lifecycleOwner!!, EventObserver {
+                val curList = checkListAdapter.addItem(it)
+                with(binding) {
+                    submitCheckList(
+                        linearLayoutHorizontalCheckListTodo,
+                        rvCheckListTodo,
+                        curList
+                    )
+                }
+            })
+        }
+
+        private fun init(todo: Todo) = with(binding) {
+
+            ivExpendTodo.setDefaultToggle(todo.isExpended)
             btnExpendTodo.isSelected = todo.isExpended
             if (todo.isExpended) {
                 nestedScrollViewCheckListTodo.setExpend()
@@ -41,18 +106,16 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
                 nestedScrollViewCheckListTodo.setCollapse()
             }
 
-            val checkListAdapter = CheckListAdapter(viewModel)
-
             rvCheckListTodo.run {
                 adapter = checkListAdapter
                 checkListAdapter.submitList(todo.todoList.toMutableList())
-                if (itemDecorationCount == 0) addItemDecoration(ItemDividerDecorator(5.dp))
-                linearLayoutHorizontalCheckListTodo.setPadding(0,0,0,
-                    if (todo.todoList.isEmpty()) 10.dp else 0
+                submitCheckList(
+                    linearLayoutHorizontalCheckListTodo,
+                    rvCheckListTodo,
+                    todo.todoList
                 )
             }
 
-            binding.todo = todo
             btnExpendTodo.setOnClickListener {
                 todo.isExpended = !todo.isExpended
                 ivExpendTodo.setToggleEnabled(todo.isExpended)
@@ -67,25 +130,31 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
             etAddCheckListTodo.setOnKeyListener { view, keyCode, keyEvent ->
                 val editText = view as EditText
                 if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
-                    Log.d("Todo", "bind: ${editText.text}")
-                    if (etAddCheckListTodo.text.isNotEmpty()) {
+                    if (editText.text.isNotEmpty()) {
                         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
                         val date = sdf.format(Date(System.currentTimeMillis()))
-                        viewModel.postCheckList(todo.subject, date, etAddCheckListTodo.text.toString())
+                        viewModel.postCheckList(
+                            todo.subject,
+                            date,
+                            etAddCheckListTodo.text.toString())
                         etAddCheckListTodo.setText("")
-                        notifyItemChanged(position)
                     }
                 }
                 return@setOnKeyListener true
             }
 
-            checkListAdapter.setOnClickDeleteListener { pk, todo ->
-                viewModel.deleteCheckList(pk, todo)
-                notifyItemChanged(position)
+            checkListAdapter.setOnClickDeleteListener { checkListItem ->
+                viewModel.deleteCheckList(checkListItem.pk)
+                val curList = checkListAdapter.removeItem(checkListItem)
+                submitCheckList(
+                    linearLayoutHorizontalCheckListTodo,
+                    rvCheckListTodo,
+                    curList
+                )
             }
 
-            checkListAdapter.setOnClickModifyListener { pk, todo ->
-                viewModel.putCheckList(pk, todo)
+            checkListAdapter.setOnClickModifyListener { checkListItem, newTitle ->
+                viewModel.putCheckList(checkListItem.pk, newTitle)
             }
         }
     }
@@ -101,18 +170,6 @@ class TodoListAdapter(private val viewModel: TodoViewModel): ListAdapter<Todo, T
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), position)
-    }
-
-    companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<Todo>() {
-            override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-                return oldItem.subject.hashCode() == newItem.subject.hashCode()
-            }
-
-            override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-                return oldItem == newItem
-            }
-        }
+        holder.bind(getItem(position))
     }
 }

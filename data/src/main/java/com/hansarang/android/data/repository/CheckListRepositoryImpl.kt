@@ -2,6 +2,7 @@ package com.hansarang.android.data.repository
 
 import com.hansarang.android.data.datasource.CheckListDataSource
 import com.hansarang.android.domain.entity.dto.BaseTodo
+import com.hansarang.android.domain.entity.dto.CheckListPk
 import com.hansarang.android.domain.repository.CheckListRepository
 import javax.inject.Inject
 
@@ -20,12 +21,16 @@ class CheckListRepositoryImpl @Inject constructor(
         subject: String,
         date: String,
         todo: String
-    ): String {
+    ): CheckListPk {
         return checkListDataSource.postCheckList(subject, date, todo)
     }
 
     override suspend fun putStatusChangeCheckList(pk: Int): String {
         return checkListDataSource.putStatusChangeCheckList(pk)
+    }
+
+    override suspend fun deleteCheckList(pk: Int): String {
+        return checkListDataSource.deleteCheckList(pk)
     }
 
     override suspend fun postMemoTodoList(date: String, memo: String): String {

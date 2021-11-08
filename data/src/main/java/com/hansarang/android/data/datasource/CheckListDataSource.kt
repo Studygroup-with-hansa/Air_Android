@@ -4,6 +4,7 @@ import com.hansarang.android.data.base.BaseDataSource
 import com.hansarang.android.data.mapper.toEntity
 import com.hansarang.android.data.network.remote.CheckListRemote
 import com.hansarang.android.domain.entity.dto.BaseTodo
+import com.hansarang.android.domain.entity.dto.CheckListPk
 import javax.inject.Inject
 
 class CheckListDataSource @Inject constructor(
@@ -21,12 +22,16 @@ class CheckListDataSource @Inject constructor(
         subject: String,
         date: String,
         todo: String
-    ): String {
-        return remote.postCheckList(subject, date, todo)
+    ): CheckListPk {
+        return remote.postCheckList(subject, date, todo).toEntity()
     }
 
     suspend fun putStatusChangeCheckList(pk: Int): String {
         return remote.putStatusChangeCheckList(pk)
+    }
+
+    suspend fun deleteCheckList(pk: Int): String {
+        return remote.deleteCheckList(pk)
     }
 
     suspend fun postMemoTodoList(date: String, memo: String): String {

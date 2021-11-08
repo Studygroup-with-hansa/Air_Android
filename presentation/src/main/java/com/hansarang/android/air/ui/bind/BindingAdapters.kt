@@ -46,6 +46,12 @@ fun FloatingActionButton.setTint(colorCode: String) {
     supportBackgroundTintList = ColorStateList.valueOf(Color.parseColor(colorCode))
 }
 
+fun ImageView.setDefaultToggle(enabled: Boolean) {
+    this.rotation =
+        if (enabled) 180f
+        else 0f
+}
+
 fun ImageView.setToggleEnabled(enabled: Boolean) {
     if (enabled) {
         animate().setDuration(200).rotation(180f)

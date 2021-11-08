@@ -1,20 +1,27 @@
 package com.hansarang.android.air.ui.fragment
 
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.databinding.FragmentTodoBinding
 import com.hansarang.android.air.ui.adapter.TodoListAdapter
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
+import com.hansarang.android.air.ui.livedata.EventObserver
+import com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel
 import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
@@ -22,7 +29,8 @@ class TodoFragment : Fragment() {
     private lateinit var todoListAdapter: TodoListAdapter
     private lateinit var binding: FragmentTodoBinding
     private lateinit var recyclerView: RecyclerView
-    private val viewModel: TodoViewModel by activityViewModels()
+    private val viewModel: TodoViewModel by viewModels()
+    private val listViewModel: TodoListAdapterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +56,22 @@ class TodoFragment : Fragment() {
         srlTodo.setOnRefreshListener {
             viewModel.getTodos()
         }
+        etMemoTodo.setOnEditorActionListener { view, actionId, keyEvent ->
+            val editText = view as EditText
+            if (actionId == EditorInfo.IME_ACTION_SEARCH
+                || actionId == EditorInfo.IME_ACTION_DONE
+                || keyEvent.action == KeyEvent.ACTION_DOWN
+                || keyEvent.action == KeyEvent.KEYCODE_ENTER) {
+                if (editText.text.isNotEmpty()) {
+                    viewModel.postMemo()
+                }
+            }
+            return@setOnEditorActionListener true
+        }
     }
 
     private fun observe() = with(viewModel) {
-        todoList.observe(viewLifecycleOwner) {
+        isSuccess.observe(viewLifecycleOwner) {
             todoListAdapter.submitList(it)
         }
         isLoading.observe(viewLifecycleOwner) {
@@ -63,13 +83,25 @@ class TodoFragment : Fragment() {
                 binding.nestedScrollViewTodo.fullScroll(NestedScrollView.FOCUS_UP)
             }
         }
+        isFailure.observe(viewLifecycleOwner, EventObserver {
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
+        })
+        date.observe(viewLifecycleOwner) {
+            listViewModel.date = it
+        }
     }
 
     private fun init() {
         recyclerView = binding.rvTodoListTodo
-        todoListAdapter = TodoListAdapter(viewModel)
+        todoListAdapter = TodoListAdapter(listViewModel)
         recyclerView.adapter = todoListAdapter
         recyclerView.addItemDecoration(ItemDividerDecorator(5.dp))
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                binding.srlTodo.isEnabled = !recyclerView.canScrollVertically(-1)
+            }
+        })
     }
 
 }
