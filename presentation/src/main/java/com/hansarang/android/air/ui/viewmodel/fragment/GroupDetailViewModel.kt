@@ -108,4 +108,27 @@ class GroupDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun leaveUserGroup(groupRank: GroupRank) {
+
+        val groupCode = groupCode.value ?: ""
+
+        if (leader.value ?: "" != groupRank.name) {
+            viewModelScope.launch {
+                try {
+                    val params = DeleteGroupUserUseCase.Params(groupRank.email, groupCode)
+                    _isLeaveSuccess.value =
+                        Event(deleteGroupUserUseCase.buildParamsUseCaseSuspend(params).code)
+                } catch (e: Throwable) {
+                    _isFailure.value = when (e.message) {
+                        "401" -> Event("토큰이 유효하지 않습니다.")
+                        "409" -> Event("자신은 내보낼 수 없습니다.")
+                        else -> Event("코드 ${e.message} 오류 발생")
+                    }
+                }
+            }
+        } else {
+            _isFailure.value = Event("자신은 내보낼 수 없습니다.")
+        }
+    }
 }

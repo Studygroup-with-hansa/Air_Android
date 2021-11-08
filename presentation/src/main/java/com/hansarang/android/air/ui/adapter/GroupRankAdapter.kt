@@ -13,6 +13,23 @@ import com.hansarang.android.domain.entity.dto.GroupRank
 
 class GroupRankAdapter: ListAdapter<GroupRank, RecyclerView.ViewHolder>(diffUtil) {
 
+    interface OnDeleteUserButtonClickListener {
+        fun onClick(groupRank: GroupRank)
+    }
+
+    private var onDeleteUserButtonClickListener: OnDeleteUserButtonClickListener =
+        object : OnDeleteUserButtonClickListener {
+            override fun onClick(groupRank: GroupRank) {}
+        }
+
+    fun setOnDeleteUserButtonClickListener(onClick: (GroupRank) -> Unit) {
+        onDeleteUserButtonClickListener = object : OnDeleteUserButtonClickListener {
+            override fun onClick(groupRank: GroupRank) {
+                onClick.invoke(groupRank)
+            }
+        }
+    }
+
     inner class HeaderViewHolder(
         binding: ItemRankHeaderBinding
     ): RecyclerView.ViewHolder(binding.root)
@@ -23,6 +40,9 @@ class GroupRankAdapter: ListAdapter<GroupRank, RecyclerView.ViewHolder>(diffUtil
         val rankItem = binding.constraintLayoutRankItem
         fun bind(groupRank: GroupRank) {
             binding.groupRank = groupRank
+            binding.btnDeleteUserRank.setOnClickListener {
+                onDeleteUserButtonClickListener.onClick(groupRank)
+            }
         }
     }
 

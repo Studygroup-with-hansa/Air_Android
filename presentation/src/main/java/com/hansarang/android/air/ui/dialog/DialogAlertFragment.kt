@@ -25,7 +25,9 @@ class DialogAlertFragment : DialogFragment() {
         }
     private var onPositiveButtonClickListener: OnPositiveButtonClickListener =
         object : OnPositiveButtonClickListener {
-            override fun onClick() {}
+            override fun onClick() {
+                dismiss()
+            }
         }
 
     private lateinit var binding: DialogFragmentAlertBinding

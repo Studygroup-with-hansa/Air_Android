@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.hansarang.android.air.databinding.FragmentGroupDetailBinding
 import com.hansarang.android.air.ui.adapter.GroupRankAdapter
+import com.hansarang.android.air.ui.dialog.DialogAlertFragment
 import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.rvhelper.SwipeHelperCallback
 import com.hansarang.android.air.ui.viewmodel.fragment.GroupDetailViewModel
@@ -76,6 +77,30 @@ class GroupDetailFragment : Fragment() {
             Toast.makeText(context, "그룹 코드가 복사되었습니다.", Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
+
+        btnExitGroup.setOnClickListener {
+            val alert = DialogAlertFragment.newInstance("알림", "그룹을 나가시겠습니까?", "취소", "나가기")
+            alert.show(parentFragmentManager, "alert")
+            alert.setOnNegativeButtonClickListener {
+                viewModel.leaveGroup()
+            }
+        }
+
+        btnGroupDeleteDetail.setOnClickListener {
+            val alert = DialogAlertFragment.newInstance("알림", "그룹을 삭제하시겠습니까?", "취소", "확인")
+            alert.show(parentFragmentManager, "alert")
+            alert.setOnNegativeButtonClickListener {
+                viewModel.deleteGroup()
+            }
+        }
+
+        groupRankAdapter.setOnDeleteUserButtonClickListener {
+            val alert = DialogAlertFragment.newInstance("알림", "그룹원을 내보내시겠습니까?", "취소", "확인")
+            alert.show(parentFragmentManager, "alert")
+            alert.setOnNegativeButtonClickListener {
+                viewModel.leaveUserGroup(it)
+            }
+        }
     }
 
     private fun observe() = with(viewModel) {
@@ -107,7 +132,7 @@ class GroupDetailFragment : Fragment() {
                         endToEnd = ConstraintSet.UNSET
                         with(binding) {
                             val swipeHelperCallback =
-                                com.hansarang.android.air.ui.rvhelper.SwipeHelperCallback()
+                                SwipeHelperCallback()
                                     .apply {
                                         setClamp(200f)
                                     }

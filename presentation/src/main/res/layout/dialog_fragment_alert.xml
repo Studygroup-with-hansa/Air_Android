@@ -44,10 +44,9 @@
             android:paddingHorizontal="26dp"
             android:paddingVertical="13dp"
             android:text="@={content}"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:background="@color/transparent"
-            android:hint="수업 코드를 입력해주세요."/>
-
+            tools:text="그룹원을 내보내시겠습니까?"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
