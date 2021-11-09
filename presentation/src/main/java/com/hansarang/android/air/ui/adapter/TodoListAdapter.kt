@@ -69,12 +69,7 @@ class TodoListAdapter(
             linearLayout: LinearLayout,
             recyclerView: RecyclerView,
             todoList: List<CheckListItem>
-        ) = with(binding) {
-            var todoDoneCount = 0
-            todoList.forEach { if (it.isitDone) todoDoneCount++ }
-            val todoListCount = todoList.size
-            tvPercentsTodo.text = String.format("%d%% 달성", (todoDoneCount.toFloat() / todoListCount.toFloat()).toInt() * 100)
-
+        ) {
             recyclerView.run {
                 if (itemDecorationCount == 0) addItemDecoration(ItemDividerDecorator(5.dp))
                 linearLayout.setPadding(
@@ -208,6 +203,8 @@ class TodoListAdapter(
                     }
                     val percents = ((doneCount.toFloat() / checkListCount.toFloat()) * 100).toInt()
                     viewModel.percents.value = "$percents% 달성"
+                } else {
+                    viewModel.percents.value = "0% 달성"
                 }
             }
         }
