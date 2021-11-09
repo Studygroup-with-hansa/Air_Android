@@ -25,6 +25,8 @@ class TodoListAdapterViewModel @Inject constructor(
     private val deleteCheckListUseCase: DeleteCheckListUseCase
 ): ViewModel() {
 
+    val percents = MutableLiveData<String>()
+
     private val _isPostCheckListSuccess = MutableLiveData<Event<CheckListItem>>()
     val isPostCheckListSuccess: LiveData<Event<CheckListItem>> = _isPostCheckListSuccess
 

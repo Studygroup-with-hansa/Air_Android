@@ -57,9 +57,11 @@ class TodoListAdapter(
         init {
             itemView.doOnAttach {
                 lifecycleOwner = itemView.findViewTreeLifecycleOwner()
+                binding.lifecycleOwner = lifecycleOwner
             }
             itemView.doOnDetach {
                 lifecycleOwner = null
+                binding.lifecycleOwner = null
             }
         }
 
@@ -103,7 +105,7 @@ class TodoListAdapter(
             itemView.doOnAttach {
                 viewModel.isPostCheckListSuccess.observe(lifecycleOwner!!, EventObserver {
                     val curList = checkListAdapter.addItem(it)
-                    setPercents(ArrayList(curList))
+                    setPercents(viewModel, ArrayList(curList))
                     with(binding) {
                         submitCheckList(
                             linearLayoutHorizontalCheckListTodo,
@@ -120,7 +122,9 @@ class TodoListAdapter(
             viewModel: TodoListAdapterViewModel,
             checkListAdapter: CheckListAdapter
         ) = with(binding) {
-            setPercents(ArrayList(todo.todoList))
+            setPercents(viewModel, ArrayList(todo.todoList))
+
+            binding.vm = viewModel
 
             ivExpendTodo.setDefaultToggle(todo.isExpended)
             btnExpendTodo.isSelected = todo.isExpended
@@ -170,7 +174,7 @@ class TodoListAdapter(
             checkListAdapter.setOnClickDeleteListener { checkListItem ->
                 viewModel.deleteCheckList(checkListItem.pk, checkListItem.todo)
                 val curList = checkListAdapter.removeItem(checkListItem)
-                setPercents(ArrayList(curList))
+                setPercents(viewModel, ArrayList(curList))
                 with(binding) {
                     submitCheckList(
                         linearLayoutHorizontalCheckListTodo,
@@ -185,21 +189,14 @@ class TodoListAdapter(
             }
 
             checkListAdapter.setOnCheckedChangeListener { checkListItem ->
-                val isItDone = checkListItem.isitDone
+                checkListItem.isitDone
                 val curList = checkListAdapter.getList()
-                for ((idx, curItem) in curList.withIndex()) {
-                    if (curItem == checkListItem) {
-                        checkListItem.isitDone = !isItDone
-                        curList[idx] = checkListItem
-                        break
-                    }
-                }
-                setPercents(ArrayList(curList))
+                setPercents(viewModel, ArrayList(curList))
                 viewModel.putStatusChangeCheckList(checkListItem)
             }
         }
 
-        private fun setPercents(checkList: ArrayList<CheckListItem>) = with(binding) {
+        private fun setPercents(viewModel: TodoListAdapterViewModel, checkList: ArrayList<CheckListItem>) = with(binding) {
             itemView.doOnAttach {
                 if (checkList.isNotEmpty()) {
                     var doneCount = 0
@@ -210,7 +207,7 @@ class TodoListAdapter(
                         }
                     }
                     val percents = ((doneCount.toFloat() / checkListCount.toFloat()) * 100).toInt()
-                    tvPercentsTodo.text = "$percents% 달성"
+                    viewModel.percents.value = "$percents% 달성"
                 }
             }
         }

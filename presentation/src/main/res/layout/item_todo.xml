@@ -7,6 +7,9 @@
         <variable
             name="todo"
             type="com.hansarang.android.domain.entity.dto.Todo" />
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel" />
     </data>
 
     <LinearLayout
@@ -39,7 +42,8 @@
                 style="@style/BoldTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50% 달성"
+                tools:text="50% 달성"
+                android:text="@{vm.percents}"
                 android:alpha="0.5"
                 android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"

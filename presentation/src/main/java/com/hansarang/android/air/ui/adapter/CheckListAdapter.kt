@@ -1,6 +1,7 @@
 package com.hansarang.android.air.ui.adapter
 
 import android.graphics.Paint
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -85,9 +86,10 @@ class CheckListAdapter(
     }
 
     inner class ViewHolder(private val binding: ItemCheckListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(checkListItem: CheckListItem) = with(binding) {
+        fun bind(checkListItem: CheckListItem, position: Int) = with(binding) {
 
             setChecked(checkListItem.isitDone)
+            chkTodoCheckList.isChecked = checkListItem.isitDone
             etTodoCheckList.setText(checkListItem.todo)
 
             btnDeleteTodoCheckList.setOnClickListener {
@@ -102,12 +104,12 @@ class CheckListAdapter(
 
             chkTodoCheckList.setOnCheckedChangeListener { view, isChecked ->
                 setChecked(isChecked)
+                list[position].isitDone = isChecked
                 onCheckedChangeListener.onClick(checkListItem)
             }
         }
 
         private fun setChecked(isChecked: Boolean) = with(binding) {
-            chkTodoCheckList.isChecked = isChecked
             etTodoCheckList.paintFlags = if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG else 0
             etTodoCheckList.setTextColor(ContextCompat.getColor(etTodoCheckList.context,
                 if (isChecked) R.color.bnv_disabled
@@ -127,7 +129,7 @@ class CheckListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 
     override fun getItemCount(): Int {
