@@ -2,6 +2,6 @@ package com.hansarang.android.domain.entity.dto
 
 data class CheckListItem (
     val pk: Int,
-    val todo: String,
-    val isitDone: Boolean = false,
+    var todo: String,
+    var isitDone: Boolean = false,
 )

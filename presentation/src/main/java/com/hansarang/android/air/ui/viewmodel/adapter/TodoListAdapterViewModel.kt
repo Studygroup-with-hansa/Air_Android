@@ -81,11 +81,11 @@ class TodoListAdapterViewModel @Inject constructor(
         }
     }
 
-    fun putStatusChangeCheckList(pk: Int) {
+    fun putStatusChangeCheckList(checkListItem: CheckListItem) {
         viewModelScope.launch {
             try {
                 withTimeout(10000) {
-                    val params = PutStatusChangeCheckListUseCase.Params(pk)
+                    val params = PutStatusChangeCheckListUseCase.Params(checkListItem.pk)
                     putStatusChangeCheckListUseCase.buildParamsUseCaseSuspend(params)
                 }
             } catch (e: TimeoutCancellationException) {

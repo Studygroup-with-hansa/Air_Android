@@ -183,19 +183,36 @@ class TodoListAdapter(
             checkListAdapter.setOnClickModifyListener { checkListItem, newTitle ->
                 viewModel.putCheckList(checkListItem.pk, newTitle)
             }
+
+            checkListAdapter.setOnCheckedChangeListener { checkListItem ->
+                val isItDone = checkListItem.isitDone
+                val curList = checkListAdapter.getList()
+                for ((idx, curItem) in curList.withIndex()) {
+                    if (curItem == checkListItem) {
+                        checkListItem.isitDone = !isItDone
+                        curList[idx] = checkListItem
+                        break
+                    }
+                }
+                setPercents(ArrayList(curList))
+                viewModel.putStatusChangeCheckList(checkListItem)
+            }
         }
 
         private fun setPercents(checkList: ArrayList<CheckListItem>) = with(binding) {
-            if (checkList.isNotEmpty()) {
-                var doneCount = 0
-                val checkListCount = checkList.size
-                checkList.forEach {
-                    if (it.isitDone) {
-                        doneCount++
+            itemView.doOnAttach {
+                if (checkList.isNotEmpty()) {
+                    var doneCount = 0
+                    val checkListCount = checkList.size
+                    checkList.forEach {
+                        if (it.isitDone) {
+                            Log.d("TAG", "setPercents: ")
+                            doneCount++
+                        }
                     }
+                    val percents = ((doneCount.toFloat() / checkListCount.toFloat()) * 100).toInt()
+                    tvPercentsTodo.text = "$percents% 달성"
                 }
-                val percents = (doneCount.toFloat() / checkListCount.toFloat()) * 100
-                tvPercentsTodo.text = "$percents% 완료"
             }
         }
     }

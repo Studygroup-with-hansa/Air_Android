@@ -29,6 +29,10 @@ class CheckListAdapter(
         return list[position]
     }
 
+    fun getList(): MutableList<CheckListItem> {
+        return list
+    }
+
     fun addItem(checkListItem: CheckListItem): MutableList<CheckListItem> {
         val curList = list.toMutableList()
         curList.add(checkListItem)
@@ -39,6 +43,12 @@ class CheckListAdapter(
     fun removeItem(checkListItem: CheckListItem): MutableList<CheckListItem> {
         val curList = list.toMutableList()
         curList.remove(checkListItem)
+        submitList(curList)
+        return curList
+    }
+
+    fun isDoneItem(checkListItem: CheckListItem): MutableList<CheckListItem> {
+        val curList = list.toMutableList()
         submitList(curList)
         return curList
     }
@@ -68,6 +78,18 @@ class CheckListAdapter(
         }
     }
 
+    lateinit var onCheckedChangeListener: OnCheckedChangeListener
+    interface OnCheckedChangeListener {
+        fun onClick(checkListItem: CheckListItem)
+    }
+    fun setOnCheckedChangeListener(listener: (CheckListItem) -> Unit) {
+        onCheckedChangeListener = object : OnCheckedChangeListener {
+            override fun onClick(checkListItem: CheckListItem) {
+                listener(checkListItem)
+            }
+        }
+    }
+
     inner class ViewHolder(private val binding: ItemCheckListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(checkListItem: CheckListItem) = with(binding) {
 
@@ -86,7 +108,7 @@ class CheckListAdapter(
 
             chkTodoCheckList.setOnCheckedChangeListener { view, isChecked ->
                 setChecked(isChecked)
-                viewModel.putStatusChangeCheckList(checkListItem.pk)
+                onCheckedChangeListener.onClick(checkListItem)
             }
         }
 
