@@ -8,6 +8,9 @@
         <variable
             name="subject"
             type="com.hansarang.android.domain.entity.dto.Subject" />
+        <variable
+            name="percentage"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,6 +63,16 @@
                 tools:text="01:47:26" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_time_percentage_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ibt_option_timer_subject"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0% 완료" />
 
         <LinearLayout
             android:id="@+id/ibt_option_timer_subject"

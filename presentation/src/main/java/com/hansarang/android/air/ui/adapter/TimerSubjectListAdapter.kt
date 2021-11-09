@@ -1,6 +1,7 @@
 package com.hansarang.android.air.ui.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -35,6 +36,12 @@ class TimerSubjectListAdapter(
                 else -> subject.color
             }
             binding.subject = subject
+
+            binding.tvTimePercentageSubject.text = if (viewModel.goal.value?:1L > 0) {
+                "${(subject.time.toFloat() / ((viewModel.goal.value?:1L).toFloat())) * 100}% 달성"
+            } else {
+                "0% 달성"
+            }
 
             binding.ibtOptionTimerSubject.setOnClickListener {
                 val popupMenu = PopupMenu(binding.root.context, it).apply {
