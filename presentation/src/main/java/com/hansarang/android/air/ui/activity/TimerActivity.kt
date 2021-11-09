@@ -1,23 +1,20 @@
 package com.hansarang.android.air.ui.activity
 
-import android.app.Activity
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
+import com.hansarang.android.air.R
+import com.hansarang.android.air.background.service.ForegroundTimerForceQuitService
 import com.hansarang.android.air.background.worker.TimerWorker
 import com.hansarang.android.air.databinding.ActivityTimerBinding
 import com.hansarang.android.air.ui.viewmodel.activity.TimerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.concurrent.timerTask
-import android.util.TypedValue
-import androidx.annotation.AttrRes
-import com.hansarang.android.air.R
 
 @AndroidEntryPoint
 class TimerActivity : AppCompatActivity() {
@@ -27,6 +24,8 @@ class TimerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTimerBinding
     private lateinit var timerWorkerRequest: OneTimeWorkRequest
     private val viewModel: TimerViewModel by viewModels()
+
+    private lateinit var foregroundIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +66,7 @@ class TimerActivity : AppCompatActivity() {
                 timer.cancel()
                 postTimerStop()
 
-                val notificationManager = getSystemService(NotificationManager::class.java)
-                notificationManager.cancel(1)
+                notificationCancel(1)
             }
         }
     }
@@ -79,32 +77,21 @@ class TimerActivity : AppCompatActivity() {
             .getInstance(this@TimerActivity)
             .cancelAllWorkByTag(TimerWorker.TAG)
 
-        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationCancel(1)
 
         date.value = System.currentTimeMillis()
 
-        if (notificationManager.activeNotifications.isNotEmpty()) {
-            notificationManager.activeNotifications.forEach {
-                with(it) {
-                    if (this.id == 1) {
-                        val extras = this.notification.extras
-                        title.value = extras.getString("title")
-                        time.value = extras.getLong("totalTime", 0L)
-                        goal.value = extras.getLong("goal", 0L)
-                        isStarted.value = extras.getBoolean("isStarted", false)
-                        notificationManager.cancel(1)
-                    }
-                }
-            }
-        } else {
-            title.value = intent.getStringExtra("title")
-            time.value = intent.getLongExtra("time", 0L)
-            goal.value = intent.getLongExtra("goal", 0L)
-            isStarted.value = intent.getBooleanExtra("isStarted", false)
+        title.value = intent.getStringExtra("title")
+        time.value = intent.getLongExtra("time", 0L)
+        goal.value = intent.getLongExtra("goal", 0L)
+        isStarted.value = intent.getBooleanExtra("isStarted", false)
 
-            if (this@TimerActivity::timerTask.isInitialized) {
-                timerTask.cancel()
-            }
+        foregroundIntent = Intent(this@TimerActivity, ForegroundTimerForceQuitService::class.java)
+        foregroundIntent.putExtra("title", title.value)
+        startService(foregroundIntent)
+
+        if (this@TimerActivity::timerTask.isInitialized) {
+            timerTask.cancel()
         }
     }
 
@@ -113,13 +100,8 @@ class TimerActivity : AppCompatActivity() {
         WorkManager.getInstance(this@TimerActivity).cancelUniqueWork(TimerWorker.TAG)
     }
 
-    override fun onStop() {
+    override fun onStop(): Unit = with(viewModel) {
         super.onStop()
-        finish()
-    }
-
-    override fun onDestroy(): Unit = with(viewModel) {
-        super.onDestroy()
 
         if (isStarted.value == true) {
             val timerData = Data.Builder()
@@ -127,6 +109,7 @@ class TimerActivity : AppCompatActivity() {
                 .putLong("goal", goal.value ?: 0L)
                 .putString("title", title.value)
                 .putBoolean("isStarted", isStarted.value ?: false)
+                .putBoolean("onDestroyed", true)
                 .build()
 
             timerWorkerRequest = OneTimeWorkRequestBuilder<TimerWorker>()
@@ -135,12 +118,6 @@ class TimerActivity : AppCompatActivity() {
                 .build()
 
             WorkManager.getInstance(this@TimerActivity).enqueueUniqueWork(TimerWorker.TAG, ExistingWorkPolicy.REPLACE, timerWorkerRequest)
-
-//            val intent = Intent(this@TimerActivity, TimerService::class.java)
-//            intent.putExtra("totalTime", time.value)
-//            intent.putExtra("goal", goal.value)
-//            intent.putExtra("title", title.value)
-//            startForegroundService(intent)
         }
     }
 
@@ -151,4 +128,8 @@ class TimerActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.nav_default_pop_enter_anim, R.anim.nav_default_pop_exit_anim)
     }
 
+    private fun notificationCancel(id: Int) {
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.cancel(id)
+    }
 }

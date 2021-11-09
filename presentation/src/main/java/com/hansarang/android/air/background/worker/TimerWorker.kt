@@ -7,23 +7,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.os.bundleOf
-import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import com.hansarang.android.air.R
+import com.hansarang.android.air.background.service.ForegroundTimerForceQuitService
 import com.hansarang.android.air.ui.activity.TimerActivity
-import com.hansarang.android.domain.usecase.timer.PostTimerStopUseCase
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import java.time.Duration
 import java.util.*
 
-@HiltWorker
-class TimerWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
+class TimerWorker(
+    context: Context,
+    params: WorkerParameters,
 ): CoroutineWorker(context, params) {
 
     companion object {
@@ -31,6 +26,8 @@ class TimerWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result = with(applicationContext) {
+
+        stopService(Intent(applicationContext, ForegroundTimerForceQuitService::class.java))
 
         val isStarted = inputData.getBoolean("isStarted", false)
         val time = inputData.getLong("totalTime", 0L) + 1
@@ -48,7 +45,7 @@ class TimerWorker @AssistedInject constructor(
 
         val timerIntent = Intent(this, TimerActivity::class.java)
         timerIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP or FLAG_ACTIVITY_NEW_TASK)
-        timerIntent.putExtra("totalTime", time)
+        timerIntent.putExtra("time", time)
         timerIntent.putExtra("title", title)
         timerIntent.putExtra("goal", goal)
         timerIntent.putExtra("isStarted", isStarted)
@@ -72,15 +69,8 @@ class TimerWorker @AssistedInject constructor(
                 .setSmallIcon(R.drawable.ic_logo_main_color)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
+                .setExtras(bundleOf("title" to title))
                 .setContentIntent(timerPendingIntent)
-                .setExtras(
-                    bundleOf(
-                        "totalTime" to time,
-                        "isStarted" to isStarted,
-                        "title" to title,
-                        "goal" to goal
-                    )
-                )
                 .setContentTitle(
                     String.format(
                         "%02d:%02d:%02d",
