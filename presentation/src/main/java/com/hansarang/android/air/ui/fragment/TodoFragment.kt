@@ -73,9 +73,8 @@ class TodoFragment : Fragment() {
                 || actionId == EditorInfo.IME_ACTION_SEND
                 || keyEvent.action == KeyEvent.ACTION_DOWN
                 || keyEvent.action == KeyEvent.KEYCODE_ENTER) {
-                if (editText.text.isNotEmpty()) {
-                    viewModel.postMemo()
-                }
+
+                viewModel.postMemo()
             }
             return@setOnEditorActionListener true
         }
