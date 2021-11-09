@@ -49,7 +49,7 @@ class TodoListAdapterViewModel @Inject constructor(
         }
     }
 
-    fun deleteCheckList(pk: Int) {
+    fun deleteCheckList(pk: Int, todo: String) {
         viewModelScope.launch {
             try {
                 withTimeout(10000) {

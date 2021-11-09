@@ -184,6 +184,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/memo_background"
                         android:gravity="top"
+                        android:imeOptions="actionSend"
                         android:inputType="textNoSuggestions"
                         android:hint="@string/please_set_memo"
                         android:text="@={vm.memo}"

@@ -19,10 +19,19 @@ import com.hansarang.android.air.ui.livedata.EventObserver
 import com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel
 import com.hansarang.android.domain.entity.dto.CheckListItem
 import com.hansarang.android.domain.entity.dto.Todo
+import com.hansarang.android.domain.usecase.checklist.DeleteCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.PostCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.PutModifyCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.PutStatusChangeCheckListUseCase
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TodoListAdapter(private val viewModel: TodoListAdapterViewModel): RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
+class TodoListAdapter(
+    private val postCheckListUseCase: PostCheckListUseCase,
+    private val putModifyCheckListUseCase: PutModifyCheckListUseCase,
+    private val putStatusChangeCheckListUseCase: PutStatusChangeCheckListUseCase,
+    private val deleteCheckListUseCase: DeleteCheckListUseCase
+) : RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
     private val list = ArrayList<Todo>()
 
@@ -43,8 +52,6 @@ class TodoListAdapter(private val viewModel: TodoListAdapterViewModel): Recycler
     inner class ViewHolder(
         private val binding: ItemTodoBinding
     ): RecyclerView.ViewHolder(binding.root) {
-
-        private val checkListAdapter = CheckListAdapter(viewModel)
         private var lifecycleOwner: LifecycleOwner? = null
 
         init {
@@ -76,27 +83,44 @@ class TodoListAdapter(private val viewModel: TodoListAdapterViewModel): Recycler
         }
 
         fun bind(todo: Todo) {
+            val viewModel = TodoListAdapterViewModel(
+                postCheckListUseCase,
+                putModifyCheckListUseCase,
+                putStatusChangeCheckListUseCase,
+                deleteCheckListUseCase
+            )
+            val checkListAdapter = CheckListAdapter(viewModel)
+
+            binding.todo = todo
+            init(todo, viewModel, checkListAdapter)
+            observe(viewModel, checkListAdapter)
+        }
+
+        private fun observe(
+            viewModel: TodoListAdapterViewModel,
+            checkListAdapter: CheckListAdapter
+        ) {
             itemView.doOnAttach {
-                binding.todo = todo
-                init(todo)
-                observe()
+                viewModel.isPostCheckListSuccess.observe(lifecycleOwner!!, EventObserver {
+                    val curList = checkListAdapter.addItem(it)
+                    setPercents(ArrayList(curList))
+                    with(binding) {
+                        submitCheckList(
+                            linearLayoutHorizontalCheckListTodo,
+                            rvCheckListTodo,
+                            curList
+                        )
+                    }
+                })
             }
         }
 
-        private fun observe() {
-            viewModel.isPostCheckListSuccess.observe(lifecycleOwner!!, EventObserver {
-                val curList = checkListAdapter.addItem(it)
-                with(binding) {
-                    submitCheckList(
-                        linearLayoutHorizontalCheckListTodo,
-                        rvCheckListTodo,
-                        curList
-                    )
-                }
-            })
-        }
-
-        private fun init(todo: Todo) = with(binding) {
+        private fun init(
+            todo: Todo,
+            viewModel: TodoListAdapterViewModel,
+            checkListAdapter: CheckListAdapter
+        ) = with(binding) {
+            setPercents(ArrayList(todo.todoList))
 
             ivExpendTodo.setDefaultToggle(todo.isExpended)
             btnExpendTodo.isSelected = todo.isExpended
@@ -144,17 +168,34 @@ class TodoListAdapter(private val viewModel: TodoListAdapterViewModel): Recycler
             }
 
             checkListAdapter.setOnClickDeleteListener { checkListItem ->
-                viewModel.deleteCheckList(checkListItem.pk)
+                viewModel.deleteCheckList(checkListItem.pk, checkListItem.todo)
                 val curList = checkListAdapter.removeItem(checkListItem)
-                submitCheckList(
-                    linearLayoutHorizontalCheckListTodo,
-                    rvCheckListTodo,
-                    curList
-                )
+                setPercents(ArrayList(curList))
+                with(binding) {
+                    submitCheckList(
+                        linearLayoutHorizontalCheckListTodo,
+                        rvCheckListTodo,
+                        curList
+                    )
+                }
             }
 
             checkListAdapter.setOnClickModifyListener { checkListItem, newTitle ->
                 viewModel.putCheckList(checkListItem.pk, newTitle)
+            }
+        }
+
+        private fun setPercents(checkList: ArrayList<CheckListItem>) = with(binding) {
+            if (checkList.isNotEmpty()) {
+                var doneCount = 0
+                val checkListCount = checkList.size
+                checkList.forEach {
+                    if (it.isitDone) {
+                        doneCount++
+                    }
+                }
+                val percents = (doneCount.toFloat() / checkListCount.toFloat()) * 100
+                tvPercentsTodo.text = "$percents% 완료"
             }
         }
     }

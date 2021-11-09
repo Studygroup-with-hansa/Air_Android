@@ -17,11 +17,14 @@ import com.hansarang.android.air.ui.adapter.TodoListAdapter
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
 import com.hansarang.android.air.ui.livedata.EventObserver
-import com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel
 import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
+import com.hansarang.android.domain.usecase.checklist.DeleteCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.PostCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.PutModifyCheckListUseCase
+import com.hansarang.android.domain.usecase.checklist.PutStatusChangeCheckListUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TodoFragment : Fragment() {
@@ -30,7 +33,15 @@ class TodoFragment : Fragment() {
     private lateinit var binding: FragmentTodoBinding
     private lateinit var recyclerView: RecyclerView
     private val viewModel: TodoViewModel by viewModels()
-    private val listViewModel: TodoListAdapterViewModel by viewModels()
+
+    @Inject
+    lateinit var postCheckListUseCase: PostCheckListUseCase
+    @Inject
+    lateinit var putModifyCheckListUseCase: PutModifyCheckListUseCase
+    @Inject
+    lateinit var putStatusChangeCheckListUseCase: PutStatusChangeCheckListUseCase
+    @Inject
+    lateinit var deleteCheckListUseCase: DeleteCheckListUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +70,7 @@ class TodoFragment : Fragment() {
         etMemoTodo.setOnEditorActionListener { view, actionId, keyEvent ->
             val editText = view as EditText
             if (actionId == EditorInfo.IME_ACTION_SEARCH
-                || actionId == EditorInfo.IME_ACTION_DONE
+                || actionId == EditorInfo.IME_ACTION_SEND
                 || keyEvent.action == KeyEvent.ACTION_DOWN
                 || keyEvent.action == KeyEvent.KEYCODE_ENTER) {
                 if (editText.text.isNotEmpty()) {
@@ -86,14 +97,16 @@ class TodoFragment : Fragment() {
         isFailure.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
         })
-        date.observe(viewLifecycleOwner) {
-            listViewModel.date = it
-        }
     }
 
     private fun init() {
         recyclerView = binding.rvTodoListTodo
-        todoListAdapter = TodoListAdapter(listViewModel)
+        todoListAdapter = TodoListAdapter(
+            postCheckListUseCase,
+            putModifyCheckListUseCase,
+            putStatusChangeCheckListUseCase,
+            deleteCheckListUseCase
+        )
         recyclerView.adapter = todoListAdapter
         recyclerView.addItemDecoration(ItemDividerDecorator(5.dp))
         recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {

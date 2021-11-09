@@ -5,17 +5,12 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemCheckListBinding
 import com.hansarang.android.air.ui.viewmodel.adapter.TodoListAdapterViewModel
-import com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel
 import com.hansarang.android.domain.entity.dto.CheckListItem
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CheckListAdapter(
@@ -75,22 +70,12 @@ class CheckListAdapter(
 
     inner class ViewHolder(private val binding: ItemCheckListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(checkListItem: CheckListItem) = with(binding) {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-            val calendar = Calendar.getInstance().time
-            val isToday = sdf.format(Date(viewModel.date)) == sdf.format(calendar)
-
-            binding.isToday = isToday
 
             setChecked(checkListItem.isitDone)
             etTodoCheckList.setText(checkListItem.todo)
-            val toast = Toast.makeText(itemView.context, "이전 날짜의 할 일은 수정할 수 없습니다.", Toast.LENGTH_SHORT)
-            
+
             btnDeleteTodoCheckList.setOnClickListener {
-                if (isToday) {
-                    onClickDeleteListener.onClick(checkListItem)
-                } else {
-                    toast.show()
-                }
+                onClickDeleteListener.onClick(checkListItem)
             }
             etTodoCheckList.setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.action == KeyEvent.ACTION_DOWN) {
@@ -107,7 +92,6 @@ class CheckListAdapter(
 
         private fun setChecked(isChecked: Boolean) = with(binding) {
             chkTodoCheckList.isChecked = isChecked
-            etTodoCheckList.isActivated = !isChecked
             etTodoCheckList.paintFlags = if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG else 0
             etTodoCheckList.setTextColor(ContextCompat.getColor(etTodoCheckList.context,
                 if (isChecked) R.color.grey_disabled
