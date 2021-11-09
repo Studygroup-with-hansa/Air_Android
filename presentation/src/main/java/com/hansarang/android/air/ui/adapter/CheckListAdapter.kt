@@ -110,7 +110,7 @@ class CheckListAdapter(
             chkTodoCheckList.isChecked = isChecked
             etTodoCheckList.paintFlags = if (isChecked) Paint.STRIKE_THRU_TEXT_FLAG else 0
             etTodoCheckList.setTextColor(ContextCompat.getColor(etTodoCheckList.context,
-                if (isChecked) R.color.grey_disabled
+                if (isChecked) R.color.bnv_disabled
                 else R.color.black
             ))
         }

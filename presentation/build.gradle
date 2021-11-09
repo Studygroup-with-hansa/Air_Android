@@ -47,6 +47,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":data")
 
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation "androidx.work:work-runtime-ktx:2.7.0"
     implementation 'androidx.hilt:hilt-work:1.0.0'

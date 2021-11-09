@@ -83,6 +83,7 @@ class StatsFragment : Fragment() {
                         description.text = ""
                         holeRadius = 60f
                         dragDecelerationFrictionCoef = 0.95f
+                        setHoleColor(Color.TRANSPARENT)
                         setDrawEntryLabels(false)
                         animateY(500, Easing.EaseInOutQuart)
                     }

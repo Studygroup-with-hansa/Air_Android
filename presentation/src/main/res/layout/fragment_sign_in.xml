@@ -86,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/email"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         android:textSize="13sp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:text="@string/validate_code"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         android:textSize="13sp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -165,7 +165,6 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/til_validate_code_sign_in"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:boxStrokeWidth="0dp"
@@ -173,6 +172,7 @@
                             app:errorEnabled="true"
                             app:hintAnimationEnabled="false"
                             app:hintEnabled="false"
+                            app:backgroundTint="@color/light"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

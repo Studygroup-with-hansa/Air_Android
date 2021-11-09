@@ -147,6 +147,7 @@ class GroupFragment : Fragment() {
             .start()
 
         ViewCompat.animate(linearLayoutCreateGroupAddGroup)
+            .alpha(1f)
             .translationY(-180f)
             .withLayer()
             .setDuration(300)
@@ -191,6 +192,7 @@ class GroupFragment : Fragment() {
             .start()
 
         ViewCompat.animate(linearLayoutCreateGroupAddGroup)
+            .alpha(0f)
             .translationY(0f)
             .withLayer()
             .setDuration(300)
@@ -198,6 +200,7 @@ class GroupFragment : Fragment() {
             .start()
 
         ViewCompat.animate(linearLayoutJoinGroupAddGroup)
+            .alpha(0f)
             .translationY(0f)
             .withLayer()
             .setDuration(300)

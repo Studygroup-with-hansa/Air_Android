@@ -142,7 +142,7 @@
             app:elevation="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white"
+            app:tint="@color/light"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <LinearLayout
@@ -170,7 +170,7 @@
                 android:layout_margin="15dp"
                 android:src="@drawable/ic_create_group"
                 app:maxImageSize="40dp"
-                app:backgroundTint="@color/white"
+                app:backgroundTint="@color/light"
                 app:elevation="0dp"
                 app:tint="@color/main"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -202,7 +202,7 @@
                 android:layout_margin="15dp"
                 android:src="@drawable/ic_join_group"
                 app:maxImageSize="40dp"
-                app:backgroundTint="@color/white"
+                app:backgroundTint="@color/light"
                 app:elevation="0dp"
                 app:tint="@color/main"
                 tools:ignore="SpeakableTextPresentCheck" />

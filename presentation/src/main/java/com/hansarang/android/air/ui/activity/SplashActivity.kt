@@ -28,24 +28,24 @@ class SplashActivity : AppCompatActivity() {
         if (token.isNotEmpty()) {
             viewModel.checkToken()
         } else {
-            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
-            startActivity(intent)
-            finish()
+            startActivityWithThemeSet(AuthActivity::class.java)
         }
     }
 
     private fun observe() = with(viewModel) {
         viewModel.isSuccess.observe(this@SplashActivity) {
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            startActivityWithThemeSet(MainActivity::class.java)
         }
 
         viewModel.isFailure.observe(this@SplashActivity) {
             Toast.makeText(this@SplashActivity, it, Toast.LENGTH_SHORT).show()
-            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
-            startActivity(intent)
-            finish()
+            startActivityWithThemeSet(AuthActivity::class.java)
         }
+    }
+
+    private fun <T> startActivityWithThemeSet(cls: Class<T>) {
+        val intent = Intent(this@SplashActivity, cls)
+        startActivity(intent)
+        finish()
     }
 }

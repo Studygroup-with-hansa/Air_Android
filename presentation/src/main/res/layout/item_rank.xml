@@ -37,7 +37,7 @@
             android:id="@+id/constraint_layout_rank_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/light"
             android:orientation="horizontal"
             android:padding="20dp">
 
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{groupRank.name}"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/dark"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_time_item_rank"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/dark"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
