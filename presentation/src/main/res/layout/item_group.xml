@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             tools:layout_marginVertical="10dp"
             android:padding="15dp"
-            android:onClick="@{() -> onClickGroup.onClick(group.code, group.leader)}"
+            android:onClick="@{() -> onClickGroup.onClick(group.code, group.leader, group.leaderEmail)}"
             android:background="@drawable/btn_group_background_box">
 
             <TextView

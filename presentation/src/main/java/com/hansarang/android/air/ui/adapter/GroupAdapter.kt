@@ -1,7 +1,6 @@
 package com.hansarang.android.air.ui.adapter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -16,26 +15,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.ItemGroupBinding
-import com.hansarang.android.air.ui.viewmodel.fragment.GroupViewModel
 import com.hansarang.android.domain.entity.dto.Group
 
-class GroupAdapter(
-    private val viewModel: GroupViewModel
-): ListAdapter<Group, GroupAdapter.ViewHolder>(diffUtil) {
+class GroupAdapter : ListAdapter<Group, GroupAdapter.ViewHolder>(diffUtil) {
 
     interface OnClickGroup {
-        fun onClick(code: String, leader: String)//, email: String)
+        fun onClick(code: String, leader: String, leaderEmail: String)
     }
 
     inner class ViewHolder(private val binding: ItemGroupBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group) = with(binding) {
             binding.group = group
             onClickGroup = object: OnClickGroup {
-                override fun onClick(code: String, leader: String) {//, email: String) {
+                override fun onClick(code: String, leader: String, leaderEmail: String) {//, email: String) {
                     val bundle = Bundle()
                     bundle.putString("groupCode", code)
                     bundle.putString("leader", leader)
-                    //bundle.putString("email", email)
+                    bundle.putString("leaderEmail", leaderEmail)
                     itemView.findNavController().navigate(R.id.action_groupFragment_to_groupDetailFragment, bundle)
                 }
             }

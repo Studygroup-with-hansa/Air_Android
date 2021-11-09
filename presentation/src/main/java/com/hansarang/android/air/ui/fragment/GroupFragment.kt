@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewPropertyAnimator
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
@@ -58,7 +57,7 @@ class GroupFragment : Fragment() {
     }
 
     private fun init() = with(binding) {
-        groupAdapter = GroupAdapter(viewModel)
+        groupAdapter = GroupAdapter()
         rvGroupList.adapter = groupAdapter
         rvGroupList.addItemDecoration(ItemDividerDecorator(5.dp))
         fabCreateGroupAddGroup.setOnClickListener {

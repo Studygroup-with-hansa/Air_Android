@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
-import com.hansarang.android.domain.entity.dto.Group
 import com.hansarang.android.domain.entity.dto.GroupRank
 import com.hansarang.android.domain.usecase.group.DeleteGroupUseCase
 import com.hansarang.android.domain.usecase.group.DeleteGroupUserUseCase
@@ -50,7 +49,7 @@ class GroupDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val user = getUserBasicInfoUseCase.buildUseCaseSuspend()
-                _isGroupLeader.value = (leader.value?:"") == user.name
+                _isGroupLeader.value = (leaderEmail.value?:"") == user.email
             } catch (e: Throwable) {
             }
         }
@@ -113,7 +112,7 @@ class GroupDetailViewModel @Inject constructor(
 
         val groupCode = groupCode.value ?: ""
 
-        if (leader.value ?: "" != groupRank.name) {
+        if (leaderEmail.value ?: "" != groupRank.email) {
             viewModelScope.launch {
                 try {
                     val params = DeleteGroupUserUseCase.Params(groupRank.email, groupCode)
