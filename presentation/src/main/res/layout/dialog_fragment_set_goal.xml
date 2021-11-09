@@ -22,7 +22,7 @@
             android:layout_marginTop="25dp"
             android:text="목표 시간을 설정해주세요"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -46,7 +46,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginHorizontal="5dp"
                 android:text="H" />
 
@@ -64,7 +63,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginHorizontal="5dp"
                 android:text="M" />
 
@@ -82,7 +80,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginStart="5dp"
                 android:text="S" />
 
