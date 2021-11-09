@@ -47,12 +47,6 @@ class CheckListAdapter(
         return curList
     }
 
-    fun isDoneItem(checkListItem: CheckListItem): MutableList<CheckListItem> {
-        val curList = list.toMutableList()
-        submitList(curList)
-        return curList
-    }
-
     lateinit var onClickDeleteListener: OnClickDeleteListener
     interface OnClickDeleteListener {
         fun onClick(checkListItem: CheckListItem)

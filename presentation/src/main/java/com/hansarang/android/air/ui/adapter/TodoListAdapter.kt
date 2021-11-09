@@ -206,7 +206,6 @@ class TodoListAdapter(
                     val checkListCount = checkList.size
                     checkList.forEach {
                         if (it.isitDone) {
-                            Log.d("TAG", "setPercents: ")
                             doneCount++
                         }
                     }
