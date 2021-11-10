@@ -155,12 +155,11 @@
                             android:layout_height="wrap_content"
                             android:elevation="3dp"
                             android:textColor="@color/red"
+                            android:layout_marginEnd="15dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.95"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.315"
+                            app:layout_constraintVertical_bias="0.305"
                             tools:text="시간 초과" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -186,7 +185,7 @@
                                 android:enabled="@{vm.isEmailSent}"
                                 android:hint="@string/please_set_validate_code"
                                 android:inputType="text"
-                                android:paddingEnd="80dp"
+                                android:paddingEnd="65dp"
                                 android:focusableInTouchMode="@{!vm.isLoading}"
                                 android:text="@={vm.authCode}"
                                 tools:ignore="RtlSymmetry" />
