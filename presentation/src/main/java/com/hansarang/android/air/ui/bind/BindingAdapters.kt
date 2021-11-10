@@ -18,8 +18,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter("setProgressBar")
-fun ProgressBar.setProgressBar(progressValue: Int) {
-    ObjectAnimator.ofInt(this, "progress", progressValue)
+fun ProgressBar.setProgressBar(progressValue: Float) {
+    ObjectAnimator.ofInt(this, "progress", progressValue.toInt())
         .setDuration(500)
         .start()
 }

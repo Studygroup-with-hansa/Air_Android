@@ -33,6 +33,7 @@ class HomeViewModel @Inject constructor(
 
     val totalTime = MutableLiveData(0L)
     val goal = MutableLiveData(0L)
+    val percents = MutableLiveData(0f)
 
     private val _subjectList = MutableLiveData(ArrayList<Subject>())
     val subjectList: LiveData<ArrayList<Subject>> = _subjectList
@@ -73,6 +74,7 @@ class HomeViewModel @Inject constructor(
                     _subjectList.value = subjectList
                     baseSubject.subject.forEach { totaltime += it.time }
                     totalTime.value = totaltime
+                    percents.value = (totaltime.toFloat() / baseSubject.goal.toFloat()) * 100f
                     goal.value = baseSubject.goal
                     _isEmpty.value = subjectList.isEmpty()
                 }

@@ -116,7 +116,7 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    app:setProgressBar="@{(int)(vm.totalTime /(vm.goal > 0L ? vm.goal : 1L)) * 100}"
+                    app:setProgressBar="@{vm.percents}"
                     android:progressDrawable="@drawable/progress_indicator" />
 
             </com.google.android.material.appbar.AppBarLayout>

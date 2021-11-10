@@ -38,7 +38,7 @@ class TimerSubjectListAdapter(
             binding.subject = subject
 
             binding.tvTimePercentageSubject.text = if (viewModel.goal.value?:1L > 0) {
-                "${(subject.time.toFloat() / ((viewModel.goal.value?:1L).toFloat())) * 100}% 달성"
+                "${((subject.time.toFloat() / ((viewModel.goal.value?:1L).toFloat())) * 100).toInt()}% 달성"
             } else {
                 "0% 달성"
             }
