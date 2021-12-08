@@ -26,9 +26,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     var isFirstLoad = true
 
-    var totalTime = 0L
-    var goal = 0L
-    var percents = 0f
+    var totalTime = MutableLiveData(0L)
+    var goal = MutableLiveData(0L)
+    var percents = MutableLiveData(0F)
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -63,6 +63,11 @@ class HomeViewModel @Inject constructor(
                     list?.remove(subject)
                     _subjectList.value = list
                     _isEmpty.value = list.isNullOrEmpty()
+
+                    var totalTimeScope = 0L
+                    list?.forEach { totalTimeScope += it.time }
+                    percents.value = (totalTimeScope.toFloat() / goal.value!!.toFloat()) * 100f
+                    totalTime.value = totalTimeScope
                 }
             } catch (e: TimeoutCancellationException) {
 
@@ -79,17 +84,17 @@ class HomeViewModel @Inject constructor(
             try {
                 delay(1000)
                 withTimeout(10000) {
-                    var totaltime = 0L
+                    var totalTimeScope = 0L
                     val date = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Date(System.currentTimeMillis()))
                     val params = GetSubjectByDateUseCase.Params(date)
                     val baseSubject = getSubjectByDateUseCase.buildParamsUseCaseSuspend(params)
                     val subjectList = ArrayList(baseSubject.subject)
 
                     _subjectList.value = subjectList
-                    baseSubject.subject.forEach { totaltime += it.time }
-                    totalTime = totaltime
-                    percents = (totaltime.toFloat() / baseSubject.goal.toFloat()) * 100f
-                    goal = baseSubject.goal
+                    baseSubject.subject.forEach { totalTimeScope += it.time }
+                    totalTime.value = totalTimeScope
+                    percents.value = (totalTimeScope.toFloat() / baseSubject.goal.toFloat()) * 100f
+                    goal.value = baseSubject.goal
                     _isEmpty.value = subjectList.isEmpty()
                 }
             } catch (e: TimeoutCancellationException) {

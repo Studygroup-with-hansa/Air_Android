@@ -4,10 +4,12 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentHomeBinding
 import com.hansarang.android.air.ui.activity.AddSubjectActivity
 import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
 import com.hansarang.android.air.ui.base.BaseFragment
+import com.hansarang.android.air.ui.bind.setTime
 import com.hansarang.android.air.ui.dialog.SetGoalDialogFragment
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         viewModel.subjectList.observe(viewLifecycleOwner) {
             timerSubjectListAdapter.submitList(it.toMutableList())
         }
+
         viewModel.isLoading.observe(viewLifecycleOwner) {
             if (it) {
                 binding.sflToolbarHome.startShimmer()
