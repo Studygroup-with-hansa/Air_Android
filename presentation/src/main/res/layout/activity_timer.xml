@@ -22,6 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:navigationOnClickListener="@{() -> vm.onBackButtonClick()}"
             app:navigationIcon="@drawable/ic_left_arrow" />
 
         <LinearLayout
@@ -38,7 +39,6 @@
                 style="@style/BoldTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vm.title}"
                 tools:text="국어"
                 android:textColor="@color/white"/>
 
@@ -46,8 +46,6 @@
                 android:id="@+id/tv_date_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:setPattern="@{@string/date_pattern}"
-                app:setDateTime="@{vm.date}"
                 tools:text="2021.10.28"
                 android:layout_marginTop="10dp"
                 android:textSize="20sp"
@@ -58,8 +56,6 @@
                 style="@style/BoldTextWhiteBiggest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:setPattern="@{@string/time}"
-                app:setTime="@{vm.time}"
                 android:text="01H 47M 26S"/>
 
             <TextView
@@ -69,8 +65,6 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 tools:text="목표 시간 05H 00M 00S"
-                app:setPattern="@{@string/target_time}"
-                app:setTime="@{vm.goal}"
                 android:textSize="20sp"
                 android:alpha="0.8"
                 android:textColor="@color/white" />

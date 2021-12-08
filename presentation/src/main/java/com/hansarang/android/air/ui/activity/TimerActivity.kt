@@ -86,10 +86,6 @@ class TimerActivity : AppCompatActivity() {
         goal.value = intent.getLongExtra("goal", 0L)
         isStarted.value = intent.getBooleanExtra("isStarted", false)
 
-        foregroundIntent = Intent(this@TimerActivity, ForegroundTimerForceQuitService::class.java)
-        foregroundIntent.putExtra("title", title.value)
-        startService(foregroundIntent)
-
         if (this@TimerActivity::timerTask.isInitialized) {
             timerTask.cancel()
         }

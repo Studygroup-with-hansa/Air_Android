@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.hansarang.android.air.R
-import com.hansarang.android.air.background.service.BackgroundTimerForceQuitService
 import com.hansarang.android.air.ui.util.SharedPreferenceHelper.token
 import com.hansarang.android.air.ui.viewmodel.activity.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,9 +18,6 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
-        val forceQuitIntent = Intent(this, BackgroundTimerForceQuitService::class.java)
-        startService(forceQuitIntent)
 
         observe()
 
