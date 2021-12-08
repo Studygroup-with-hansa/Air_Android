@@ -36,8 +36,8 @@ class TimerSubjectListAdapter(
             }
             binding.subject = subject
 
-            binding.tvTimePercentageSubject.text = if (viewModel.goal > 0) {
-                "${((subject.time.toFloat() / ((viewModel.goal).toFloat())) * 100).toInt()}% 달성"
+            binding.tvTimePercentageSubject.text = if (viewModel.goal.value!! > 0) {
+                "${((subject.time.toFloat() / (viewModel.goal.value!!.toFloat())) * 100).toInt()}% 달성"
             } else {
                 "0% 달성"
             }
@@ -69,7 +69,7 @@ class TimerSubjectListAdapter(
                 val intent = Intent(binding.root.context, TimerActivity::class.java)
                 intent.putExtra("title", subject.title)
                 intent.putExtra("time", subject.time)
-                intent.putExtra("goal", viewModel.goal)
+                intent.putExtra("goal", viewModel.goal.value!!)
                 binding.root.context.startActivity(intent)
             }
         }

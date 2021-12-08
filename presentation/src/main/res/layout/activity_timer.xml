@@ -36,11 +36,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tv_title_timer"
                 style="@style/BoldTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="국어"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                tools:text="국어" />
 
             <TextView
                 android:id="@+id/tv_date_timer"
@@ -56,7 +57,9 @@
                 style="@style/BoldTextWhiteBiggest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01H 47M 26S"/>
+                app:setPattern="@{@string/time}"
+                app:setTime="@{vm.time}"
+                tools:text="01H 47M 26S"/>
 
             <TextView
                 android:id="@+id/tv_target_time_timer"
@@ -65,15 +68,18 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 tools:text="목표 시간 05H 00M 00S"
+                app:setPattern="@{@string/target_time}"
+                app:setTime="@{vm.goal}"
                 android:textSize="20sp"
                 android:alpha="0.8"
                 android:textColor="@color/white" />
 
             <CheckBox
+                android:id="@+id/chk_play_button_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@null"
-                android:checked="@={vm.isStarted}"
+                android:onClick="@{() -> vm.onPlayButtonClick(chkPlayButtonTimer.isChecked())}"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/chk_play"/>
 

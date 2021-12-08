@@ -11,7 +11,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.os.bundleOf
 import androidx.work.*
 import com.hansarang.android.air.R
-import com.hansarang.android.air.background.service.ForegroundTimerForceQuitService
 import com.hansarang.android.air.ui.activity.TimerActivity
 import java.time.Duration
 import java.util.*
@@ -26,8 +25,6 @@ class TimerWorker(
     }
 
     override suspend fun doWork(): Result = with(applicationContext) {
-
-        stopService(Intent(applicationContext, ForegroundTimerForceQuitService::class.java))
 
         val isStarted = inputData.getBoolean("isStarted", false)
         val time = inputData.getLong("totalTime", 0L) + 1
