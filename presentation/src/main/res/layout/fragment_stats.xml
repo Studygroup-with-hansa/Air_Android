@@ -46,7 +46,8 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/srl_stats"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:onRefreshListener="@{() -> vm.getStats()}">
 
                 <LinearLayout
                     android:visibility="@{!vm.isLoading ? View.VISIBLE : View.GONE}"
@@ -76,7 +77,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginHorizontal="5dp"/>
 
-                    <FrameLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -89,29 +90,37 @@
                             android:textSize="18sp"
                             android:gravity="center"/>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/linearLayout_data_graph_stats"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
                             android:visibility="@{weekdayDatePickerAdapterVm.stats.goal != 0 ? View.VISIBLE : View.GONE}"
-                            android:orientation="vertical">
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constraintLayout2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="8dp">
+                                android:layout_marginHorizontal="8dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <View
                                     android:id="@+id/view_goal_achievement_rate_background_stats"
                                     android:layout_width="0dp"
                                     android:layout_height="0dp"
-                                    android:background="@color/main"
-                                    tools:alpha="0.5"
                                     android:alpha="@{achievement > 0.3f ? achievement : 0.3f}"
+                                    android:background="@color/main"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:alpha="0.5" />
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
@@ -125,28 +134,28 @@
                                         android:id="@+id/tv_goal_achievement_rate_stats"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textColor="@color/white"
-                                        android:textSize="17sp"
                                         android:layout_margin="10dp"
                                         android:text="@{@string/goal_achievement_rate_stats(10f > achievement * 100f ? Math.ceil(achievement * 100f) : achievement * 100f)}"
+                                        android:textColor="@color/white"
+                                        android:textSize="17sp"
                                         tools:text="목표 달성률 50%" />
 
                                     <View
                                         android:layout_width="1dp"
-                                        android:background="@color/white"
+                                        android:layout_height="match_parent"
                                         android:layout_marginVertical="10dp"
-                                        android:layout_height="match_parent"/>
+                                        android:background="@color/white" />
 
 
                                     <TextView
                                         android:id="@+id/tv_goal_time_stats"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_margin="10dp"
                                         android:textColor="@color/white"
                                         android:textSize="17sp"
-                                        android:layout_margin="10dp"
-                                        app:setTime="@{weekdayDatePickerAdapterVm.stats.goal}"
                                         app:setPattern="@{@string/time}"
+                                        app:setTime="@{weekdayDatePickerAdapterVm.stats.goal}"
                                         tools:text="05H 00M 00S" />
 
                                 </LinearLayout>
@@ -154,47 +163,62 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView
+                                android:id="@+id/textView3"
+                                style="@style/BoldTextBlack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/all_time"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="20dp"
+                                android:text="@string/all_time"
                                 android:textColor="@color/main"
-                                style="@style/BoldTextBlack"/>
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
                             <TextView
                                 android:id="@+id/tv_time_stats"
                                 style="@style/BoldTextBlackBiggest"
-                                android:textSize="25sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:textColor="@color/main"
                                 android:layout_gravity="center"
-                                app:setTime="@{weekdayDatePickerAdapterVm.stats.totalStudyTime}"
+                                android:textColor="@color/main"
+                                android:textSize="25sp"
+                                android:layout_marginTop="5dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView3"
                                 app:setPattern="@{@string/time}"
+                                app:setTime="@{weekdayDatePickerAdapterVm.stats.totalStudyTime}"
                                 tools:text="01H 47M 26S" />
 
                             <com.github.mikephil.charting.charts.PieChart
                                 android:id="@+id/chart_study_time_stats"
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
+                                android:layout_width="180dp"
+                                android:layout_height="180dp"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp" />
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="10dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_time_stats" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_chart_legend_stats"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="20dp"
                                 android:layout_marginBottom="20dp"
                                 android:orientation="vertical"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/chart_study_time_stats"
                                 tools:listitem="@layout/item_chart_legend" />
 
-                        </LinearLayout>
-                    </FrameLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>

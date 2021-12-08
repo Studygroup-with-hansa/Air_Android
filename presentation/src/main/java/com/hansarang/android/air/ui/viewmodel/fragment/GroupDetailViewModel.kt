@@ -79,7 +79,7 @@ class GroupDetailViewModel @AssistedInject constructor(
                 _isGroupLeader.value = leaderEmail == user.email
 
                 val params = PostViewGroupDetail.Params(groupCode)
-                _groupRankList.value = postViewGroupDetail.buildParamsUseCaseSuspend(params).rankList
+                _groupRankList.value = postViewGroupDetail.buildParamsUseCaseSuspend(params).userList
             } catch (e: Throwable) {
                 _isFailure.value = when(e.message) {
                     "400" -> Event("그룹 코드가 유효하지 않습니다.")

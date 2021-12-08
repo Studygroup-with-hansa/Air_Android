@@ -1,63 +1,38 @@
 package com.hansarang.android.air.ui.fragment
 
 import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
-import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentStatsBinding
 import com.hansarang.android.air.ui.adapter.ChartLegendListAdapter
 import com.hansarang.android.air.ui.adapter.WeekdayDatePickerAdapter
+import com.hansarang.android.air.ui.base.BaseFragment
 import com.hansarang.android.air.ui.viewmodel.adapter.WeekdayDatePickerAdapterViewModel
 import com.hansarang.android.air.ui.viewmodel.fragment.StatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.ceil
 
 @AndroidEntryPoint
-class StatsFragment : Fragment() {
+class StatsFragment : BaseFragment<FragmentStatsBinding, StatsViewModel>() {
 
-    private lateinit var binding: FragmentStatsBinding
     private lateinit var weekDayDatePickerAdapter: WeekdayDatePickerAdapter
     private lateinit var chartLegendListAdapter: ChartLegendListAdapter
-    private val viewModel: StatsViewModel by activityViewModels()
+    override val viewModel: StatsViewModel by activityViewModels()
     private val weekdayDatePickerAdapterViewModel: WeekdayDatePickerAdapterViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentStatsBinding.inflate(inflater)
-        binding.weekdayDatePickerAdapterVm = weekdayDatePickerAdapterViewModel
-        binding.vm = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
-        observe()
-        listener()
-    }
-
-    private fun listener() = with(binding) {
-        srlStats.setOnRefreshListener {
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.isFirstLoad)
             viewModel.getStats()
-        }
     }
 
-    private fun observe() {
+    override fun observerViewModel() {
+        binding.weekdayDatePickerAdapterVm = weekdayDatePickerAdapterViewModel
+        weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
+        binding.rvWeekdayDatePickerStats.adapter = weekDayDatePickerAdapter
+
         weekdayDatePickerAdapterViewModel.stats.observe(viewLifecycleOwner) {
             with(it) {
                 if (goal >= 0) {
@@ -99,14 +74,7 @@ class StatsFragment : Fragment() {
             if (!it) binding.srlStats.isRefreshing = false
         }
 
-        viewModel.stats.observe(viewLifecycleOwner) { weekDayDatePickerAdapter.submitList(it) }
+        viewModel.statList.observe(viewLifecycleOwner) { weekDayDatePickerAdapter.submitList(it) }
     }
-
-    private fun init() {
-        weekDayDatePickerAdapter = WeekdayDatePickerAdapter(weekdayDatePickerAdapterViewModel)
-        if (viewModel.isFirstLoad) viewModel.getStats()
-        binding.rvWeekdayDatePickerStats.adapter = weekDayDatePickerAdapter
-    }
-
 
 }
