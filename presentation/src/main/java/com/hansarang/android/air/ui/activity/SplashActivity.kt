@@ -6,42 +6,33 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.hansarang.android.air.R
+import com.hansarang.android.air.databinding.ActivitySplashBinding
+import com.hansarang.android.air.ui.base.BaseActivity
 import com.hansarang.android.air.ui.util.SharedPreferenceHelper.token
 import com.hansarang.android.air.ui.viewmodel.activity.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
 
-    private val viewModel: SplashViewModel by viewModels()
+    override val viewModel: SplashViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-
-        observe()
-
-        if (token.isNotEmpty()) {
-            viewModel.checkToken()
-        } else {
-            startActivityWithThemeSet(AuthActivity::class.java)
-        }
-    }
-
-    private fun observe() = with(viewModel) {
+    override fun observerViewModel() {
         viewModel.isSuccess.observe(this@SplashActivity) {
-            startActivityWithThemeSet(MainActivity::class.java)
+            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         viewModel.isFailure.observe(this@SplashActivity) {
             Toast.makeText(this@SplashActivity, it, Toast.LENGTH_SHORT).show()
-            startActivityWithThemeSet(AuthActivity::class.java)
+            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-    }
 
-    private fun <T> startActivityWithThemeSet(cls: Class<T>) {
-        val intent = Intent(this@SplashActivity, cls)
-        startActivity(intent)
-        finish()
+        if (token.isNotEmpty()) {
+            viewModel.checkToken()
+        }
     }
 }
