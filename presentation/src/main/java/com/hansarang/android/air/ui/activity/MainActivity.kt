@@ -8,34 +8,30 @@ import android.provider.Settings
 import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.hansarang.android.air.databinding.ActivityMainBinding
+import com.hansarang.android.air.ui.base.BaseActivity
 import com.hansarang.android.air.ui.util.BackPressedHandler
+import com.hansarang.android.air.ui.viewmodel.activity.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+
+    override val viewModel: MainViewModel by viewModels()
 
     private lateinit var backPressedHandler: BackPressedHandler
     private lateinit var permissionLauncher: ActivityResultLauncher<Intent>
-
-    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var bottomNavigationView: BottomNavigationView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        bottomNavigationView = binding.bottomNavigationViewMain
-
+    override fun observerViewModel() {
         permissionLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
+            ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (Settings.canDrawOverlays(this)) {
                 val snackBar = Snackbar.make(
@@ -74,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         navController = findNavController(binding.navHostFragmentMain.id)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationViewMain.setupWithNavController(navController)
     }
 
     override fun onBackPressed() {
