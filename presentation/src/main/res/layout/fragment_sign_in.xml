@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.util.Patterns"/>
         <import type="android.view.View"/>
         <variable
             name="vm"
@@ -117,8 +118,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/please_set_email"
                                 android:inputType="textEmailAddress"
-                                android:focusableInTouchMode="@{!vm.isLoading}"
-                                android:text="@={vm.email}" />
+                                android:focusableInTouchMode="@{!vm.isLoading}" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,7 +126,7 @@
                             android:id="@+id/btn_email_validate_sign_in"
                             style="@style/OutlinedButton"
                             android:layout_width="0dp"
-                            android:onClick="@{() -> vm.getRequestAuth()}"
+                            android:onClick="@{() -> vm.getRequestAuth(etEmailSignIn.getText().toString())}"
                             android:stateListAnimator="@null"
                             android:text="@string/validate"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -183,11 +183,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="@{vm.isEmailSent}"
+                                android:focusableInTouchMode="@{!vm.isLoading}"
                                 android:hint="@string/please_set_validate_code"
                                 android:inputType="text"
                                 android:paddingEnd="65dp"
-                                android:focusableInTouchMode="@{!vm.isLoading}"
-                                android:text="@={vm.authCode}"
                                 tools:ignore="RtlSymmetry" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -201,8 +200,8 @@
                     style="@style/SubmitButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="@{vm.signInButtonEnabled}"
-                    android:onClick="@{() -> vm.postSendAuthCode()}"
+                    android:enabled="false"
+                    android:onClick="@{() -> vm.postSendAuthCode(etEmailSignIn.getText().toString(), etValidateCodeSignIn.getText().toString())}"
                     android:text="@string/sign_in"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
