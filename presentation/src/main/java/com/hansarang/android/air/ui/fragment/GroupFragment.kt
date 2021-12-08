@@ -1,19 +1,16 @@
 package com.hansarang.android.air.ui.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.hansarang.android.air.databinding.FragmentGroupBinding
 import com.hansarang.android.air.ui.adapter.GroupAdapter
+import com.hansarang.android.air.ui.base.BaseFragment
 import com.hansarang.android.air.ui.decorator.ItemDividerDecorator
 import com.hansarang.android.air.ui.dialog.DialogAlertFragment
 import com.hansarang.android.air.ui.dialog.JoinGroupDialogFragment
@@ -23,22 +20,11 @@ import com.hansarang.android.air.ui.viewmodel.fragment.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GroupFragment : Fragment() {
-
-    private lateinit var binding: FragmentGroupBinding
+class GroupFragment : BaseFragment<FragmentGroupBinding, GroupViewModel>() {
     private var isOpened: Boolean = false
-    private lateinit var groupAdapter: GroupAdapter
-    private val viewModel: GroupViewModel by activityViewModels()
+    private val groupAdapter = GroupAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentGroupBinding.inflate(inflater)
-        binding.vm = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
+    override val viewModel: GroupViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()
@@ -48,19 +34,23 @@ class GroupFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun observerViewModel() {
+        binding.rvGroupList.adapter = groupAdapter
+        binding.rvGroupList.addItemDecoration(ItemDividerDecorator(5.dp))
 
-        init()
-        listener()
-        observe()
-    }
+        binding.expandableFabAddGroup.setOnClickListener {
+            if(!isOpened) openFAB() else closeFAB()
+        }
+        binding.viewFabBackground.setOnClickListener {
+            closeFAB()
+        }
+        setFragmentResultListener(GroupDetailFragment.id) { _, bundle ->
+            if (bundle.getString("data") == "Reload") {
+                viewModel.groupList()
+            }
+        }
 
-    private fun init() = with(binding) {
-        groupAdapter = GroupAdapter()
-        rvGroupList.adapter = groupAdapter
-        rvGroupList.addItemDecoration(ItemDividerDecorator(5.dp))
-        fabCreateGroupAddGroup.setOnClickListener {
+        viewModel.createGroupButtonClick.observe(viewLifecycleOwner) {
             val alert = DialogAlertFragment.newInstance(
                 "알림",
                 "그룹을 추가하시겠습니까?",
@@ -78,7 +68,7 @@ class GroupFragment : Fragment() {
             }
         }
 
-        fabJoinGroupAddGroup.setOnClickListener {
+        viewModel.joinGroupButtonClick.observe(viewLifecycleOwner) {
             val joinGroupDialogFragment = JoinGroupDialogFragment.newInstance()
             joinGroupDialogFragment.show(parentFragmentManager, "joinGroupDialogFragment")
             joinGroupDialogFragment.setOnDismissDialogListener {
@@ -90,41 +80,22 @@ class GroupFragment : Fragment() {
                 closeFAB()
             }
         }
-    }
 
-    private fun observe() = with(viewModel) {
-        groupList.observe(viewLifecycleOwner) {
+        viewModel.groupList.observe(viewLifecycleOwner) {
             groupAdapter.submitList(it)
         }
 
-        isFailure.observe(viewLifecycleOwner, EventObserver {
+        viewModel.isFailure.observe(viewLifecycleOwner, EventObserver {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
-        isLoading.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             if (it) {
                 binding.sflRvGroupList.startShimmer()
             } else {
                 binding.sflRvGroupList.stopShimmer()
                 binding.srlGroup.isRefreshing = false
                 binding.nestedScrollViewGroup.fullScroll(NestedScrollView.FOCUS_UP)
-            }
-        }
-    }
-
-    private fun listener() = with(binding) {
-        expandableFabAddGroup.setOnClickListener {
-            if(!isOpened) openFAB() else closeFAB()
-        }
-        viewFabBackground.setOnClickListener {
-            closeFAB()
-        }
-        srlGroup.setOnRefreshListener {
-            viewModel.groupList()
-        }
-        setFragmentResultListener(GroupDetailFragment.id) { _, bundle ->
-            if (bundle.getString("data") == "Reload") {
-                viewModel.groupList()
             }
         }
     }
