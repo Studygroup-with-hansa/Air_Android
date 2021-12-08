@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hansarang.android.air.ui.livedata.SingleLiveEvent
 import com.hansarang.android.domain.entity.dto.Subject
 import com.hansarang.android.domain.usecase.subject.DeleteSubjectUseCase
 import com.hansarang.android.domain.usecase.subject.GetSubjectByDateUseCase
@@ -25,40 +26,53 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     var isFirstLoad = true
 
+    var totalTime = 0L
+    var goal = 0L
+    var percents = 0f
+
     private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _isEmpty = MutableLiveData(false)
-    val isEmpty: LiveData<Boolean> = _isEmpty
-
-    val totalTime = MutableLiveData(0L)
-    val goal = MutableLiveData(0L)
-    val percents = MutableLiveData(0f)
+    val isEmpty: LiveData<Boolean> get() = _isEmpty
 
     private val _subjectList = MutableLiveData(ArrayList<Subject>())
-    val subjectList: LiveData<ArrayList<Subject>> = _subjectList
+    val subjectList: LiveData<ArrayList<Subject>> get() = _subjectList
+
+    private val _setTargetTimeButtonClick = SingleLiveEvent<Unit>()
+    val setTargetTimeButtonClick: LiveData<Unit> get() = _setTargetTimeButtonClick
+
+    private val _addSubjectButtonClick = SingleLiveEvent<Unit>()
+    val addSubjectButtonClick: LiveData<Unit> get() = _addSubjectButtonClick
+
+    fun onSetTargetTimeButtonClick() {
+        _setTargetTimeButtonClick.call()
+    }
+
+    fun onAddSubjectButtonClick() {
+        _addSubjectButtonClick.call()
+    }
 
     fun deleteSubject(subject: Subject) {
-        _isLoading.value = true
-
         viewModelScope.launch {
             try {
                 withTimeout(10000) {
                     val params = DeleteSubjectUseCase.Params(subject.title)
                     deleteSubjectUseCase.buildParamsUseCaseSuspend(params)
-                    getSubjectList()
+                    val list = _subjectList.value
+                    list?.remove(subject)
+                    _subjectList.value = list
+                    _isEmpty.value = list.isNullOrEmpty()
                 }
             } catch (e: TimeoutCancellationException) {
 
             } catch (e: Throwable) {
                 Log.d("TAG", "deleteSubject: ${e.message}")
-            } finally {
-                _isLoading.value = false
             }
         }
     }
 
-    fun getSubjectList() {
+    fun getSubject() {
         _isLoading.value = true
 
         viewModelScope.launch {
@@ -73,9 +87,9 @@ class HomeViewModel @Inject constructor(
 
                     _subjectList.value = subjectList
                     baseSubject.subject.forEach { totaltime += it.time }
-                    totalTime.value = totaltime
-                    percents.value = (totaltime.toFloat() / baseSubject.goal.toFloat()) * 100f
-                    goal.value = baseSubject.goal
+                    totalTime = totaltime
+                    percents = (totaltime.toFloat() / baseSubject.goal.toFloat()) * 100f
+                    goal = baseSubject.goal
                     _isEmpty.value = subjectList.isEmpty()
                 }
             } catch (e: TimeoutCancellationException) {

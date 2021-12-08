@@ -5,6 +5,7 @@
     <string name="home">홈</string>
     <string name="zero_fill">%02d</string>
     <!-- 2021.09.06 -->
+    <string name="ymd_format">%1$tY.%1$tm.%1$td</string>
     <string name="ymd">%04d.%02d.%02d</string>
     <string name="time">%02dH %02dM %02dS</string>
     <string name="target_time">목표 시간 %02dH %02dM %02dS</string>
@@ -38,4 +39,5 @@
     <string name="group_name">%s님의 그룹</string>
     <string name="number_of_people">%d명</string>
     <string name="_00">00</string>
+    <string name="default_year">0000.00.00</string>
 </resources>

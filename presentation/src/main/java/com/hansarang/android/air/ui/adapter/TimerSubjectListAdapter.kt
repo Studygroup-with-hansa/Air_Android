@@ -25,8 +25,7 @@ class TimerSubjectListAdapter(
 ) : ListAdapter<Subject, TimerSubjectListAdapter.TimeSubjectListViewHolder>(diffUtil) {
 
     inner class TimeSubjectListViewHolder(
-        private val binding: ItemTimerSubjectBinding,
-        private val viewModel: HomeViewModel
+        private val binding: ItemTimerSubjectBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(subject: Subject) {
 
@@ -37,8 +36,8 @@ class TimerSubjectListAdapter(
             }
             binding.subject = subject
 
-            binding.tvTimePercentageSubject.text = if (viewModel.goal.value?:1L > 0) {
-                "${((subject.time.toFloat() / ((viewModel.goal.value?:1L).toFloat())) * 100).toInt()}% 달성"
+            binding.tvTimePercentageSubject.text = if (viewModel.goal > 0) {
+                "${((subject.time.toFloat() / ((viewModel.goal).toFloat())) * 100).toInt()}% 달성"
             } else {
                 "0% 달성"
             }
@@ -70,7 +69,7 @@ class TimerSubjectListAdapter(
                 val intent = Intent(binding.root.context, TimerActivity::class.java)
                 intent.putExtra("title", subject.title)
                 intent.putExtra("time", subject.time)
-                intent.putExtra("goal", viewModel.goal.value?:0L)
+                intent.putExtra("goal", viewModel.goal)
                 binding.root.context.startActivity(intent)
             }
         }
@@ -84,7 +83,7 @@ class TimerSubjectListAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemTimerSubjectBinding.inflate(inflater)
         binding.root.layoutParams = ConstraintLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        return TimeSubjectListViewHolder(binding, viewModel)
+        return TimeSubjectListViewHolder(binding)
     }
 
     companion object {
