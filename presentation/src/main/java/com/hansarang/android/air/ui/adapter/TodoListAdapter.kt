@@ -1,6 +1,5 @@
 package com.hansarang.android.air.ui.adapter
 
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -25,8 +24,9 @@ import com.hansarang.android.domain.usecase.checklist.PutModifyCheckListUseCase
 import com.hansarang.android.domain.usecase.checklist.PutStatusChangeCheckListUseCase
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class TodoListAdapter(
+class TodoListAdapter @Inject constructor(
     private val postCheckListUseCase: PostCheckListUseCase,
     private val putModifyCheckListUseCase: PutModifyCheckListUseCase,
     private val putStatusChangeCheckListUseCase: PutStatusChangeCheckListUseCase,
