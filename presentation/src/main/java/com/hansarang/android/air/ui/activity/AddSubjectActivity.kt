@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.hansarang.android.air.databinding.ActivityAddSubjectBinding
 import com.hansarang.android.air.ui.adapter.ColorPickerAdapter
+import com.hansarang.android.air.ui.base.BaseActivity
 import com.hansarang.android.air.ui.decorator.GridDividerDecorator
 import com.hansarang.android.air.ui.extention.dp
 import com.hansarang.android.air.ui.livedata.EventObserver
@@ -16,20 +17,12 @@ import com.hansarang.android.domain.entity.dto.Subject
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddSubjectActivity : AppCompatActivity() {
+class AddSubjectActivity : BaseActivity<ActivityAddSubjectBinding, AddSubjectViewModel>() {
 
-    private lateinit var binding: ActivityAddSubjectBinding
     private lateinit var colorPickerAdapter: ColorPickerAdapter
-    private val viewModel: AddSubjectViewModel by viewModels()
+    override val viewModel: AddSubjectViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val inflater = LayoutInflater.from(this)
-        binding = ActivityAddSubjectBinding.inflate(inflater)
-        binding.vm = viewModel
-        binding.lifecycleOwner = this
-        setContentView(binding.root)
-
+    override fun observerViewModel() {
         init()
         observe()
         listener()
