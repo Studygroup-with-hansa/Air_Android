@@ -27,8 +27,8 @@ class StatsViewModel @Inject constructor(
     private val _isFailure = MutableLiveData<Event<String>>()
     val isFailure: LiveData<Event<String>> = _isFailure
 
-    private val _stats = MutableLiveData<ArrayList<Stats>>()
-    val stats: LiveData<ArrayList<Stats>> = _stats
+    private val _statList = MutableLiveData<ArrayList<Stats>>()
+    val statList: LiveData<ArrayList<Stats>> = _statList
 
     fun getStats() {
         _isLoading.value = true
@@ -51,7 +51,7 @@ class StatsViewModel @Inject constructor(
                 Log.d("Stats", "getStats: $startDate $endDate")
 
                 val params = GetWeeklyStatsUseCase.Params(startDate, endDate)
-                _stats.value = ArrayList(getWeeklyStatsUseCase.buildParamsUseCaseSuspend(params).stats)
+                _statList.value = ArrayList(getWeeklyStatsUseCase.buildParamsUseCaseSuspend(params).stats)
             } catch (e: Throwable) {
                 _isFailure.value = Event(e.message?:"")
             } finally {

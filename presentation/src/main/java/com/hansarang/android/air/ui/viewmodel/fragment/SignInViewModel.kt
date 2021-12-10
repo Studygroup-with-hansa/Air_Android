@@ -23,22 +23,21 @@ class SignInViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _isFailure = MutableLiveData<Event<String>>()
-    val isFailure: LiveData<Event<String>> = _isFailure
+    val isFailure: LiveData<Event<String>> get() = _isFailure
 
     private val _isAuthSuccess = MutableLiveData<String>()
-    val isAuthSuccess: LiveData<String> = _isAuthSuccess
+    val isAuthSuccess: LiveData<String> get() = _isAuthSuccess
+    
+    private val _isEmailSent = MutableLiveData<Boolean>()
+    val isEmailSent: LiveData<Boolean> get() = _isEmailSent
 
-    val email = MutableLiveData<String>()
-    val authCode = MutableLiveData<String>()
-    val isEmailSent = MutableLiveData<Boolean>()
-    val isEmailExist = MutableLiveData<Boolean>()
-    val signInButtonEnabled = MutableLiveData(false)
+    private val _isEmailExist = MutableLiveData<Boolean>()
+    val isEmailExist: LiveData<Boolean> get() = _isEmailExist
 
     private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun getRequestAuth() {
-        val email = email.value?:""
+    fun getRequestAuth(email: String) {
         _isLoading.value = true
 
         viewModelScope.launch {
@@ -49,18 +48,18 @@ class SignInViewModel @Inject constructor(
                         val emailChk = Patterns.EMAIL_ADDRESS
                         if (emailChk.matcher(email).matches()) {
                             val auth = postRequestAuthUseCase.buildParamsUseCaseSuspend(params)
-                            isEmailSent.value = auth.emailSent
-                            isEmailExist.value = auth.isEmailExist
+                            _isEmailSent.value = auth.emailSent
+                            _isEmailExist.value = auth.isEmailExist
                         } else {
-                            isEmailSent.value = false
-                            isEmailExist.value = false
+                            _isEmailSent.value = false
+                            _isEmailExist.value = false
                             _isFailure.value =
                                 Event("이메일 전송에 실패하였습니다. 재시도 해주세요.")
                         }
                     }
                 } catch (e: TimeoutCancellationException) {
                     _isFailure.value = Event("시간 초과")
-                    isEmailSent.value = false
+                    _isEmailSent.value = false
                 } catch (e: Throwable) {
                     _isFailure.value = if (e.message == "400") {
                         Event("이메일 전송에 실패하였습니다. 재시도 해주세요.")
@@ -68,7 +67,7 @@ class SignInViewModel @Inject constructor(
                         Log.d("SignInViewModel", "getRequestAuth: ${e.message}")
                         Event("오류 발생")
                     }
-                    isEmailSent.value = false
+                    _isEmailSent.value = false
 
                 } finally {
                     _isLoading.value = false
@@ -80,9 +79,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun postSendAuthCode() {
-        val email = email.value?:""
-        val authCode = authCode.value?:""
+    fun postSendAuthCode(email: String, authCode: String) {
         _isLoading.value = true
 
         viewModelScope.launch {

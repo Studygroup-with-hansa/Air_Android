@@ -1,44 +1,57 @@
 package com.hansarang.android.air.ui.viewmodel.activity
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.hansarang.android.air.di.assistedfactory.TimerAssistedFactory
+import com.hansarang.android.air.ui.livedata.SingleLiveEvent
 import com.hansarang.android.domain.usecase.timer.PostTimerStartUseCase
 import com.hansarang.android.domain.usecase.timer.PostTimerStopUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TimerViewModel @Inject constructor(
+class TimerViewModel @AssistedInject constructor(
     private val postTimerStartUseCase: PostTimerStartUseCase,
-    private val postTimerStopUseCase: PostTimerStopUseCase
+    private val postTimerStopUseCase: PostTimerStopUseCase,
+    @Assisted("title") val title: String,
+    @Assisted("date") val date: Long,
+    @Assisted("time") time: Long,
+    @Assisted("goal") val goal: Long,
+    @Assisted("isStarted") isStarted: Boolean
 ): ViewModel() {
-    val title = MutableLiveData<String>()
-    val date = MutableLiveData<Long>()
-    val time = MutableLiveData(0L)
-    val goal = MutableLiveData<Long>()
-    val isStarted = MutableLiveData<Boolean>()
+
+    val time = MutableLiveData(time)
+
+    private val _isStarted = SingleLiveEvent<Unit>()
+    val isStarted: LiveData<Unit> get() = _isStarted
+    init {
+        if (isStarted) _isStarted.call()
+    }
+
+    private val _isStopped = SingleLiveEvent<Unit>()
+    val isStopped: LiveData<Unit> get() = _isStopped
 
     private val _isFailure = MutableLiveData<String>()
-    val isFailure: LiveData<String> = _isFailure
+    val isFailure: LiveData<String> get() = _isFailure
 
-    private val _isSuccessStop = MutableLiveData<String>()
-    val isSuccessStop: LiveData<String> = _isSuccessStop
+    private val _backButtonClick = SingleLiveEvent<Unit>()
+    val backButtonClick: LiveData<Unit> get() = _backButtonClick
 
-    private val _isSuccessStart = MutableLiveData<String>()
-    val isSuccessStart: LiveData<String> = _isSuccessStart
+    fun onPlayButtonClick(isPlayed: Boolean) {
+        if (isPlayed) _isStarted.call()
+        else _isStopped.call()
+    }
+
+    fun onBackButtonClick() {
+        _backButtonClick.call()
+    }
 
     fun postTimerStart() {
         viewModelScope.launch {
             try {
                 postTimerStartUseCase.buildParamsUseCaseSuspend(
-                    PostTimerStartUseCase.Params(title.value ?: "")
+                    PostTimerStartUseCase.Params(title)
                 )
-                _isSuccessStart.value = "시작 성공"
             } catch (e: Throwable) {
                 when(e.message) {
                     "401" -> _isFailure.value = "유효하지 않은 토큰입니다."
@@ -55,20 +68,32 @@ class TimerViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 postTimerStopUseCase.buildParamsUseCaseSuspend(
-                    PostTimerStopUseCase.Params(title.value ?: "")
+                    PostTimerStopUseCase.Params(title)
                 )
-                _isSuccessStop.value = "종료 성공"
             } catch (e: Throwable) {
                 when(e.message) {
                     "401" -> _isFailure.value = "유효하지 않은 토큰입니다."
-                    "409" -> {
-
-                    }
+                    "409" -> { }
                     else -> {
                         _isFailure.value = "${e.message} 오류 발생"
                         Log.d("TimerViewModel", "postTimerStop: ${e.message}")
                     }
                 }
+            }
+        }
+    }
+
+    companion object {
+        fun provideFactory(
+            assistedFactory: TimerAssistedFactory,
+            date: Long,
+            title: String,
+            time: Long,
+            goal: Long,
+            isStarted: Boolean
+        ): ViewModelProvider.Factory = object: ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return assistedFactory.create(title, date, time, goal, isStarted) as T
             }
         }
     }

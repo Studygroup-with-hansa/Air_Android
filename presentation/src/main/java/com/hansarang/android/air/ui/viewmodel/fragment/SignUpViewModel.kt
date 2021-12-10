@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
+import com.hansarang.android.air.ui.livedata.SingleLiveEvent
 import com.hansarang.android.domain.usecase.user.PutModifyUsernameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
@@ -30,14 +31,15 @@ class SignUpViewModel @Inject constructor(
     private val _isFailure = MutableLiveData<Event<String>>()
     val isFailure: LiveData<Event<String>> = _isFailure
 
-    val finishButtonEnabled = MutableLiveData(false)
+    private val _addImageButtonClick = SingleLiveEvent<Unit>()
+    val addImageButtonClick: LiveData<Unit> get() = _addImageButtonClick
 
-    val nickname = MutableLiveData<String>()
+    fun onAddImageButtonClick() {
+        _addImageButtonClick.call()
+    }
 
-    fun putModifyUsername() {
+    fun putModifyUsername(nickname: String) {
         _isLoading.value = true
-
-        val nickname = nickname.value?:""
 
         viewModelScope.launch {
             if (nickname.isNotEmpty()) {

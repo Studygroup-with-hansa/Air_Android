@@ -80,6 +80,7 @@
                     android:padding="20dp"
                     android:clipToPadding="false"
                     android:gravity="center"
+                    android:onClick="@{() -> vm.onAddImageButtonClick()}"
                     android:background="?selectableItemBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -159,8 +160,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/please_set_nickname"
                             android:inputType="textPersonName"
-                            android:focusableInTouchMode="@{!vm.isLoading}"
-                            android:text="@={vm.nickname}" />
+                            android:focusableInTouchMode="@{!vm.isLoading}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,8 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/save"
-                    android:enabled="@{vm.finishButtonEnabled}"
-                    android:onClick="@{() -> vm.putModifyUsername()}"
+                    android:onClick="@{() -> vm.putModifyUsername(etNicknameSignUp.getText().toString())}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.491"

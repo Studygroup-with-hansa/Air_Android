@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hansarang.android.air.ui.livedata.Event
+import com.hansarang.android.air.ui.livedata.SingleLiveEvent
 import com.hansarang.android.domain.entity.dto.Group
 import com.hansarang.android.domain.usecase.group.GetGroupListUseCase
 import com.hansarang.android.domain.usecase.group.PostCreateUserGroupUseCase
@@ -21,16 +22,30 @@ class GroupViewModel @Inject constructor(
     var isFirstLoad = true
 
     private val _groupList = MutableLiveData<ArrayList<Group>>()
-    val groupList: LiveData<ArrayList<Group>> = _groupList
+    val groupList: LiveData<ArrayList<Group>> get() = _groupList
 
     private val _isFailure = MutableLiveData<Event<String>>()
-    val isFailure: LiveData<Event<String>> = _isFailure
+    val isFailure: LiveData<Event<String>> get() = _isFailure
 
     private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _isEmpty = MutableLiveData(false)
-    val isEmpty: LiveData<Boolean> = _isEmpty
+    val isEmpty: LiveData<Boolean> get() = _isEmpty
+
+    private val _createGroupButtonClick = SingleLiveEvent<Unit>()
+    val createGroupButtonClick: LiveData<Unit> get() = _createGroupButtonClick
+
+    private val _joinGroupButtonClick = SingleLiveEvent<Unit>()
+    val joinGroupButtonClick: LiveData<Unit> get() = _joinGroupButtonClick
+
+    fun onCreateGroupButtonClick() {
+        _createGroupButtonClick.call()
+    }
+
+    fun onJoinGroupButtonClick() {
+        _joinGroupButtonClick.call()
+    }
 
     fun groupList() {
         _isLoading.value = true

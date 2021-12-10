@@ -2,90 +2,62 @@ package com.hansarang.android.air.ui.fragment
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.SimpleItemAnimator
+import com.hansarang.android.air.R
 import com.hansarang.android.air.databinding.FragmentHomeBinding
 import com.hansarang.android.air.ui.activity.AddSubjectActivity
 import com.hansarang.android.air.ui.adapter.TimerSubjectListAdapter
+import com.hansarang.android.air.ui.base.BaseFragment
+import com.hansarang.android.air.ui.bind.setTime
 import com.hansarang.android.air.ui.dialog.SetGoalDialogFragment
 import com.hansarang.android.air.ui.viewmodel.fragment.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
-    private lateinit var binding: FragmentHomeBinding
+    override val viewModel: HomeViewModel by activityViewModels()
     private lateinit var timerSubjectListAdapter: TimerSubjectListAdapter
     private var activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == RESULT_OK) {
-            viewModel.getSubjectList()
+            viewModel.getSubject()
         }
-    }
-
-    private val viewModel: HomeViewModel by activityViewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(inflater)
-        binding.vm = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
 
         if (viewModel.isFirstLoad) {
-            viewModel.getSubjectList()
+            viewModel.getSubject()
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun observerViewModel() {
 
-        init()
-        listener()
-        observe()
-    }
+        timerSubjectListAdapter = TimerSubjectListAdapter(viewModel, activityResultLauncher)
+        binding.rvSubjectHome.adapter = timerSubjectListAdapter
 
-    private fun listener() = with(binding) {
-        fabAddSubjectHome.setOnClickListener {
+        viewModel.setTargetTimeButtonClick.observe(viewLifecycleOwner) {
+            val setGoalDialogFragment = SetGoalDialogFragment.newInstance()
+            setGoalDialogFragment.show(parentFragmentManager, "setGoalDialogFragment")
+            setGoalDialogFragment.setOnDismissDialogListener {
+                viewModel.getSubject()
+            }
+        }
+
+        viewModel.addSubjectButtonClick.observe(viewLifecycleOwner) {
             val intent = Intent(requireContext(), AddSubjectActivity::class.java)
             activityResultLauncher.launch(intent)
         }
 
-        tvTargetTimeHome.setOnClickListener {
-            val setGoalDialogFragment = SetGoalDialogFragment.newInstance()
-            setGoalDialogFragment.show(parentFragmentManager, "setGoalDialogFragment")
-            setGoalDialogFragment.setOnDismissDialogListener {
-                viewModel.getSubjectList()
-            }
-
-        }
-
-        srlHome.setOnRefreshListener {
-            viewModel.getSubjectList()
-        }
-    }
-
-    private fun observe() = with(viewModel) {
-        subjectList.observe(viewLifecycleOwner) {
+        viewModel.subjectList.observe(viewLifecycleOwner) {
             timerSubjectListAdapter.submitList(it.toMutableList())
         }
-        isLoading.observe(viewLifecycleOwner) {
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             if (it) {
                 binding.sflToolbarHome.startShimmer()
                 binding.sflRvSubjectHome.startShimmer()
@@ -96,16 +68,13 @@ class HomeFragment : Fragment() {
                 binding.srlHome.isRefreshing = false
             }
         }
-    }
-
-    private fun init() = with(binding) {
-        timerSubjectListAdapter = TimerSubjectListAdapter(viewModel, activityResultLauncher)
-        rvSubjectHome.adapter = timerSubjectListAdapter
-        val animator = rvSubjectHome.itemAnimator
-        if (animator is SimpleItemAnimator) {
-            animator.supportsChangeAnimations = false
+        viewModel.setTargetTimeButtonClick.observe(viewLifecycleOwner) {
+            val setGoalDialogFragment = SetGoalDialogFragment.newInstance()
+            setGoalDialogFragment.show(parentFragmentManager, "setGoalDialogFragment")
+            setGoalDialogFragment.setOnDismissDialogListener {
+                viewModel.getSubject()
+            }
         }
-        tvDateHome.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(Date(System.currentTimeMillis()))
     }
 
 }
