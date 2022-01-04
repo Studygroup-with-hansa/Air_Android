@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Air</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">홈</string>
+    <string name="zero_fill">%02d</string>
+    <!-- 2021.09.06 -->
+    <string name="ymd_format">%1$tY.%1$tm.%1$td</string>
+    <string name="ymd">%04d.%02d.%02d</string>
+    <string name="time">%02dH %02dM %02dS</string>
+    <string name="target_time">목표 시간 %02dH %02dM %02dS</string>
+    <string name="stats">통계</string>
+    <string name="group">그룹</string>
+    <string name="todo">할 일</string>
+    <string name="memo">메모</string>
+    <string name="subject">과목</string>
+    <string name="date_pattern">yyyy-MM-dd</string>
+    <string name="modify">수정</string>
+    <string name="delete">삭제</string>
+    <string name="time_pattern">%02d:%02d:%02d</string>
+    <string name="please_set_memo">자유롭게 메모해주세요</string>
+    <string name="email">이메일</string>
+    <string name="please_set_email">이메일을 입력해주세요.</string>
+    <string name="validate_code">인증코드</string>
+    <string name="please_set_validate_code">인증코드를 입력해주세요.</string>
+    <string name="validate">인증</string>
+    <string name="sign_in">로그인</string>
+    <string name="dont_you_have_an_account">회원이 아니신가요?</string>
+    <string name="lets_sign_up">회원가입하기</string>
+    <string name="sign_up">회원가입</string>
+    <string name="please_set_nickname">닉네임을 입력해주세요.</string>
+    <string name="nickname">닉네임</string>
+    <string name="do_you_have_an_account">회원이신가요?</string>
+    <string name="lets_sign_in">로그인하기</string>
+    <string name="save">저장</string>
+    <string name="please_set_validate_email">옳은 이메일 주소를 입력해 주세요.</string>
+    <string name="all_time">총 공부 시간</string>
+    <string name="goal_achievement_rate_stats">목표 달성률 %.1f%%</string>
+    <string name="group_name">%s님의 그룹</string>
+    <string name="number_of_people">%d명</string>
+    <string name="_00">00</string>
+    <string name="default_year">0000.00.00</string>
+</resources>

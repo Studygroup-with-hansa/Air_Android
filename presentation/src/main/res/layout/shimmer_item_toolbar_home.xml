@@ -1,0 +1,64 @@
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/main_grey"
+        app:cardCornerRadius="5dp">
+
+        <TextView
+            android:layout_width="101dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/white" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/main_grey"
+        app:cardCornerRadius="5dp">
+
+        <TextView
+            style="@style/BoldTextWhiteBiggest"
+            android:layout_width="187dp"
+            android:layout_height="wrap_content" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/main_grey"
+        app:cardCornerRadius="5dp">
+
+        <TextView
+            android:id="@+id/tv_target_time_home"
+            android:layout_width="216dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:paddingHorizontal="5dp"
+            android:alpha="0.8"
+            android:textColor="@color/white" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

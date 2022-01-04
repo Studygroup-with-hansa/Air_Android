@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.activity.TimerViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activity.TimerActivity"
+        android:background="@color/splash_color">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationOnClickListener="@{() -> vm.onBackButtonClick()}"
+            app:navigationIcon="@drawable/ic_left_arrow" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_title_timer"
+                style="@style/BoldTextWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                tools:text="국어" />
+
+            <TextView
+                android:id="@+id/tv_date_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2021.10.28"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_time_timer"
+                style="@style/BoldTextWhiteBiggest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:setPattern="@{@string/time}"
+                app:setTime="@{vm.time}"
+                tools:text="01H 47M 26S"/>
+
+            <TextView
+                android:id="@+id/tv_target_time_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                tools:text="목표 시간 05H 00M 00S"
+                app:setPattern="@{@string/target_time}"
+                app:setTime="@{vm.goal}"
+                android:textSize="20sp"
+                android:alpha="0.8"
+                android:textColor="@color/white" />
+
+            <CheckBox
+                android:id="@+id/chk_play_button_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:onClick="@{() -> vm.onPlayButtonClick(chkPlayButtonTimer.isChecked())}"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/chk_play"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

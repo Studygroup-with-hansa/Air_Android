@@ -1,0 +1,103 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Air" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorPrimaryVariant">@color/main_grey</item>
+        <item name="colorOnPrimary">@color/main_white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="colorAccent">@color/main</item>
+        <item name="android:windowAnimationStyle">@style/DefaultActivityAnimation</item>
+    </style>
+
+    <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
+        <item name="backgroundTint">@color/light</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/main</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/main</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="DefaultActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/nav_default_enter_anim</item>
+        <item name="android:activityOpenExitAnimation">@anim/nav_default_exit_anim</item>
+        <item name="android:activityCloseEnterAnimation">@anim/nav_default_pop_enter_anim</item>
+        <item name="android:activityCloseExitAnimation">@anim/nav_default_pop_exit_anim</item>
+    </style>
+
+    <style name="BoldTextWhite" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BoldTextWhiteBiggest" parent="BoldTextWhite">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="BoldTextWhiteMiddle" parent="BoldTextWhite">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BoldTextWhiteSmall" parent="BoldTextWhite">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <style name="BoldTextBlack" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="BoldTextBlackBiggest" parent="BoldTextBlack">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="BoldTextBlackMiddle" parent="BoldTextBlack">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ErrorText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/error_color</item>
+    </style>
+
+    <style name="CustomEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="colorControlActivated">@color/main</item>
+        <item name="android:textSelectHandle">@color/main</item>
+        <item name="android:textColorHighlight">@color/main_white</item>
+    </style>
+
+    <style name="TextEditText" parent="CustomEditText">
+        <item name="android:textSize">15sp</item>
+        <item name="boxBackgroundMode">none</item>
+        <item name="android:background">@drawable/edt_box</item>
+        <item name="android:paddingVertical">16dp</item>
+    </style>
+
+    <style name="OutlinedButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/btn_outlined_box</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:paddingVertical">17dp</item>
+    </style>
+
+    <style name="TextButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+    <style name="SubmitButton" parent="TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/btn_filled_box</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>

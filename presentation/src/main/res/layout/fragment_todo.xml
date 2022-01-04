@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="vm"
+            type="com.hansarang.android.air.ui.viewmodel.fragment.TodoViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.TodoFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@color/main"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?selectableItemBackground"
+                    android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), -1)}"
+                    android:src="@drawable/ic_left_arrow"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/tv_date_todo"
+                    style="@style/BoldTextWhiteMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    app:setDateTime="@{vm.date}"
+                    app:setPattern="@{@string/date_pattern}"
+                    tools:text="2021.09.06" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:visibility="@{vm.isNextEnabled ? View.VISIBLE : View.INVISIBLE}"
+                    android:background="?selectableItemBackground"
+                    android:onClick="@{() -> vm.setDay(tvDateTodo.getText().toString(), 1)}"
+                    android:src="@drawable/ic_right_arrow"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2">
+
+                        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                            android:id="@+id/srl_todo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:onRefreshListener="@{() -> vm.getTodos()}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rv_todoList_todo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:listitem="@layout/item_todo"
+                                    android:visibility="@{!vm.isLoading ? (!vm.isEmpty ? View.VISIBLE : View.GONE) : View.GONE}"/>
+
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/sfl_todo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}">
+
+                                    <androidx.core.widget.NestedScrollView
+                                        android:id="@+id/nestedScrollView_todo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginBottom="5dp"
+                                                app:alpha="@{1.0f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.8f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.6f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.4f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.2f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.1f}"/>
+
+                                            <include layout="@layout/shimmer_item_todo"
+                                                android:layout_height="wrap_content"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginVertical="5dp"
+                                                app:alpha="@{0.0f}"/>
+
+                                        </LinearLayout>
+
+                                    </androidx.core.widget.NestedScrollView>
+
+
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                            </FrameLayout>
+
+                        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="공부 기록이 존재하지 않습니다."
+                            android:visibility="@{vm.isEmpty ? (!vm.isLoading ? View.VISIBLE : View.GONE) : View.GONE}"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <EditText
+                        android:id="@+id/et_memo_todo"
+                        style="@style/CustomEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/memo_background"
+                        android:gravity="top"
+                        android:imeOptions="actionSend"
+                        android:inputType="textNoSuggestions"
+                        android:hint="@string/please_set_memo"
+                        android:text="@={vm.memo}"
+                        android:padding="10dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
